@@ -1,0 +1,367 @@
+/* ---------------------------------------------------------------------
+   DESIGN TOKENS
+   Change these once and the whole app updates. This is the only place
+   colors, fonts and spacing are defined.
+------------------------------------------------------------------------ */
+:root {
+  --color-bg: #f7f5f0;
+  --color-surface: #ffffff;
+  --color-ink: #12241f;
+  --color-muted: #5c6864;
+  --color-primary: #0b6e4f;
+  --color-primary-dark: #063d2c;
+  --color-accent: #c98a2b;
+  --color-line: #e2ded3;
+  --color-invested: #0b6e4f;
+  --color-returns: #c98a2b;
+
+  --font-display: 'Newsreader', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --shadow-card: 0 1px 2px rgba(18, 36, 31, 0.04), 0 8px 24px rgba(18, 36, 31, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font-family: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------
+   PAGE SHELL
+------------------------------------------------------------------------ */
+.app-shell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-header {
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+
+.site-header__inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 24px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.site-header__mark {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+}
+
+.site-header__tagline {
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.site-main {
+  flex: 1;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+}
+
+.site-footer {
+  border-top: 1px solid var(--color-line);
+}
+
+.site-footer p {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 24px;
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+/* ---------------------------------------------------------------------
+   HOME PAGE
+------------------------------------------------------------------------ */
+.home__intro h1 {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+}
+
+.home__intro p {
+  color: var(--color-muted);
+  font-size: 16px;
+  max-width: 480px;
+  margin: 0 0 40px;
+}
+
+.home__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.calc-card {
+  text-align: left;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.calc-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+  border-color: var(--color-primary);
+}
+
+.calc-card__category {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.calc-card__title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.calc-card__desc {
+  color: var(--color-muted);
+  font-size: 14px;
+  margin: 0;
+  flex: 1;
+}
+
+.calc-card__cta {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-top: 8px;
+}
+
+/* ---------------------------------------------------------------------
+   CALCULATOR VIEW
+------------------------------------------------------------------------ */
+.calc-view__back {
+  background: none;
+  border: none;
+  color: var(--color-muted);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 24px;
+}
+
+.calc-view__back:hover {
+  color: var(--color-primary);
+}
+
+.calc-view__title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 600;
+  margin: 0 0 32px;
+}
+
+.calc-view__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 720px) {
+  .calc-view__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.calc-view__explanation {
+  margin-top: 32px;
+  border-top: 1px solid var(--color-line);
+  padding-top: 20px;
+}
+
+.calc-view__explanation summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.calc-view__explanation p {
+  color: var(--color-muted);
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.calc-view__disclaimer {
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* ---------------------------------------------------------------------
+   FORM
+------------------------------------------------------------------------ */
+.calc-form {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.calc-form__row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calc-form__label {
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+}
+
+.calc-form__unit {
+  color: var(--color-muted);
+  font-weight: 500;
+}
+
+.calc-form__input {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 600;
+  padding: 10px 12px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  width: 100%;
+}
+
+.calc-form__slider {
+  accent-color: var(--color-primary);
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------------
+   RESULTS
+------------------------------------------------------------------------ */
+.result-panel {
+  background: var(--color-primary-dark);
+  color: #fdfaf3;
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.result-panel__primary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.result-panel__primary-label {
+  font-size: 13px;
+  color: rgba(253, 250, 243, 0.7);
+}
+
+.result-panel__primary-value {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--color-accent);
+  letter-spacing: -0.01em;
+}
+
+.result-panel__bar {
+  display: flex;
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(253, 250, 243, 0.15);
+}
+
+.result-panel__bar-segment {
+  transition: width 0.2s ease;
+}
+
+.result-panel__bar-segment--invested {
+  background: #fdfaf3;
+}
+
+.result-panel__bar-segment--returns {
+  background: var(--color-accent);
+}
+
+.result-panel__list {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.result-panel__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 14px;
+  border-top: 1px solid rgba(253, 250, 243, 0.15);
+  padding-top: 12px;
+}
+
+.result-panel__row dt {
+  color: rgba(253, 250, 243, 0.75);
+}
+
+.result-panel__row dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
