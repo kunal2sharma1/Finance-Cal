@@ -7,10 +7,19 @@ import { config as sipConfig } from './sip/config.js'
 import { calculate as sipCalculate } from './sip/formula.js'
 import { explanation as sipExplanation } from './sip/explanation.js'
 
+import { config as lumpsumConfig } from './lumpsum/config.js'
+import { calculate as lumpsumCalculate } from './lumpsum/formula.js'
+import { explanation as lumpsumExplanation } from './lumpsum/explanation.js'
+
 export const calculators = [
   {
     config: sipConfig,
     calculate: sipCalculate,
     explanation: sipExplanation,
+  },
+  {
+    config: lumpsumConfig,
+    calculate: lumpsumCalculate,
+    explanation: lumpsumExplanation,
   },
 ]
