@@ -39,8 +39,8 @@ export const config = {
   ],
 
   resultFields: [
-    { name: 'cagr', label: 'CAGR (%)', primary: true },
+    { name: 'cagr', label: 'CAGR (%)', unit: '%', primary: true },
     { name: 'absoluteGain', label: 'Absolute gain' },
-    { name: 'totalGrowthPercentage', label: 'Total growth (%)' },
+    { name: 'totalGrowthPercentage', label: 'Total growth (%)', unit: '%' },
   ],
 }

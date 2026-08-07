@@ -6,6 +6,25 @@ function formatCurrency(value) {
   }).format(value || 0)
 }
 
+function formatNumber(value, maximumFractionDigits = 0) {
+  return new Intl.NumberFormat('en-IN', {
+    maximumFractionDigits,
+  }).format(value || 0)
+}
+
+function formatResultValue(value, field) {
+  if (field.unit === '%') {
+    const formatted = formatNumber(value, 2)
+    return field.label.includes('%') ? formatted : `${formatted}%`
+  }
+
+  if (field.unit && field.unit !== '₹') {
+    return `${formatNumber(value)} ${field.unit}`
+  }
+
+  return formatCurrency(value)
+}
+
 export default function ResultPanel({ resultFields, results }) {
   const primary = resultFields.find((field) => field.primary)
   const secondary = resultFields.filter((field) => !field.primary)
@@ -24,7 +43,7 @@ export default function ResultPanel({ resultFields, results }) {
         <div className="result-panel__primary">
           <span className="result-panel__primary-label">{primary.label}</span>
           <span className="result-panel__primary-value">
-            {formatCurrency(results[primary.name])}
+            {formatResultValue(results[primary.name], primary)}
           </span>
         </div>
       )}
@@ -46,7 +65,7 @@ export default function ResultPanel({ resultFields, results }) {
         {secondary.map((field) => (
           <div className="result-panel__row" key={field.name}>
             <dt>{field.label}</dt>
-            <dd>{formatCurrency(results[field.name])}</dd>
+            <dd>{formatResultValue(results[field.name], field)}</dd>
           </div>
         ))}
       </dl>
