@@ -1,12 +1,14 @@
 // This file is the single place that "installs" a calculator into the app.
 // Calculators are grouped by purpose so they appear in a logical order.
 //
-// Groups:
+// Current calculator groups:
 // 1. Investing
 // 2. Savings & Retirement Accounts
 // 3. Loans
 // 4. Retirement & Financial Planning
-// 5. Education Planning
+// 5. Tax & Inflation
+// 6. Education Planning
+
 
 // ============================================================
 // INVESTING
@@ -27,6 +29,10 @@ import { explanation as cagrExplanation } from './cagr/explanation.js'
 import { config as swpConfig } from './swp/config.js'
 import { calculate as swpCalculate } from './swp/formula.js'
 import { explanation as swpExplanation } from './swp/explanation.js'
+
+import { config as goalBasedConfig } from './goal-based/config.js'
+import { calculate as goalBasedCalculate } from './goal-based/formula.js'
+import { explanation as goalBasedExplanation } from './goal-based/explanation.js'
 
 
 // ============================================================
@@ -58,6 +64,14 @@ import { config as emiConfig } from './EMI/config.js'
 import { calculate as emiCalculate } from './EMI/formula.js'
 import { explanation as emiExplanation } from './EMI/explanation.js'
 
+import { config as homeLoanConfig } from './home-loan/config.js'
+import { calculate as homeLoanCalculate } from './home-loan/formula.js'
+import { explanation as homeLoanExplanation } from './home-loan/explanation.js'
+
+import { config as loanEligibilityConfig } from './loan-eligibility/config.js'
+import { calculate as loanEligibilityCalculate } from './loan-eligibility/formula.js'
+import { explanation as loanEligibilityExplanation } from './loan-eligibility/explanation.js'
+
 
 // ============================================================
 // RETIREMENT & FINANCIAL PLANNING
@@ -66,6 +80,27 @@ import { explanation as emiExplanation } from './EMI/explanation.js'
 import { config as fireConfig } from './fire/config.js'
 import { calculate as fireCalculate } from './fire/formula.js'
 import { explanation as fireExplanation } from './fire/explanation.js'
+
+import { config as retirementConfig } from './retirement/config.js'
+import { calculate as retirementCalculate } from './retirement/formula.js'
+import { explanation as retirementExplanation } from './retirement/explanation.js'
+
+import { config as netWorthConfig } from './net-worth/config.js'
+import { calculate as netWorthCalculate } from './net-worth/formula.js'
+import { explanation as netWorthExplanation } from './net-worth/explanation.js'
+
+
+// ============================================================
+// TAX & INFLATION
+// ============================================================
+
+import { config as incomeTaxConfig } from './income-tax/config.js'
+import { calculate as incomeTaxCalculate } from './income-tax/formula.js'
+import { explanation as incomeTaxExplanation } from './income-tax/explanation.js'
+
+import { config as inflationConfig } from './inflation/config.js'
+import { calculate as inflationCalculate } from './inflation/formula.js'
+import { explanation as inflationExplanation } from './inflation/explanation.js'
 
 
 // ============================================================
@@ -111,6 +146,12 @@ export const calculators = [
     explanation: swpExplanation,
   },
 
+  {
+    config: goalBasedConfig,
+    calculate: goalBasedCalculate,
+    explanation: goalBasedExplanation,
+  },
+
 
   // ----------------------------------------------------------
   // SAVINGS & RETIREMENT ACCOUNTS
@@ -151,6 +192,18 @@ export const calculators = [
     explanation: emiExplanation,
   },
 
+  {
+    config: homeLoanConfig,
+    calculate: homeLoanCalculate,
+    explanation: homeLoanExplanation,
+  },
+
+  {
+    config: loanEligibilityConfig,
+    calculate: loanEligibilityCalculate,
+    explanation: loanEligibilityExplanation,
+  },
+
 
   // ----------------------------------------------------------
   // RETIREMENT & FINANCIAL PLANNING
@@ -160,6 +213,35 @@ export const calculators = [
     config: fireConfig,
     calculate: fireCalculate,
     explanation: fireExplanation,
+  },
+
+  {
+    config: retirementConfig,
+    calculate: retirementCalculate,
+    explanation: retirementExplanation,
+  },
+
+  {
+    config: netWorthConfig,
+    calculate: netWorthCalculate,
+    explanation: netWorthExplanation,
+  },
+
+
+  // ----------------------------------------------------------
+  // TAX & INFLATION
+  // ----------------------------------------------------------
+
+  {
+    config: incomeTaxConfig,
+    calculate: incomeTaxCalculate,
+    explanation: incomeTaxExplanation,
+  },
+
+  {
+    config: inflationConfig,
+    calculate: inflationCalculate,
+    explanation: inflationExplanation,
   },
 
 
