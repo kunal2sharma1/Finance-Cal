@@ -51,9 +51,9 @@ import { config as ppfConfig } from './ppf/config.js'
 import { calculate as ppfCalculate } from './ppf/formula.js'
 import { explanation as ppfExplanation } from './ppf/explanation.js'
 
-import { config as epfConfig } from './epf/config.js'
-import { calculate as epfCalculate } from './epf/formula.js'
-import { explanation as epfExplanation } from './epf/explanation.js'
+import { config as epfConfig } from './EPF/config.js'
+import { calculate as epfCalculate } from './EPF/formula.js'
+import { explanation as epfExplanation } from './EPF/explanation.js'
 
 
 // ============================================================
