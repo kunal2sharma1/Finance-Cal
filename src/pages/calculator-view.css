@@ -36,7 +36,10 @@
   line-height: 1.65;
 }
 
+/* Always stack the calculator vertically so the estimated outcome is shown first. */
 .calc-view__grid {
+  display: flex;
+  flex-direction: column;
   gap: 18px;
 }
 
@@ -47,8 +50,6 @@
   box-shadow: var(--shadow-card);
 }
 
-/* Results are the primary reason the user opened the calculator.
-   Keep them above the inputs on every screen size. */
 .calc-view__panel--results {
   order: 1;
   padding: 12px;
