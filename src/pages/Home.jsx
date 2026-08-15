@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import CalculatorCard from '../components/CalculatorCard.jsx'
+import './home-filters.css'
 
 export default function Home({ calculators, onSelect }) {
   const [searchTerm, setSearchTerm] = useState('')
