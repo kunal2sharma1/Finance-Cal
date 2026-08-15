@@ -47,15 +47,19 @@
   box-shadow: var(--shadow-card);
 }
 
-.calc-view__panel--inputs {
-  background: rgba(255, 255, 255, 0.94);
-  padding: 24px;
-}
-
+/* Results are the primary reason the user opened the calculator.
+   Keep them above the inputs on every screen size. */
 .calc-view__panel--results {
+  order: 1;
   padding: 12px;
   background: var(--color-primary-dark);
   box-shadow: var(--shadow-panel);
+}
+
+.calc-view__panel--inputs {
+  order: 2;
+  background: rgba(255, 255, 255, 0.94);
+  padding: 24px;
 }
 
 .calc-view__panel-heading {
