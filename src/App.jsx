@@ -1,11 +1,51 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Home from './pages/Home.jsx'
 import CalculatorView from './pages/CalculatorView.jsx'
 import { calculators } from './calculators/registry.js'
 
+const HOME_HISTORY_STATE = { finCalcView: 'home' }
+
+function getCalculatorIdFromLocation() {
+  const match = window.location.hash.match(/^#calculator\/(.+)$/)
+  return match ? decodeURIComponent(match[1]) : null
+}
+
 export default function App() {
-  // null = show the calculator list. Otherwise holds the id of the open calculator.
-  const [selectedId, setSelectedId] = useState(null)
+  // Calculator selection is mirrored into browser history so the device or
+  // browser Back button returns to FinCalc home instead of leaving the site.
+  const [selectedId, setSelectedId] = useState(() => getCalculatorIdFromLocation())
+
+  useEffect(() => {
+    if (!window.history.state?.finCalcView && !getCalculatorIdFromLocation()) {
+      window.history.replaceState(HOME_HISTORY_STATE, '', window.location.href)
+    }
+
+    function handlePopState() {
+      setSelectedId(getCalculatorIdFromLocation())
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
+
+  function openCalculator(id) {
+    setSelectedId(id)
+
+    const nextUrl = `${window.location.pathname}${window.location.search}#calculator/${encodeURIComponent(id)}`
+    window.history.pushState(
+      { finCalcView: 'calculator', calculatorId: id },
+      '',
+      nextUrl,
+    )
+  }
+
+  function goHome() {
+    if (getCalculatorIdFromLocation()) {
+      window.history.back()
+    } else {
+      setSelectedId(null)
+    }
+  }
 
   const selectedCalculator = calculators.find(
     (item) => item.config.id === selectedId
@@ -26,10 +66,10 @@ export default function App() {
         {selectedCalculator ? (
           <CalculatorView
             calculator={selectedCalculator}
-            onBack={() => setSelectedId(null)}
+            onBack={goHome}
           />
         ) : (
-          <Home calculators={calculators} onSelect={setSelectedId} />
+          <Home calculators={calculators} onSelect={openCalculator} />
         )}
       </main>
 
