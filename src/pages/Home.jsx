@@ -55,6 +55,7 @@ export default function Home({ calculators, onSelect }) {
   return (
     <section className="home">
       <div className="home_intro">
+        <span className="home_build_badge" aria-label="Current design build version">v3</span>
         <div className="home_intro_text">
           <span className="home_kicker">SMARTER MONEY DECISIONS</span>
           <h1>Make your money math simple.</h1>
