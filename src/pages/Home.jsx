@@ -2,19 +2,40 @@ import { useMemo, useState } from 'react'
 import CalculatorCard from '../components/CalculatorCard.jsx'
 import './home-filters.css'
 
+const CATEGORY_ORDER = ['All', 'Investing', 'Savings', 'Loans', 'Retirement', 'Tax', 'Education']
+
+function getDisplayCategory(config) {
+  if (config.id === 'education') return 'Education'
+  if (config.id === 'goal-based') return 'Investing'
+  if (['fire', 'retirement', 'net-worth'].includes(config.id)) return 'Retirement'
+  if (['Retirement', 'Retirement Planning'].includes(config.category)) return 'Retirement'
+  return config.category || 'Other'
+}
+
 export default function Home({ calculators, onSelect }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [activeCategory, setActiveCategory] = useState('All')
 
+  const normalizedCalculators = useMemo(
+    () => calculators.map((calculator) => ({
+      ...calculator,
+      config: {
+        ...calculator.config,
+        category: getDisplayCategory(calculator.config),
+      },
+    })),
+    [calculators],
+  )
+
   const categories = useMemo(() => {
-    const uniqueCategories = [...new Set(calculators.map(({ config }) => config.category).filter(Boolean))]
-    return ['All', ...uniqueCategories]
-  }, [calculators])
+    const available = new Set(normalizedCalculators.map(({ config }) => config.category))
+    return CATEGORY_ORDER.filter((category) => category === 'All' || available.has(category))
+  }, [normalizedCalculators])
 
   const filteredCalculators = useMemo(() => {
     const query = searchTerm.trim().toLowerCase()
 
-    return calculators.filter(({ config }) => {
+    return normalizedCalculators.filter(({ config }) => {
       const matchesCategory = activeCategory === 'All' || config.category === activeCategory
       const searchableText = [config.title, config.shortDescription, config.category]
         .filter(Boolean)
@@ -23,7 +44,11 @@ export default function Home({ calculators, onSelect }) {
       const matchesSearch = !query || searchableText.includes(query)
       return matchesCategory && matchesSearch
     })
-  }, [calculators, searchTerm, activeCategory])
+  }, [normalizedCalculators, searchTerm, activeCategory])
+
+  const resultLabel = searchTerm.trim()
+    ? `${filteredCalculators.length} result${filteredCalculators.length === 1 ? '' : 's'} for "${searchTerm.trim()}"`
+    : `${filteredCalculators.length} calculator${filteredCalculators.length === 1 ? '' : 's'}`
 
   return (
     <section className="home">
@@ -53,42 +78,49 @@ export default function Home({ calculators, onSelect }) {
       </div>
 
       <div className="calculator_filters" aria-label="Calculator filters">
-        <div className="calculator_search">
+        <div className="calculator_filter_topline">
           <label htmlFor="calculator-search">Search calculators</label>
-          <div className="calculator_search_box">
-            <span aria-hidden="true">⌕</span>
-            <input
-              id="calculator-search"
-              type="search"
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Search by name or purpose..."
-              autoComplete="off"
-            />
-            {searchTerm && (
-              <button type="button" className="calculator_search_clear" onClick={() => setSearchTerm('')} aria-label="Clear calculator search">×</button>
-            )}
-          </div>
+          <span className="calculator_filter_count">{resultLabel}</span>
         </div>
 
-        <div className="calculator_filter_header">
-          <span>Browse by category</span>
-          <span className="calculator_filter_count">Showing {filteredCalculators.length} of {calculators.length}</span>
-        </div>
-
-        <div className="calculator_categories" role="tablist" aria-label="Calculator categories">
-          {categories.map((category) => (
+        <div className="calculator_search_box">
+          <span aria-hidden="true">⌕</span>
+          <input
+            id="calculator-search"
+            type="search"
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            placeholder="Search by name or purpose..."
+            autoComplete="off"
+          />
+          {searchTerm && (
             <button
-              key={category}
               type="button"
-              role="tab"
-              aria-selected={activeCategory === category}
-              className={`calculator_category ${activeCategory === category ? 'is-active' : ''}`}
-              onClick={() => setActiveCategory(category)}
+              className="calculator_search_clear"
+              onClick={() => setSearchTerm('')}
+              aria-label="Clear calculator search"
             >
-              {category}
+              ×
             </button>
-          ))}
+          )}
+        </div>
+
+        <div className="calculator_filter_row">
+          <span className="calculator_filter_label">Browse by category</span>
+          <div className="calculator_categories" role="tablist" aria-label="Calculator categories">
+            {categories.map((category) => (
+              <button
+                key={category}
+                type="button"
+                role="tab"
+                aria-selected={activeCategory === category}
+                className={`calculator_category ${activeCategory === category ? 'is-active' : ''}`}
+                onClick={() => setActiveCategory(category)}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -102,7 +134,13 @@ export default function Home({ calculators, onSelect }) {
         <div className="calculator_empty_state">
           <strong>No calculators found</strong>
           <p>Try a different search term or switch to another category.</p>
-          <button type="button" onClick={() => { setSearchTerm(''); setActiveCategory('All') }}>
+          <button
+            type="button"
+            onClick={() => {
+              setSearchTerm('')
+              setActiveCategory('All')
+            }}
+          >
             Show all calculators
           </button>
         </div>
