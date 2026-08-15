@@ -6,7 +6,7 @@ const CATEGORY_ORDER = ['All', 'Investing', 'Savings', 'Loans', 'Retirement', 'T
 
 function getDisplayCategory(config) {
   if (config.id === 'education') return 'Education'
-  if (config.id === 'goal-based') return 'Investing'
+  if (config.id === 'goal-based' || config.category === 'Planning') return 'Investing'
   if (['fire', 'retirement', 'net-worth'].includes(config.id)) return 'Retirement'
   if (['Retirement', 'Retirement Planning'].includes(config.category)) return 'Retirement'
   return config.category || 'Other'
