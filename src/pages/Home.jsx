@@ -50,6 +50,8 @@ export default function Home({ calculators, onSelect }) {
     ? `${filteredCalculators.length} result${filteredCalculators.length === 1 ? '' : 's'} for "${searchTerm.trim()}"`
     : `${filteredCalculators.length} calculator${filteredCalculators.length === 1 ? '' : 's'}`
 
+  const showAllState = activeCategory === 'All' && !searchTerm.trim()
+
   return (
     <section className="home">
       <div className="home_intro">
@@ -125,11 +127,25 @@ export default function Home({ calculators, onSelect }) {
       </div>
 
       {filteredCalculators.length > 0 ? (
-        <div className="home__grid">
-          {filteredCalculators.map(({ config }) => (
-            <CalculatorCard key={config.id} config={config} onSelect={onSelect} />
-          ))}
-        </div>
+        <>
+          <div className="home_section_header">
+            <div>
+              <span className="home_section_kicker">{showAllState ? 'FINANCIAL TOOLKIT' : 'SEARCH RESULTS'}</span>
+              <h2>{showAllState ? 'Choose a calculator' : 'Matching calculators'}</h2>
+            </div>
+            <p>
+              {showAllState
+                ? 'Pick a tool based on the decision you are trying to make.'
+                : 'Refine your search or category to narrow the list.'}
+            </p>
+          </div>
+
+          <div className="home__grid">
+            {filteredCalculators.map(({ config }) => (
+              <CalculatorCard key={config.id} config={config} onSelect={onSelect} />
+            ))}
+          </div>
+        </>
       ) : (
         <div className="calculator_empty_state">
           <strong>No calculators found</strong>
