@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import CalculatorForm from '../components/CalculatorForm.jsx'
 import ResultPanel from '../components/ResultPanel.jsx'
+import './calculator-view.css'
 
 function buildDefaultValues(fields) {
   const values = {}
