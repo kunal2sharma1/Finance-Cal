@@ -15,8 +15,6 @@ export default function CalculatorView({ calculator, onBack }) {
   const { config, calculate, explanation } = calculator
   const [values, setValues] = useState(() => buildDefaultValues(config.fields))
 
-  // Recalculates automatically whenever any input changes — this is what
-  // makes results feel "instant" with no submit button.
   const results = useMemo(() => calculate(values), [values, calculate])
 
   function handleChange(name, rawValue) {
@@ -36,6 +34,17 @@ export default function CalculatorView({ calculator, onBack }) {
       </div>
 
       <div className="calc-view__grid">
+        <div className="calc-view__panel calc-view__panel--results">
+          <div className="calc-view__panel-heading calc-view__panel-heading--light">
+            <div>
+              <span className="calc-view__panel-kicker">ESTIMATED OUTCOME</span>
+              <h2>See what the numbers mean</h2>
+            </div>
+          </div>
+
+          <ResultPanel resultFields={config.resultFields} results={results} />
+        </div>
+
         <div className="calc-view__panel calc-view__panel--inputs">
           <div className="calc-view__panel-heading">
             <div>
@@ -50,17 +59,6 @@ export default function CalculatorView({ calculator, onBack }) {
             values={values}
             onChange={handleChange}
           />
-        </div>
-
-        <div className="calc-view__panel calc-view__panel--results">
-          <div className="calc-view__panel-heading calc-view__panel-heading--light">
-            <div>
-              <span className="calc-view__panel-kicker">ESTIMATED OUTCOME</span>
-              <h2>See what the numbers mean</h2>
-            </div>
-          </div>
-
-          <ResultPanel resultFields={config.resultFields} results={results} />
         </div>
       </div>
 
