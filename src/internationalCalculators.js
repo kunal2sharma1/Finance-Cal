@@ -31,6 +31,9 @@ import { explanation as singaporeCpfExplanation } from './calculators/singapore-
 import { config as australiaConcessionalSuperConfig } from './calculators/australia-concessional-super/config.js'
 import { calculate as australiaConcessionalSuperCalculate } from './calculators/australia-concessional-super/formula.js'
 import { explanation as australiaConcessionalSuperExplanation } from './calculators/australia-concessional-super/explanation.js'
+import { config as uaeEndOfServiceConfig } from './calculators/uae-end-of-service/config.js'
+import { calculate as uaeEndOfServiceCalculate } from './calculators/uae-end-of-service/formula.js'
+import { explanation as uaeEndOfServiceExplanation } from './calculators/uae-end-of-service/explanation.js'
 
 export const internationalCalculators = [
   { config: us401kConfig, calculate: us401kCalculate, explanation: us401kExplanation },
@@ -44,4 +47,5 @@ export const internationalCalculators = [
   { config: canadaFhsaConfig, calculate: canadaFhsaCalculate, explanation: canadaFhsaExplanation },
   { config: singaporeCpfConfig, calculate: singaporeCpfCalculate, explanation: singaporeCpfExplanation },
   { config: australiaConcessionalSuperConfig, calculate: australiaConcessionalSuperCalculate, explanation: australiaConcessionalSuperExplanation },
+  { config: uaeEndOfServiceConfig, calculate: uaeEndOfServiceCalculate, explanation: uaeEndOfServiceExplanation },
 ]
