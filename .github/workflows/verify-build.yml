@@ -35,5 +35,8 @@ jobs:
       - name: Validate SEO configuration
         run: npm run seo:check
 
+      - name: Run formula regression tests
+        run: npm run formula:check
+
       - name: Build
         run: npm run build
