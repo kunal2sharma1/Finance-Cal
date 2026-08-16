@@ -1,5 +1,6 @@
 import { calculators as coreCalculators } from './calculators/registry.js'
 import { internationalCalculators } from './internationalCalculators.js'
+import { phase3Calculators } from './phase3Calculators.js'
 
 /**
  * Single source of truth for calculator discovery across the app.
@@ -9,6 +10,7 @@ import { internationalCalculators } from './internationalCalculators.js'
 export const calculators = Object.freeze([
   ...coreCalculators,
   ...internationalCalculators,
+  ...phase3Calculators,
 ])
 
 const calculatorById = new Map(calculators.map((calculator) => [calculator.config.id, calculator]))
