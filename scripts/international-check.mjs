@@ -6,10 +6,10 @@ const supported = new Set(countries.map((country) => country.code))
 const errors = []
 const ids = new Set()
 const expectedCountryCalculators = {
-  US: ['401k', 'roth-ira'],
-  GB: ['uk-isa', 'uk-pension'],
-  CA: ['canada-tfsa', 'canada-rrsp'],
-  AU: ['australia-super'],
+  US: ['401k', 'roth-ira', 'hsa'],
+  GB: ['uk-isa', 'uk-pension', 'uk-lifetime-isa'],
+  CA: ['canada-tfsa', 'canada-rrsp', 'canada-fhsa'],
+  AU: ['australia-super', 'australia-concessional-super'],
   AE: ['uae-end-of-service'],
   SG: ['singapore-cpf'],
 }
