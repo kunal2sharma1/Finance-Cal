@@ -3,6 +3,7 @@ import CalculatorForm from '../components/CalculatorForm.jsx'
 import ResultPanel from '../components/ResultPanel.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import CalculatorSEOSections from '../components/CalculatorSEOSections.jsx'
+import { calculators } from '../calculators/registry.js'
 import { getCalculatorCurrency } from '../calculatorLocale.js'
 import './calculator-view.css'
 
@@ -12,7 +13,6 @@ const categoryPaths = {
   Salary: '/salary',
   Retirement: '/retirement',
   Budgeting: '/budgeting',
-  Savings: '/financial-planning',
   'Financial Planning': '/financial-planning',
 }
 
@@ -24,7 +24,7 @@ function buildDefaultValues(fields) {
   return values
 }
 
-function getRelatedCalculators(currentConfig, calculators) {
+function getRelatedCalculators(currentConfig) {
   const sameCategory = calculators.filter(
     (item) => item.config.id !== currentConfig.id && item.config.category === currentConfig.category,
   )
@@ -34,7 +34,7 @@ function getRelatedCalculators(currentConfig, calculators) {
     .slice(0, 6)
 }
 
-export default function CalculatorView({ calculator, onBack, country, calculators = [] }) {
+export default function CalculatorView({ calculator, onBack, country, numberSystem }) {
   const { config, calculate, explanation } = calculator
   const [values, setValues] = useState(() => buildDefaultValues(config.fields))
   const [results, setResults] = useState({})
@@ -53,14 +53,20 @@ export default function CalculatorView({ calculator, onBack, country, calculator
       })
       .catch(() => {
         if (active) {
-          setResults({ isValid: false, loading: false, message: 'The calculation could not be completed. Please try again.' })
+          setResults({
+            isValid: false,
+            loading: false,
+            message: 'The calculation could not be completed. Please try again.',
+          })
         }
       })
 
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [values, calculate])
 
-  const relatedCalculators = useMemo(() => getRelatedCalculators(config, calculators), [config, calculators])
+  const relatedCalculators = useMemo(() => getRelatedCalculators(config), [config])
   const displayCurrency = getCalculatorCurrency(config, country)
 
   function handleChange(name, rawValue) {
@@ -77,7 +83,9 @@ export default function CalculatorView({ calculator, onBack, country, calculator
         ]}
       />
 
-      <button className="calc-view__back" onClick={onBack} type="button">← Back to calculators</button>
+      <button className="calc-view__back" onClick={onBack} type="button">
+        ← Back to calculators
+      </button>
 
       <div className="calc-view__header">
         <span className="calc-view__eyebrow">FINANCIAL CALCULATOR</span>
@@ -93,7 +101,13 @@ export default function CalculatorView({ calculator, onBack, country, calculator
               <h2>See what the numbers mean</h2>
             </div>
           </div>
-          <ResultPanel resultFields={config.resultFields} results={results} defaultCurrency={displayCurrency} />
+
+          <ResultPanel
+            resultFields={config.resultFields}
+            results={results}
+            defaultCurrency={displayCurrency}
+            numberSystem={numberSystem}
+          />
         </div>
 
         <div className="calc-view__panel calc-view__panel--inputs">
@@ -104,14 +118,21 @@ export default function CalculatorView({ calculator, onBack, country, calculator
             </div>
             <span className="calc-view__panel-hint">Updates instantly</span>
           </div>
-          <CalculatorForm fields={config.fields} values={values} onChange={handleChange} />
+
+          <CalculatorForm
+            fields={config.fields}
+            values={values}
+            onChange={handleChange}
+          />
         </div>
       </div>
 
       <section className="calc-view__content" aria-labelledby="how-it-works">
         <span className="calc-view__eyebrow">PLAIN-ENGLISH GUIDE</span>
         <h2 id="how-it-works">How the {config.title.toLowerCase()} works</h2>
-        {explanation.body.split('\n').filter(Boolean).map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+        {explanation.body.split('\n').filter(Boolean).map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
       </section>
 
       <CalculatorSEOSections calculatorId={config.id} />
@@ -120,19 +141,33 @@ export default function CalculatorView({ calculator, onBack, country, calculator
         <span className="calc-view__eyebrow">QUICK OVERVIEW</span>
         <h2 id="calculator-overview">What you enter and what you get</h2>
         <div className="calc-view__overview-grid">
-          <div><h3>What you enter</h3><ul>{config.fields.map((field) => <li key={field.name}>{field.label}</li>)}</ul></div>
-          <div><h3>What you get</h3><ul>{config.resultFields.map((field) => <li key={field.name}>{field.label}</li>)}</ul></div>
+          <div>
+            <h3>What you enter</h3>
+            <ul>
+              {config.fields.map((field) => <li key={field.name}>{field.label}</li>)}
+            </ul>
+          </div>
+          <div>
+            <h3>What you get</h3>
+            <ul>
+              {config.resultFields.map((field) => <li key={field.name}>{field.label}</li>)}
+            </ul>
+          </div>
         </div>
         <p className="calc-view__disclaimer"><strong>Important:</strong> {explanation.disclaimer}</p>
       </section>
 
       {relatedCalculators.length > 0 && (
         <nav className="calc-view__related" aria-labelledby="related-calculators">
-          <div><span className="calc-view__eyebrow">KEEP EXPLORING</span><h2 id="related-calculators">Related financial calculators</h2></div>
+          <div>
+            <span className="calc-view__eyebrow">KEEP EXPLORING</span>
+            <h2 id="related-calculators">Related financial calculators</h2>
+          </div>
           <div className="calc-view__related-grid">
             {relatedCalculators.map(({ config: related }) => (
               <a key={related.id} href={`/calculators/${encodeURIComponent(related.id)}`} className="calc-view__related-link">
-                <span>{related.title}</span><small>{related.shortDescription}</small>
+                <span>{related.title}</span>
+                <small>{related.shortDescription}</small>
               </a>
             ))}
           </div>
