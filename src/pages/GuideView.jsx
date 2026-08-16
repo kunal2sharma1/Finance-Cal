@@ -1,5 +1,6 @@
-import { useEffect } from 'react'
-import { setSiteSEO } from '../seo.js'
+import { useEffect, useMemo } from 'react'
+import { setBreadcrumbSchema, setSiteSEO } from '../seo.js'
+import { getGuidesByTopic } from '../guides.js'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import './guide.css'
 
@@ -10,6 +11,12 @@ export default function GuideView({ guide }) {
       description: guide.metaDescription,
       pathname: `/guides/${guide.slug}`,
     })
+
+    setBreadcrumbSchema([
+      { label: 'FinCalc', href: '/' },
+      { label: 'Financial Guides', href: '/guides' },
+      { label: guide.title },
+    ])
 
     const schemaId = `fincalc-guide-${guide.slug}`
     let schema = document.getElementById(schemaId)
@@ -32,6 +39,10 @@ export default function GuideView({ guide }) {
 
     return () => schema.remove()
   }, [guide])
+
+  const relatedGuides = useMemo(() => getGuidesByTopic(guide.topic)
+    .filter((candidate) => candidate.slug !== guide.slug)
+    .slice(0, 4), [guide])
 
   return (
     <article className="guide-page">
@@ -69,6 +80,21 @@ export default function GuideView({ guide }) {
           </div>
         </aside>
       </div>
+
+      {relatedGuides.length > 0 && (
+        <section className="guide-page__related" aria-labelledby="related-guides">
+          <span className="guide-page__eyebrow">KEEP READING</span>
+          <h2 id="related-guides">Related financial guides</h2>
+          <div className="guide-page__related-grid">
+            {relatedGuides.map((related) => (
+              <a className="guide-page__related-link" key={related.slug} href={`/guides/${related.slug}`}>
+                <strong>{related.title}</strong>
+                <span>{related.metaDescription}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
     </article>
   )
 }

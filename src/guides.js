@@ -1,3 +1,5 @@
+import { seoGrowthGuides } from './seoGrowthGuides.js'
+
 export const guides = [
   {
     slug: 'how-sip-works',
@@ -50,6 +52,8 @@ export const guides = [
     sections: [['Coupon income', 'Coupon payments provide income based on the bond terms. They are only one part of the overall return when the purchase or sale price differs from face value.'], ['Price and yield', 'Bond prices and market yields generally move in opposite directions. The price you pay therefore affects the return you can realize.'], ['Holding period matters', 'A bond sold before maturity can have a different outcome from holding it to maturity because market price changes become relevant.']], calculatorLinks: [['Bond Return Calculator','/calculators/bond-return'],['Real Return Calculator','/calculators/real-return'],['Portfolio Return Calculator','/calculators/portfolio-return']],
   },
 ]
+
+guides.push(...seoGrowthGuides)
 
 export function getGuide(slug) {
   return guides.find((guide) => guide.slug === slug)

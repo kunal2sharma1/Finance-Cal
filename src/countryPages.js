@@ -8,9 +8,9 @@ const countryHighlights = {
     intro: 'Use FinCalc with Indian rupee formatting and India-specific financial tools where applicable.',
     priorityCalculatorIds: ['sip', 'lumpsum', 'cagr', 'fd', 'rd', 'ppf', 'epf', 'nps', 'emi', 'home-loan', 'income-tax'],
     seoSections: [
-      ['Investing in India', 'Use SIP, lump-sum, CAGR, PPF, EPF and NPS tools to compare contribution, growth and long-term planning scenarios.'],
-      ['Loans and salary planning', 'Use EMI, home-loan, income-tax and salary calculators together when comparing a borrowing decision with the cash flow needed to support it.'],
-      ['Use India-specific rules carefully', 'Where a calculator depends on a local tax, pension or government-program rule, FinCalc treats the result as a planning estimate and separates local assumptions from global math.'],
+      ['Investing in India', 'Explore SIP, lump-sum, CAGR, PPF, EPF and NPS tools for long-term investing and retirement planning.'],
+      ['Loans and salary planning', 'Use EMI, home-loan and salary tools to compare payments, affordability and take-home income using clear assumptions.'],
+      ['Why local rules matter', 'Indian tax, pension and government-linked schemes can have country-specific rules. Use localized calculators only where FinCalc has explicit India assumptions.'],
     ],
   },
   US: {
@@ -18,11 +18,11 @@ const countryHighlights = {
     title: 'Financial Calculators for the United States',
     description: 'US-focused financial calculators covering retirement accounts, health savings, investing, debt and everyday money planning.',
     intro: 'Use US-specific retirement and HSA tools alongside global investment, savings and debt calculators.',
-    priorityCalculatorIds: ['401k', 'roth-ira', 'hsa', 'compound-interest', 'cagr', 'investment-return', 'monthly-savings', 'emergency-fund', 'retirement', 'net-worth', 'debt-payoff', 'loan-comparison', 'currency-exchange'],
+    priorityCalculatorIds: ['401k', 'roth-ira', 'hsa', 'us-mortgage', 'compound-interest', 'cagr', 'investment-return', 'monthly-savings', 'emergency-fund', 'retirement', 'net-worth', 'debt-payoff', 'loan-comparison', 'currency-exchange'],
     seoSections: [
-      ['Retirement and tax-advantaged accounts', 'Use the 401(k), Roth IRA and HSA tools alongside broader retirement and investment calculators to compare contribution and growth scenarios.'],
-      ['Debt and cash-flow planning', 'Combine loan comparison, debt payoff, emergency-fund and savings tools to evaluate how monthly obligations affect your wider financial plan.'],
-      ['Country-specific assumptions', 'Account rules and tax treatment can change. Treat localized calculators as planning tools and verify current official rules before making an account or tax decision.'],
+      ['Retirement and health savings', 'Explore 401(k), Roth IRA and HSA calculators alongside general retirement and investment tools.'],
+      ['Debt and household planning', 'Compare loan costs, debt payoff timelines, emergency funds and net worth using US-focused inputs where available.'],
+      ['US rules vs global calculations', 'Retirement-account and tax rules can be specific to the United States. Global compound-growth tools do not automatically become US tax calculators.'],
     ],
   },
   GB: {
@@ -30,11 +30,11 @@ const countryHighlights = {
     title: 'Financial Calculators for the United Kingdom',
     description: 'UK-focused financial calculators covering ISA savings, pensions, Lifetime ISAs, investing and retirement planning.',
     intro: 'Use UK-specific savings and pension tools alongside global financial calculators in GBP.',
-    priorityCalculatorIds: ['uk-isa', 'uk-lifetime-isa', 'uk-pension', 'compound-interest', 'cagr', 'investment-return', 'monthly-savings', 'emergency-fund', 'retirement', 'net-worth', 'loan-comparison', 'debt-payoff', 'currency-exchange'],
+    priorityCalculatorIds: ['uk-isa', 'uk-lifetime-isa', 'uk-pension', 'uk-mortgage', 'compound-interest', 'cagr', 'investment-return', 'monthly-savings', 'emergency-fund', 'retirement', 'net-worth', 'loan-comparison', 'debt-payoff', 'currency-exchange'],
     seoSections: [
-      ['Saving and investing in the UK', 'Use ISA, Lifetime ISA and pension tools alongside compound-growth and investment-return calculators to compare long-term scenarios.'],
-      ['Planning around cash flow', 'Emergency-fund, monthly-savings and debt tools can help connect long-term goals with the amount you can realistically set aside each month.'],
-      ['Check current rules', 'UK tax, pension and savings rules are time-sensitive. Localized calculators are estimates and should be checked against the latest official guidance.'],
+      ['Saving and investing in the UK', 'Explore ISA, Lifetime ISA and pension tools alongside global return and savings calculators.'],
+      ['Planning around household finances', 'Use emergency-fund, loan, debt and retirement tools to test different household scenarios in GBP.'],
+      ['Country-specific assumptions', 'UK pensions, ISAs and tax rules require localized assumptions. Currency alone is not enough to label a calculator as UK-specific.'],
     ],
   },
   CA: {
@@ -42,23 +42,23 @@ const countryHighlights = {
     title: 'Financial Calculators for Canada',
     description: 'Canadian financial calculators covering TFSA, RRSP, FHSA, investing, savings, debt and retirement planning.',
     intro: 'Use Canadian registered-account tools alongside global calculators in Canadian dollars.',
-    priorityCalculatorIds: ['canada-tfsa', 'canada-rrsp', 'canada-fhsa', 'compound-interest', 'cagr', 'investment-return', 'monthly-savings', 'emergency-fund', 'retirement', 'net-worth', 'loan-comparison', 'debt-payoff', 'currency-exchange'],
+    priorityCalculatorIds: ['canada-tfsa', 'canada-rrsp', 'canada-fhsa', 'canada-mortgage', 'compound-interest', 'cagr', 'investment-return', 'monthly-savings', 'emergency-fund', 'retirement', 'net-worth', 'loan-comparison', 'debt-payoff', 'currency-exchange'],
     seoSections: [
-      ['Registered-account planning', 'Use TFSA, RRSP and FHSA calculators with broader investment and savings tools to compare contribution and growth scenarios.'],
-      ['Balance goals and debt', 'Combine savings, emergency-fund, debt payoff and loan comparison tools when building a plan around monthly cash flow.'],
-      ['Verify current Canadian rules', 'Contribution limits, tax treatment and account rules can change. Use the calculator as an estimate and confirm current requirements with official sources.'],
+      ['Canadian registered accounts', 'Explore TFSA, RRSP and FHSA tools alongside general investment and retirement calculators.'],
+      ['Savings and debt planning', 'Compare monthly savings, emergency funds, loan costs and debt payoff using Canadian-dollar scenarios.'],
+      ['Local rules matter', 'Registered-account contribution limits and tax treatment are Canada-specific. General investment calculators should not be treated as Canadian tax advice.'],
     ],
   },
   AU: {
     slug: 'australia',
     title: 'Financial Calculators for Australia',
     description: 'Australian financial calculators covering superannuation contributions, investing, savings, debt and retirement planning.',
-    intro: 'Use Australian super contribution tools alongside global calculators in Australian dollars.',
-    priorityCalculatorIds: ['australia-super', 'australia-concessional-super', 'compound-interest', 'cagr', 'investment-return', 'monthly-savings', 'emergency-fund', 'retirement', 'net-worth', 'loan-comparison', 'debt-payoff', 'currency-exchange'],
+    intro: 'Use Australian super contribution tools alongside global financial calculators in Australian dollars.',
+    priorityCalculatorIds: ['australia-super', 'australia-concessional-super', 'australia-mortgage', 'compound-interest', 'cagr', 'investment-return', 'monthly-savings', 'emergency-fund', 'retirement', 'net-worth', 'loan-comparison', 'debt-payoff', 'currency-exchange'],
     seoSections: [
-      ['Superannuation and long-term planning', 'Use the Australian super calculators alongside investment-return and retirement tools to explore contribution and growth scenarios.'],
-      ['Everyday cash-flow decisions', 'Savings, emergency-fund, loan comparison and debt payoff tools help connect long-term goals with the cash flow available today.'],
-      ['Check current contribution rules', 'Superannuation rules and limits can change. Treat localized results as estimates and verify current requirements with official guidance.'],
+      ['Australian superannuation', 'Use superannuation tools to explore contribution scenarios alongside broader retirement and investment planning.'],
+      ['Household money planning', 'Combine savings, emergency-fund, loan and net-worth calculators for a broader financial picture in AUD.'],
+      ['Local rules matter', 'Super contribution caps and tax treatment are jurisdiction-specific. Only the clearly localized tools should be treated as Australia-specific rule calculators.'],
     ],
   },
   AE: {
@@ -68,9 +68,9 @@ const countryHighlights = {
     intro: 'Explore global calculators in UAE dirhams and UAE-specific end-of-service planning where applicable.',
     priorityCalculatorIds: ['uae-end-of-service', 'compound-interest', 'cagr', 'investment-return', 'monthly-savings', 'emergency-fund', 'retirement', 'net-worth', 'loan-comparison', 'debt-payoff', 'currency-exchange'],
     seoSections: [
-      ['Salary and end-of-service planning', 'Use the UAE end-of-service calculator together with savings, emergency-fund and investment tools to connect employment decisions with longer-term planning.'],
-      ['Borrowing and savings', 'Loan comparison, debt payoff and monthly-savings tools can help you test how a financing decision changes your available cash flow.'],
-      ['Local employment rules matter', 'End-of-service outcomes can depend on employment terms and applicable rules. Use the calculator as a planning estimate and verify the current rule for your situation.'],
+      ['UAE end-of-service planning', 'Use the UAE-specific gratuity calculator where the stated employment assumptions apply, and review the official rules for your circumstances.'],
+      ['Savings and investing in AED', 'Use global growth, savings, debt and net-worth tools with UAE dirham presentation for planning scenarios.'],
+      ['Local employment rules matter', 'End-of-service benefits and employment arrangements can depend on worker status and contract conditions. Do not treat a generic calculator as an official entitlement statement.'],
     ],
   },
   SG: {
@@ -80,9 +80,9 @@ const countryHighlights = {
     intro: 'Use Singapore CPF tools alongside global calculators in Singapore dollars.',
     priorityCalculatorIds: ['singapore-cpf', 'compound-interest', 'cagr', 'investment-return', 'monthly-savings', 'emergency-fund', 'retirement', 'net-worth', 'loan-comparison', 'debt-payoff', 'currency-exchange'],
     seoSections: [
-      ['CPF and retirement planning', 'Use the Singapore CPF calculator with broader retirement and investment tools to explore long-term contribution and growth scenarios.'],
-      ['Plan around monthly cash flow', 'Savings, emergency-fund, debt payoff and loan comparison tools can help you compare immediate obligations with longer-term goals.'],
-      ['Verify current CPF rules', 'Contribution rates, limits and other CPF rules can change. Use the calculator as an estimate and confirm current requirements with official guidance.'],
+      ['Singapore CPF planning', 'Use the CPF calculator alongside long-term savings and retirement tools for Singapore-focused scenarios.'],
+      ['Investing and household finances', 'Combine savings, debt, retirement and net-worth calculators with Singapore-dollar presentation.'],
+      ['Local rules matter', 'CPF contribution and withdrawal rules are country-specific. General investment calculators should not be treated as Singapore tax or CPF advice.'],
     ],
   },
 }
