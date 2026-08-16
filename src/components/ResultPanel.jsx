@@ -1,18 +1,24 @@
+import { INVALID_RESULT_VALUE, isValidResultValue, normalizeCalculatorResult } from '../calculatorValidation.js'
+
 function formatCurrency(value) {
+  if (!isValidResultValue(value)) return INVALID_RESULT_VALUE
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
     maximumFractionDigits: 0,
-  }).format(value || 0)
+  }).format(value)
 }
 
 function formatNumber(value, maximumFractionDigits = 0) {
+  if (!isValidResultValue(value)) return INVALID_RESULT_VALUE
   return new Intl.NumberFormat('en-IN', {
     maximumFractionDigits,
-  }).format(value || 0)
+  }).format(value)
 }
 
 function formatResultValue(value, field) {
+  if (!isValidResultValue(value)) return INVALID_RESULT_VALUE
+
   if (field.unit === '%') {
     const formatted = formatNumber(value, 2)
     return field.label.includes('%') ? formatted : `${formatted}%`
@@ -26,24 +32,36 @@ function formatResultValue(value, field) {
 }
 
 export default function ResultPanel({ resultFields, results }) {
+  const normalized = normalizeCalculatorResult(results)
+  const data = normalized.data
   const primary = resultFields.find((field) => field.primary)
   const secondary = resultFields.filter((field) => !field.primary)
 
-  // If a calculator exposes totalInvested + totalReturns, we can draw a
-  // simple proportional bar. Calculators that don't just skip this part.
-  const invested = results.totalInvested
-  const returns = results.totalReturns
+  const invested = data.totalInvested
+  const returns = data.totalReturns
   const hasBreakdown =
-    invested !== undefined && returns !== undefined && invested + returns > 0
-  const investedPct = hasBreakdown ? (invested / (invested + returns)) * 100 : 0
+    isValidResultValue(invested) &&
+    isValidResultValue(returns) &&
+    Number.isFinite(Number(invested)) &&
+    Number.isFinite(Number(returns)) &&
+    Number(invested) + Number(returns) > 0
+  const investedPct = hasBreakdown
+    ? Math.min(100, Math.max(0, (Number(invested) / (Number(invested) + Number(returns))) * 100))
+    : 0
 
   return (
     <div className="result-panel">
+      {!normalized.isValid && normalized.message ? (
+        <div className="result-panel__error" role="alert">
+          {normalized.message}
+        </div>
+      ) : null}
+
       {primary && (
         <div className="result-panel__primary">
           <span className="result-panel__primary-label">{primary.label}</span>
           <span className="result-panel__primary-value">
-            {formatResultValue(results[primary.name], primary)}
+            {formatResultValue(data[primary.name], primary)}
           </span>
         </div>
       )}
@@ -65,7 +83,7 @@ export default function ResultPanel({ resultFields, results }) {
         {secondary.map((field) => (
           <div className="result-panel__row" key={field.name}>
             <dt>{field.label}</dt>
-            <dd>{formatResultValue(results[field.name], field)}</dd>
+            <dd>{formatResultValue(data[field.name], field)}</dd>
           </div>
         ))}
       </dl>
