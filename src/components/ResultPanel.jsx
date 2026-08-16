@@ -1,4 +1,5 @@
 import { INVALID_RESULT_VALUE, isValidResultValue, normalizeCalculatorResult } from '../calculatorValidation.js'
+import './result-validation.css'
 
 function formatCurrency(value) {
   if (!isValidResultValue(value)) return INVALID_RESULT_VALUE
