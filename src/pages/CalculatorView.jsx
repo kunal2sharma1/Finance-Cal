@@ -4,6 +4,7 @@ import ResultPanel from '../components/ResultPanel.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import CalculatorSEOSections from '../components/CalculatorSEOSections.jsx'
 import { calculators } from '../calculators/registry.js'
+import { safeCalculate } from '../calculatorValidation.js'
 import './calculator-view.css'
 
 const categoryPaths = {
@@ -41,7 +42,7 @@ export default function CalculatorView({ calculator, onBack }) {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
   }, [config.id])
 
-  const results = useMemo(() => calculate(values), [values, calculate])
+  const results = useMemo(() => safeCalculate(calculate, values), [values, calculate])
   const relatedCalculators = useMemo(() => getRelatedCalculators(config), [config])
 
   function handleChange(name, rawValue) {
