@@ -17,6 +17,7 @@ import { calculators, getCalculatorById } from './calculatorCatalog.js'
 import { guides } from './guides.js'
 import { topicHubs } from './topicHubs.js'
 import { buildCalculatorSEO, setSiteSEO } from './seo.js'
+import { trackEvent } from './analytics.js'
 import './site-footer.css'
 
 const HOME_HISTORY_STATE = { finCalcView: 'home' }
@@ -25,28 +26,20 @@ const INFO_SLUGS = new Set(['about', 'how-it-works', 'privacy', 'contact'])
 
 function getRouteFromLocation() {
   const pathname = window.location.pathname.replace(/\/+$/, '') || '/'
-
   const calculatorMatch = pathname.match(/^\/calculators\/([^/]+)$/)
   if (calculatorMatch) return { type: 'calculator', id: decodeURIComponent(calculatorMatch[1]) }
-
   const guideMatch = pathname.match(/^\/guides\/([^/]+)$/)
   if (guideMatch) return { type: 'guide', slug: decodeURIComponent(guideMatch[1]) }
-
   if (pathname === '/guides') return { type: 'guides' }
   if (pathname === '/countries') return { type: 'countries' }
-
   const countryMatch = pathname.match(/^\/countries\/([^/]+)$/)
   if (countryMatch) return { type: 'country', slug: decodeURIComponent(countryMatch[1]) }
-
   const hubSlug = pathname.replace(/^\//, '')
   if (TOPIC_SLUGS.has(hubSlug)) return { type: 'hub', slug: hubSlug }
   if (INFO_SLUGS.has(hubSlug)) return { type: 'info', slug: hubSlug }
-
   if (pathname !== '/') return { type: 'not-found' }
-
   const hashMatch = window.location.hash.match(/^#calculator\/(.+)$/)
   if (hashMatch) return { type: 'calculator', id: decodeURIComponent(hashMatch[1]) }
-
   return { type: 'home' }
 }
 
@@ -54,11 +47,7 @@ function normalizeLegacyHashUrl() {
   const hashMatch = window.location.hash.match(/^#calculator\/(.+)$/)
   if (!hashMatch) return
   const id = decodeURIComponent(hashMatch[1])
-  window.history.replaceState(
-    { finCalcView: 'calculator', calculatorId: id },
-    '',
-    `/calculators/${encodeURIComponent(id)}`,
-  )
+  window.history.replaceState({ finCalcView: 'calculator', calculatorId: id }, '', `/calculators/${encodeURIComponent(id)}`)
 }
 
 export default function App() {
@@ -69,39 +58,26 @@ export default function App() {
   useEffect(() => {
     normalizeLegacyHashUrl()
     setRoute(getRouteFromLocation())
-
     if (!window.history.state?.finCalcView && getRouteFromLocation().type === 'home') {
       window.history.replaceState(HOME_HISTORY_STATE, '', window.location.pathname + window.location.search)
     }
-
-    function handlePopState() {
-      setRoute(getRouteFromLocation())
-    }
-
+    function handlePopState() { setRoute(getRouteFromLocation()) }
     window.addEventListener('popstate', handlePopState)
     return () => window.removeEventListener('popstate', handlePopState)
   }, [])
 
-  const selectedCalculator = useMemo(
-    () => route.type === 'calculator' ? getCalculatorById(route.id) : null,
-    [route],
-  )
-  const selectedGuide = useMemo(
-    () => route.type === 'guide' ? guides.find((guide) => guide.slug === route.slug) : null,
-    [route],
-  )
-  const selectedHub = useMemo(
-    () => route.type === 'hub' ? topicHubs[route.slug] : null,
-    [route],
-  )
-  const selectedCountry = useMemo(
-    () => route.type === 'country' ? getCountryPageBySlug(route.slug) : null,
-    [route],
-  )
+  const selectedCalculator = useMemo(() => route.type === 'calculator' ? getCalculatorById(route.id) : null, [route])
+  const selectedGuide = useMemo(() => route.type === 'guide' ? guides.find((guide) => guide.slug === route.slug) : null, [route])
+  const selectedHub = useMemo(() => route.type === 'hub' ? topicHubs[route.slug] : null, [route])
+  const selectedCountry = useMemo(() => route.type === 'country' ? getCountryPageBySlug(route.slug) : null, [route])
+
+  useEffect(() => {
+    const pageType = selectedCalculator ? 'calculator' : selectedGuide ? 'guide' : selectedCountry ? 'country' : route.type
+    trackEvent('page_view', { pageType })
+  }, [route, selectedCalculator, selectedGuide, selectedCountry])
 
   useEffect(() => {
     if (route.type === 'not-found') return
-
     if (selectedCalculator) {
       const seo = buildCalculatorSEO(selectedCalculator.config)
       setSiteSEO({ ...seo, pathname: `/calculators/${encodeURIComponent(selectedCalculator.config.id)}`, calculator: true })
@@ -112,27 +88,15 @@ export default function App() {
       return
     }
     if (route.type === 'guides') {
-      setSiteSEO({
-        title: 'Financial Guides | Practical Money Explanations | FinCalc',
-        description: 'Plain-English financial guides covering investing, loans, salary, budgeting, retirement and major money decisions.',
-        pathname: '/guides',
-      })
+      setSiteSEO({ title: 'Financial Guides | Practical Money Explanations | FinCalc', description: 'Plain-English financial guides covering investing, loans, salary, budgeting, retirement and major money decisions.', pathname: '/guides' })
       return
     }
     if (route.type === 'countries') {
-      setSiteSEO({
-        title: 'Financial Calculators by Country | FinCalc',
-        description: 'Explore FinCalc by country, with local currency formatting and country-specific financial tools where available.',
-        pathname: '/countries',
-      })
+      setSiteSEO({ title: 'Financial Calculators by Country | FinCalc', description: 'Explore FinCalc by country, with local currency formatting and country-specific financial tools where available.', pathname: '/countries' })
       return
     }
     if (selectedCountry) {
-      setSiteSEO({
-        title: `${selectedCountry.title} | FinCalc`,
-        description: selectedCountry.description,
-        pathname: `/countries/${selectedCountry.slug}`,
-      })
+      setSiteSEO({ title: `${selectedCountry.title} | FinCalc`, description: selectedCountry.description, pathname: `/countries/${selectedCountry.slug}` })
       return
     }
     if (selectedHub) {
@@ -174,37 +138,20 @@ export default function App() {
           <CountrySelector />
         </div>
       </header>
-
       <main className="site-main">
-        {selectedCalculator ? (
-          <CalculatorView calculator={selectedCalculator} onBack={goHome} country={country} numberSystem={numberSystem} />
-        ) : selectedGuide ? (
-          <GuideView guide={selectedGuide} />
-        ) : route.type === 'guides' ? (
-          <GuidesIndex />
-        ) : route.type === 'countries' ? (
-          <CountriesIndex />
-        ) : selectedCountry ? (
-          <CountryPage page={selectedCountry} calculators={calculators} onSelect={openCalculator} />
-        ) : selectedHub ? (
-          <TopicHub slug={route.slug} calculators={calculators} onSelect={openCalculator} />
-        ) : route.type === 'info' ? (
-          <InfoPage slug={route.slug} />
-        ) : route.type === 'not-found' ? (
-          <NotFound />
-        ) : (
-          <Home calculators={calculators} onSelect={openCalculator} country={country} />
-        )}
+        {selectedCalculator ? <CalculatorView calculator={selectedCalculator} onBack={goHome} country={country} numberSystem={numberSystem} />
+          : selectedGuide ? <GuideView guide={selectedGuide} />
+          : route.type === 'guides' ? <GuidesIndex />
+          : route.type === 'countries' ? <CountriesIndex />
+          : selectedCountry ? <CountryPage page={selectedCountry} calculators={calculators} onSelect={openCalculator} />
+          : selectedHub ? <TopicHub slug={route.slug} calculators={calculators} onSelect={openCalculator} />
+          : route.type === 'info' ? <InfoPage slug={route.slug} />
+          : route.type === 'not-found' ? <NotFound />
+          : <Home calculators={calculators} onSelect={openCalculator} country={country} />}
       </main>
-
       <footer className="site-footer">
         <nav aria-label="FinCalc information">
-          <a href="/guides">Guides</a>
-          <a href="/countries">Countries</a>
-          <a href="/about">About</a>
-          <a href="/how-it-works">How calculations work</a>
-          <a href="/privacy">Privacy</a>
-          <a href="/contact">Contact</a>
+          <a href="/guides">Guides</a><a href="/countries">Countries</a><a href="/about">About</a><a href="/how-it-works">How calculations work</a><a href="/privacy">Privacy</a><a href="/contact">Contact</a>
         </nav>
         <p>Calculations are estimates based on the assumptions you enter. FinCalc is not a bank, lender, insurer or financial adviser.</p>
       </footer>
