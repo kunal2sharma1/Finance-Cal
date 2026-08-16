@@ -36,12 +36,35 @@ function getRelatedCalculators(currentConfig) {
 export default function CalculatorView({ calculator, onBack }) {
   const { config, calculate, explanation } = calculator
   const [values, setValues] = useState(() => buildDefaultValues(config.fields))
+  const [results, setResults] = useState({})
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
   }, [config.id])
 
-  const results = useMemo(() => calculate(values), [values, calculate])
+  useEffect(() => {
+    let active = true
+    setResults((previous) => ({ ...previous, loading: true }))
+
+    Promise.resolve(calculate(values))
+      .then((nextResults) => {
+        if (active) setResults({ ...nextResults, loading: false })
+      })
+      .catch(() => {
+        if (active) {
+          setResults({
+            isValid: false,
+            loading: false,
+            message: 'The calculation could not be completed. Please try again.',
+          })
+        }
+      })
+
+    return () => {
+      active = false
+    }
+  }, [values, calculate])
+
   const relatedCalculators = useMemo(() => getRelatedCalculators(config), [config])
 
   function handleChange(name, rawValue) {

@@ -77,6 +77,7 @@ const SEO = {
   'investment-return': { title: 'Investment Return Calculator – Estimate Investment Growth | FinCalc', description: 'Estimate investment growth, total return and ending value from invested amount, return assumption and investment period.' },
   'monthly-savings': { title: 'Monthly Savings Calculator – Calculate How Much to Save | FinCalc', description: 'Calculate the monthly amount you may need to save to reach a target using your goal amount, timeline and assumptions.' },
   budget: { title: 'Budget Calculator – Plan Monthly Spending & Savings | FinCalc', description: 'Build a simple monthly budget by comparing income, essential expenses, flexible spending and your savings target.' },
+  'currency-exchange': { title: 'Currency Converter – Convert INR, USD, EUR & More | FinCalc', description: 'Convert money between major currencies using the latest available daily reference exchange rate and see the converted amount instantly.' },
 }
 
 export function getCalculatorSEO(id) {
