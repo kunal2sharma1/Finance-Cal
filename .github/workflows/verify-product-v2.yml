@@ -36,6 +36,9 @@ jobs:
       - name: International calculator validation
         run: node scripts/international-check.mjs
 
+      - name: SEO growth validation
+        run: npm run seo:growth
+
       - name: SEO validation
         run: npm run seo:check
 
