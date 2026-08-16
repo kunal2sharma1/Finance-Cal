@@ -6,6 +6,8 @@ import GuidesIndex from './pages/GuidesIndex.jsx'
 import TopicHub from './pages/TopicHub.jsx'
 import InfoPage from './pages/InfoPage.jsx'
 import NotFound from './pages/NotFound.jsx'
+import CountrySelector from './components/CountrySelector.jsx'
+import { useCountry } from './useCountry.js'
 import { calculators } from './calculators/registry.js'
 import { guides } from './guides.js'
 import { topicHubs } from './topicHubs.js'
@@ -67,6 +69,7 @@ function normalizeLegacyHashUrl() {
 
 export default function App() {
   const [route, setRoute] = useState(() => getRouteFromLocation())
+  const country = useCountry()
 
   useEffect(() => {
     normalizeLegacyHashUrl()
@@ -185,6 +188,7 @@ export default function App() {
           <span className="site-header__tagline">
             Simple, transparent money math
           </span>
+          <CountrySelector />
         </div>
       </header>
 
@@ -206,7 +210,7 @@ export default function App() {
         ) : route.type === 'not-found' ? (
           <NotFound />
         ) : (
-          <Home calculators={calculators} onSelect={openCalculator} />
+          <Home calculators={calculators} onSelect={openCalculator} country={country} />
         )}
       </main>
 
