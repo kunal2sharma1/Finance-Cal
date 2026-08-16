@@ -76,7 +76,9 @@ export default function Home({ calculators, onSelect, country }) {
     : `${filteredCalculators.length} calculator${filteredCalculators.length === 1 ? '' : 's'}`
 
   const showAllState = activeCategory === 'All' && !searchTerm.trim()
-  const countryLabel = country ? `${country.flag} ${country.name}` : '🌎 Global'
+  const preferredCurrency = country?.currency || 'INR'
+  const regionCode = country?.code || 'IN'
+  const regionFlag = country?.flag || '🌎'
 
   return (
     <section className="home">
@@ -91,15 +93,15 @@ export default function Home({ calculators, onSelect, country }) {
           </p>
           <div className="home_intro_stats">
             <div><strong>{calculators.length}+</strong><span>Calculators</span></div>
-            <div><strong>{country?.currency || 'INR'}</strong><span>Preferred currency</span></div>
-            <div><strong>{countryLabel}</strong><span>Selected region</span></div>
+            <div><strong>{preferredCurrency}</strong><span>Preferred currency</span></div>
+            <div><strong>{regionFlag} {regionCode}</strong><span>Selected region</span></div>
           </div>
         </div>
 
         <div className="home_illustration" aria-hidden="true">
           <div className="illustration_circle"></div>
           <div className="illustration_card illustration_card_main">
-            <span>{country?.currency === 'USD' ? '$' : country?.currency === 'GBP' ? '£' : country?.currency === 'EUR' ? '€' : '₹'}</span><strong>Wealth</strong><small>Planning made simple</small>
+            <span>{preferredCurrency === 'USD' ? '$' : preferredCurrency === 'GBP' ? '£' : preferredCurrency === 'EUR' ? '€' : '₹'}</span><strong>Wealth</strong><small>Planning made simple</small>
           </div>
           <div className="illustration_card illustration_card_top">↗</div>
           <div className="illustration_card illustration_card_bottom">✓</div>
