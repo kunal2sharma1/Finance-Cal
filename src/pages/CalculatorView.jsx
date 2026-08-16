@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import CalculatorForm from '../components/CalculatorForm.jsx'
 import ResultPanel from '../components/ResultPanel.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
@@ -6,6 +6,7 @@ import CalculatorSEOSections from '../components/CalculatorSEOSections.jsx'
 import CalculatorTrust from '../components/CalculatorTrust.jsx'
 import { calculators, getCalculatorsByCategory } from '../calculatorCatalog.js'
 import { getCalculatorCurrency } from '../calculatorLocale.js'
+import { trackEvent } from '../analytics.js'
 import './calculator-view.css'
 
 const categoryPaths = {
@@ -39,9 +40,13 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
   const { config, calculate, explanation } = calculator
   const [values, setValues] = useState(() => buildDefaultValues(config.fields))
   const [results, setResults] = useState({})
+  const completionTrackedRef = useRef(false)
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+    completionTrackedRef.current = false
+    trackEvent('calculator_open', { calculatorId: config.id, category: config.category || 'Other' })
+
     const key = 'fincalc-recent-calculators'
     try {
       const previous = JSON.parse(window.localStorage.getItem(key) || '[]')
@@ -50,18 +55,25 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
     } catch {
       // Storage may be unavailable; calculator use should still work.
     }
-  }, [config.id])
+  }, [config.id, config.category])
 
   useEffect(() => {
     let active = true
     setResults((previous) => ({ ...previous, loading: true }))
     Promise.resolve(calculate(values))
-      .then((nextResults) => { if (active) setResults({ ...nextResults, loading: false }) })
+      .then((nextResults) => {
+        if (!active) return
+        setResults({ ...nextResults, loading: false })
+        if (!completionTrackedRef.current && nextResults?.isValid !== false && nextResults?.isValid !== undefined) {
+          completionTrackedRef.current = true
+          trackEvent('calculator_complete', { calculatorId: config.id })
+        }
+      })
       .catch(() => {
         if (active) setResults({ isValid: false, loading: false, message: 'The calculation could not be completed. Please try again.' })
       })
     return () => { active = false }
-  }, [values, calculate])
+  }, [values, calculate, config.id])
 
   const relatedCalculators = useMemo(() => getRelatedCalculators(config), [config])
   const displayCurrency = getCalculatorCurrency(config, country)
