@@ -28,9 +28,11 @@ const pages = {
   privacy: {
     title: 'Privacy',
     metaTitle: 'Privacy | FinCalc',
-    metaDescription: 'Learn how FinCalc handles information entered into its browser-based financial calculators.',
+    metaDescription: 'Learn how FinCalc handles calculator inputs and privacy-conscious product analytics.',
     sections: [
       ['Calculator inputs', 'The calculator interface is designed to perform calculations in your browser. The values you enter into a calculator are not intentionally sent to a FinCalc application server as part of the calculation itself.'],
+      ['Analytics', 'FinCalc records privacy-conscious product events such as page views, calculator opens and completions, search activity, country selection and number-format selection. The analytics layer does not intentionally collect calculator input values, financial amounts, IP addresses or account information.'],
+      ['Local analytics by default', 'Without an analytics endpoint configured, event aggregates remain in your browser storage and are not transmitted by the analytics module. A deployment can optionally provide VITE_ANALYTICS_ENDPOINT for a first-party collection endpoint.'],
       ['No account required', 'FinCalc calculators are designed to work without requiring you to create an account or submit personal financial details to use a calculation.'],
       ['Third-party services', 'Hosting, analytics or other third-party services may have their own processing and privacy practices. Review their policies when those services are enabled.'],
     ],
@@ -52,11 +54,7 @@ export default function InfoPage({ slug }) {
   if (!page) return null
 
   useEffect(() => {
-    setSiteSEO({
-      title: page.metaTitle,
-      description: page.metaDescription,
-      pathname: `/${slug}`,
-    })
+    setSiteSEO({ title: page.metaTitle, description: page.metaDescription, pathname: `/${slug}` })
   }, [page, slug])
 
   return (
@@ -67,12 +65,7 @@ export default function InfoPage({ slug }) {
         <h1>{page.title}</h1>
       </header>
       <div className="info-page__content">
-        {page.sections.map(([heading, body]) => (
-          <section key={heading}>
-            <h2>{heading}</h2>
-            <p>{body}</p>
-          </section>
-        ))}
+        {page.sections.map(([heading, body]) => <section key={heading}><h2>{heading}</h2><p>{body}</p></section>)}
       </div>
     </article>
   )
