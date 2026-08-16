@@ -1,5 +1,6 @@
 export const DEFAULT_COUNTRY = 'IN'
 export const COUNTRY_STORAGE_KEY = 'fincalc-country'
+export const NUMBER_SYSTEM_STORAGE_KEY = 'fincalc-number-system'
 
 export const countries = [
   { code: 'IN', name: 'India', flag: '🇮🇳', currency: 'INR', locale: 'en-IN' },
@@ -30,6 +31,15 @@ export function getInitialCountry() {
   return DEFAULT_COUNTRY
 }
 
+export function getInitialNumberSystem() {
+  if (typeof window === 'undefined') return 'indian'
+
+  const stored = window.localStorage.getItem(NUMBER_SYSTEM_STORAGE_KEY)
+  if (stored === 'indian' || stored === 'international') return stored
+
+  return getInitialCountry() === 'IN' ? 'indian' : 'international'
+}
+
 export function saveCountry(code) {
   const country = getCountry(code)
   if (typeof window !== 'undefined') {
@@ -39,21 +49,34 @@ export function saveCountry(code) {
   return country.code
 }
 
+export function saveNumberSystem(system) {
+  const next = system === 'international' ? 'international' : 'indian'
+  if (typeof window !== 'undefined') {
+    window.localStorage.setItem(NUMBER_SYSTEM_STORAGE_KEY, next)
+    window.dispatchEvent(new CustomEvent('fincalc-number-system-change', { detail: next }))
+  }
+  return next
+}
+
 export function getCountryCurrency(code) {
   return getCountry(code).currency
 }
 
-export function formatMoney(value, code = DEFAULT_COUNTRY) {
+export function getNumberFormatLocale(numberSystem = 'indian') {
+  return numberSystem === 'international' ? 'en-US' : 'en-IN'
+}
+
+export function formatMoney(value, code = DEFAULT_COUNTRY, numberSystem = 'indian') {
   const country = getCountry(code)
   if (!Number.isFinite(Number(value))) return '—'
 
   try {
-    return new Intl.NumberFormat(country.locale, {
+    return new Intl.NumberFormat(getNumberFormatLocale(numberSystem), {
       style: 'currency',
       currency: country.currency,
       maximumFractionDigits: country.currency === 'JPY' ? 0 : 2,
     }).format(Number(value))
   } catch {
-    return `${country.currency} ${Number(value).toLocaleString(country.locale)}`
+    return `${country.currency} ${Number(value).toLocaleString(getNumberFormatLocale(numberSystem))}`
   }
 }
