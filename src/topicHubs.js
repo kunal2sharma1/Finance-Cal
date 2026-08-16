@@ -19,7 +19,7 @@ export const topicHubs = {
     metaDescription: 'Free loan and debt calculators for EMI, personal loans, car loans, home loans, prepayment, debt payoff and credit-card interest.',
     intro: 'Compare borrowing costs, understand monthly payments and build a clearer plan for becoming debt-free.',
     calculatorIds: [
-      'EMI', 'home-loan', 'loan-eligibility', 'personal-loan', 'car-loan', 'home-loan-affordability',
+      'emi', 'home-loan', 'loan-eligibility', 'personal-loan', 'car-loan', 'home-loan-affordability',
       'down-payment', 'loan-comparison', 'loan-prepayment', 'debt-payoff', 'debt-snowball',
       'debt-avalanche', 'credit-card-interest', 'credit-card-emi', 'loan-balance-transfer',
     ],
