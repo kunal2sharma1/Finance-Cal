@@ -2,13 +2,17 @@ function isValidNumeric(value) {
   return typeof value === 'number' && Number.isFinite(value)
 }
 
-function formatCurrency(value) {
+function formatCurrency(value, currency = 'INR') {
   if (!isValidNumeric(value)) return '—'
-  return new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
-    maximumFractionDigits: 0,
-  }).format(value)
+  try {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency,
+      maximumFractionDigits: currency === 'JPY' ? 0 : 2,
+    }).format(value)
+  } catch {
+    return `${formatNumber(value, 2)} ${currency}`
+  }
 }
 
 function formatNumber(value, maximumFractionDigits = 0) {
@@ -18,12 +22,21 @@ function formatNumber(value, maximumFractionDigits = 0) {
   }).format(value)
 }
 
-function formatResultValue(value, field) {
+function formatResultValue(value, field, results) {
+  if (field.type === 'date') return value || '—'
   if (!isValidNumeric(value)) return '—'
+
+  if (field.type === 'dynamicCurrency') {
+    return formatCurrency(value, results.targetCurrency || 'INR')
+  }
 
   if (field.unit === '%') {
     const formatted = formatNumber(value, 2)
     return field.label.includes('%') ? formatted : `${formatted}%`
+  }
+
+  if (field.unit === 'rate') {
+    return formatNumber(value, 6)
   }
 
   if (field.unit && field.unit !== '₹') {
@@ -38,8 +51,6 @@ export default function ResultPanel({ resultFields, results = {} }) {
   const secondary = resultFields.filter((field) => !field.primary)
   const isInvalid = results.isValid === false
 
-  // If a calculator exposes totalInvested + totalReturns, we can draw a
-  // simple proportional bar. Calculators that don't just skip this part.
   const invested = results.totalInvested
   const returns = results.totalReturns
   const hasBreakdown =
@@ -56,11 +67,17 @@ export default function ResultPanel({ resultFields, results = {} }) {
         </div>
       )}
 
+      {results.loading && (
+        <div className="result-panel__message" role="status">
+          Fetching the latest available exchange rate…
+        </div>
+      )}
+
       {primary && (
         <div className="result-panel__primary">
           <span className="result-panel__primary-label">{primary.label}</span>
           <span className="result-panel__primary-value">
-            {formatResultValue(results[primary.name], primary)}
+            {formatResultValue(results[primary.name], primary, results)}
           </span>
         </div>
       )}
@@ -82,7 +99,7 @@ export default function ResultPanel({ resultFields, results = {} }) {
         {secondary.map((field) => (
           <div className="result-panel__row" key={field.name}>
             <dt>{field.label}</dt>
-            <dd>{formatResultValue(results[field.name], field)}</dd>
+            <dd>{formatResultValue(results[field.name], field, results)}</dd>
           </div>
         ))}
       </dl>
