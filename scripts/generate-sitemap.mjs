@@ -2,6 +2,7 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { calculators } from '../src/calculators/registry.js'
 import { guides } from '../src/guides.js'
 import { topicHubs } from '../src/topicHubs.js'
+import { countryPages } from '../src/countryPages.js'
 
 const BASE_URL = 'https://finance-cal.kunal2sharma1.workers.dev'
 const infoRoutes = ['/about', '/how-it-works', '/privacy', '/contact']
@@ -9,10 +10,11 @@ const urls = new Set(['/'])
 
 for (const slug of Object.keys(topicHubs)) urls.add(`/${slug}`)
 for (const guide of guides) urls.add(`/guides/${guide.slug}`)
-for (const { config } of calculators) {
-  urls.add(`/calculators/${encodeURIComponent(config.id)}`)
-}
+for (const { config } of calculators) urls.add(`/calculators/${encodeURIComponent(config.id)}`)
 for (const route of infoRoutes) urls.add(route)
+
+urls.add('/countries')
+for (const country of countryPages) urls.add(`/countries/${country.slug}`)
 
 const xml = [
   '<?xml version="1.0" encoding="UTF-8"?>',
