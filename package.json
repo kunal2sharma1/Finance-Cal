@@ -10,6 +10,7 @@
     "formula:check": "node scripts/formula-check.mjs",
     "route:check": "node scripts/route-check.mjs",
     "content:check": "node scripts/content-check.mjs",
+    "internal-link:check": "node scripts/internal-link-check.mjs",
     "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "vite build",
     "preview": "vite preview"
