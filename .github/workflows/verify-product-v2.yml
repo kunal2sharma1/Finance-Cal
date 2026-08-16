@@ -1,0 +1,64 @@
+name: Verify Product V2
+
+on:
+  push:
+    branches: [product-v2-development]
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'src/**'
+      - 'public/**'
+      - 'index.html'
+      - 'vite.config.js'
+      - 'scripts/**'
+      - '.github/workflows/verify-product-v2.yml'
+  workflow_dispatch:
+
+jobs:
+  product-v2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Product QA
+        run: node scripts/product-qa-check.mjs
+
+      - name: International calculator validation
+        run: npm run international:check
+
+      - name: SEO growth validation
+        run: npm run seo:growth
+
+      - name: Discovery validation
+        run: npm run discovery:check
+
+      - name: Trust validation
+        run: npm run trust:check
+
+      - name: Analytics validation
+        run: npm run analytics:check
+
+      - name: Commercial validation
+        run: npm run commercial:check
+
+      - name: SEO validation
+        run: npm run seo:check
+
+      - name: Formula regression tests
+        run: npm run formula:check
+
+      - name: Production build
+        run: npm run build
+
+      - name: Performance budget validation
+        run: npm run performance:check

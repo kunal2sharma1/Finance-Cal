@@ -1,12 +1,10 @@
 import { mkdir, writeFile } from 'node:fs/promises'
-import { calculators as coreCalculators } from '../src/calculators/registry.js'
-import { internationalCalculators } from '../src/internationalCalculators.js'
+import { calculators } from '../src/calculatorCatalog.js'
 import { guides } from '../src/guides.js'
 import { topicHubs } from '../src/topicHubs.js'
 import { countryPages } from '../src/countryPages.js'
 
 const BASE_URL = 'https://finance-cal.kunal2sharma1.workers.dev'
-const calculators = [...coreCalculators, ...internationalCalculators]
 const urls = new Set(['/'])
 
 for (const slug of Object.keys(topicHubs)) urls.add(`/${slug}`)

@@ -78,6 +78,11 @@ const SEO = {
   'monthly-savings': { title: 'Monthly Savings Calculator – Calculate How Much to Save | FinCalc', description: 'Calculate the monthly amount you may need to save to reach a target using your goal amount, timeline and assumptions.' },
   budget: { title: 'Budget Calculator – Plan Monthly Spending & Savings | FinCalc', description: 'Build a simple monthly budget by comparing income, essential expenses, flexible spending and your savings target.' },
   'currency-exchange': { title: 'Currency Converter – Convert INR, USD, EUR & More | FinCalc', description: 'Convert money between major currencies using the latest available daily reference exchange rate and see the converted amount instantly.' },
+  'savings-rate': { title: 'Savings Rate Calculator – Calculate Your Savings Percentage | FinCalc', description: 'Calculate the percentage of your income you save or invest each month and see how much remains for spending.' },
+  'real-return': { title: 'Real Return Calculator – Adjust Investment Return for Inflation | FinCalc', description: 'Estimate investment return after inflation to understand the approximate change in purchasing power.' },
+  'bond-return': { title: 'Bond Return Calculator – Estimate Coupon Income & Return | FinCalc', description: 'Estimate bond coupon income, capital gain or loss and simple total return from purchase, sale and coupon assumptions.' },
+  'auto-loan': { title: 'Auto Loan Calculator – Estimate Monthly Car Payment | FinCalc', description: 'Estimate an auto loan payment, total interest and repayment from vehicle price, down payment, interest rate and term.' },
+  'debt-to-income': { title: 'Debt-to-Income Ratio Calculator | FinCalc', description: 'Calculate your debt-to-income ratio from monthly income and debt payments to understand your current debt burden.' },
 }
 
 export function getCalculatorSEO(id) {
