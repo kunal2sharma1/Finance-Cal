@@ -34,13 +34,16 @@ jobs:
         run: node scripts/product-qa-check.mjs
 
       - name: International calculator validation
-        run: node scripts/international-check.mjs
+        run: npm run international:check
 
       - name: SEO growth validation
         run: npm run seo:growth
 
       - name: Discovery validation
         run: npm run discovery:check
+
+      - name: Trust validation
+        run: npm run trust:check
 
       - name: SEO validation
         run: npm run seo:check
