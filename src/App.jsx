@@ -11,12 +11,14 @@ import CountriesIndex from './pages/CountriesIndex.jsx'
 import CountrySelector from './components/CountrySelector.jsx'
 import { useCountry } from './useCountry.js'
 import { getCountryPageBySlug } from './countryPages.js'
-import { calculators } from './calculators/registry.js'
+import { calculators as coreCalculators } from './calculators/registry.js'
+import { internationalCalculators } from './internationalCalculators.js'
 import { guides } from './guides.js'
 import { topicHubs } from './topicHubs.js'
 import { buildCalculatorSEO, setSiteSEO } from './seo.js'
 import './site-footer.css'
 
+const calculators = [...coreCalculators, ...internationalCalculators]
 const HOME_HISTORY_STATE = { finCalcView: 'home' }
 const TOPIC_SLUGS = new Set(Object.keys(topicHubs))
 const INFO_SLUGS = new Set(['about', 'how-it-works', 'privacy', 'contact'])
@@ -173,7 +175,7 @@ export default function App() {
 
       <main className="site-main">
         {selectedCalculator ? (
-          <CalculatorView calculator={selectedCalculator} onBack={goHome} country={country} />
+          <CalculatorView calculator={selectedCalculator} onBack={goHome} country={country} calculators={calculators} />
         ) : selectedGuide ? (
           <GuideView guide={selectedGuide} />
         ) : route.type === 'guides' ? (
