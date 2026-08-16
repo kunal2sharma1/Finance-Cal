@@ -10,6 +10,7 @@ export const countries = [
   { code: 'AU', name: 'Australia', flag: '🇦🇺', currency: 'AUD', locale: 'en-AU' },
   { code: 'AE', name: 'United Arab Emirates', flag: '🇦🇪', currency: 'AED', locale: 'en-AE' },
   { code: 'SG', name: 'Singapore', flag: '🇸🇬', currency: 'SGD', locale: 'en-SG' },
+  { code: 'GLOBAL', name: 'Global / Other', flag: '🌎', currency: 'USD', locale: 'en-US' },
 ]
 
 const countryMap = new Map(countries.map((country) => [country.code, country]))
@@ -37,13 +38,17 @@ export function getInitialNumberSystem() {
   const stored = window.localStorage.getItem(NUMBER_SYSTEM_STORAGE_KEY)
   if (stored === 'indian' || stored === 'international') return stored
 
-  return getInitialCountry() === 'IN' ? 'indian' : 'international'
+  const country = getCountry(getInitialCountry())
+  return country.code === 'IN' ? 'indian' : 'international'
 }
 
 export function saveCountry(code) {
   const country = getCountry(code)
   if (typeof window !== 'undefined') {
     window.localStorage.setItem(COUNTRY_STORAGE_KEY, country.code)
+    if (country.code === 'IN' && !window.localStorage.getItem(NUMBER_SYSTEM_STORAGE_KEY)) {
+      window.localStorage.setItem(NUMBER_SYSTEM_STORAGE_KEY, 'indian')
+    }
     window.dispatchEvent(new CustomEvent('fincalc-country-change', { detail: country.code }))
   }
   return country.code
@@ -74,7 +79,7 @@ export function formatMoney(value, code = DEFAULT_COUNTRY, numberSystem = 'india
     return new Intl.NumberFormat(getNumberFormatLocale(numberSystem), {
       style: 'currency',
       currency: country.currency,
-      maximumFractionDigits: country.currency === 'JPY' ? 0 : 2,
+      maximumFractionDigits: ['JPY', 'KRW'].includes(country.currency) ? 0 : 2,
     }).format(Number(value))
   } catch {
     return `${country.currency} ${Number(value).toLocaleString(getNumberFormatLocale(numberSystem))}`
