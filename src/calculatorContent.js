@@ -1,3 +1,5 @@
+// Tier 1 is a hand-picked priority set for deeper custom content in this batch;
+// it is a planning priority, not a claim about measured search volume.
 const priorityTierOne = new Set([
   'sip',
   'step-up-sip',
