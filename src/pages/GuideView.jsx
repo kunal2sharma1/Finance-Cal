@@ -10,6 +10,27 @@ export default function GuideView({ guide }) {
       description: guide.metaDescription,
       pathname: `/guides/${guide.slug}`,
     })
+
+    const schemaId = `fincalc-guide-${guide.slug}`
+    let schema = document.getElementById(schemaId)
+    if (!schema) {
+      schema = document.createElement('script')
+      schema.id = schemaId
+      schema.type = 'application/ld+json'
+      document.head.appendChild(schema)
+    }
+
+    schema.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: guide.title,
+      description: guide.metaDescription,
+      mainEntityOfPage: `https://finance-cal.kunal2sharma1.workers.dev/guides/${guide.slug}`,
+      author: { '@type': 'Organization', name: 'FinCalc' },
+      publisher: { '@type': 'Organization', name: 'FinCalc' },
+    })
+
+    return () => schema.remove()
   }, [guide])
 
   return (
@@ -17,7 +38,7 @@ export default function GuideView({ guide }) {
       <Breadcrumbs
         items={[
           { label: 'FinCalc', href: '/' },
-          { label: 'Financial Guides', href: '/financial-planning' },
+          { label: 'Financial Guides', href: '/guides' },
           { label: guide.title },
         ]}
       />
