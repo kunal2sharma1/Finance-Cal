@@ -10,6 +10,7 @@
     "discovery:check": "node scripts/discovery-check.mjs",
     "trust:check": "node scripts/trust-check.mjs",
     "analytics:check": "node scripts/analytics-check.mjs",
+    "commercial:check": "node scripts/commercial-check.mjs",
     "international:check": "node scripts/international-check.mjs",
     "formula:check": "node scripts/formula-check.mjs",
     "prebuild": "node scripts/generate-global-sitemap.mjs",
