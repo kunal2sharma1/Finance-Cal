@@ -39,6 +39,9 @@ jobs:
       - name: SEO growth validation
         run: npm run seo:growth
 
+      - name: Discovery validation
+        run: npm run discovery:check
+
       - name: SEO validation
         run: npm run seo:check
 
