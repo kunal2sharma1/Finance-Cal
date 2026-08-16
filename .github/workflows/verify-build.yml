@@ -2,7 +2,7 @@ name: Verify build
 
 on:
   push:
-    branches: [main, seo-development, currency-exchange]
+    branches: [main, seo-development]
     paths:
       - 'package.json'
       - 'package-lock.json'
