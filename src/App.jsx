@@ -12,14 +12,12 @@ import CountrySelector from './components/CountrySelector.jsx'
 import { useCountry } from './useCountry.js'
 import { useNumberSystem } from './useNumberSystem.js'
 import { getCountryPageBySlug } from './countryPages.js'
-import { calculators as coreCalculators } from './calculators/registry.js'
-import { internationalCalculators } from './internationalCalculators.js'
+import { calculators, getCalculatorById } from './calculatorCatalog.js'
 import { guides } from './guides.js'
 import { topicHubs } from './topicHubs.js'
 import { buildCalculatorSEO, setSiteSEO } from './seo.js'
 import './site-footer.css'
 
-const calculators = [...coreCalculators, ...internationalCalculators]
 const HOME_HISTORY_STATE = { finCalcView: 'home' }
 const TOPIC_SLUGS = new Set(Object.keys(topicHubs))
 const INFO_SLUGS = new Set(['about', 'how-it-works', 'privacy', 'contact'])
@@ -84,7 +82,7 @@ export default function App() {
   }, [])
 
   const selectedCalculator = useMemo(
-    () => route.type === 'calculator' ? calculators.find((item) => item.config.id === route.id) : null,
+    () => route.type === 'calculator' ? getCalculatorById(route.id) : null,
     [route],
   )
   const selectedGuide = useMemo(
