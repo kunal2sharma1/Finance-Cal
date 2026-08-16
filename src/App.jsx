@@ -8,6 +8,7 @@ import { calculators } from './calculators/registry.js'
 import { guides } from './guides.js'
 import { topicHubs } from './topicHubs.js'
 import { buildCalculatorSEO, setSiteSEO } from './seo.js'
+import './site-footer.css'
 
 const HOME_HISTORY_STATE = { finCalcView: 'home' }
 const TOPIC_SLUGS = new Set(Object.keys(topicHubs))
