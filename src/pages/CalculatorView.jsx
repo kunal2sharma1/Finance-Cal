@@ -5,6 +5,15 @@ import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import { calculators } from '../calculators/registry.js'
 import './calculator-view.css'
 
+const categoryPaths = {
+  Investing: '/investing',
+  Loans: '/loans',
+  Salary: '/salary',
+  Retirement: '/retirement',
+  Budgeting: '/budgeting',
+  'Financial Planning': '/financial-planning',
+}
+
 function buildDefaultValues(fields) {
   const values = {}
   fields.forEach((field) => {
@@ -43,7 +52,7 @@ export default function CalculatorView({ calculator, onBack }) {
       <Breadcrumbs
         items={[
           { label: 'FinCalc', href: '/' },
-          { label: config.category, href: `/${config.category.toLowerCase()}` },
+          { label: config.category, href: categoryPaths[config.category] || '/financial-planning' },
           { label: config.title },
         ]}
       />
