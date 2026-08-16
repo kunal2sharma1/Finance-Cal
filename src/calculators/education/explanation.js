@@ -1,22 +1,15 @@
 export const explanation = {
-  heading: 'How this is calculated',
+  heading: 'What this calculator is doing',
+  body: `This calculator helps answer a simple question: “If education costs rise, how much might I need by the time my child starts?”
 
-  body: `Planning for higher education requires accounting for both rising education costs and investment growth.
+First, it increases today's education cost using the yearly education-cost increase you entered.
 
-This calculator first estimates how much today's education cost could become by the time your child starts higher education using the selected education inflation rate.
+Next, it estimates how your current education savings could grow and how your ongoing monthly investments could grow before the education goal begins.
 
-Future Education Cost = Current Education Cost × (1 + Education Inflation Rate)^Years
+Finally, it compares those projected amounts with the estimated future education cost and shows any shortfall.
 
-Next, it projects the future value of your existing education savings using the expected annual investment return.
+The two most important assumptions are education-cost growth and investment return. Changing either one can change the result a lot.
 
-It also calculates the future value of your monthly investments using the standard future value of a SIP formula, assuming investments continue until the education goal begins.
-
-The calculator then compares your projected investment corpus with the estimated education corpus required and shows any funding shortfall.
-
-Finally, it estimates the monthly investment that would be required from today to fully fund the education goal by the target year.
-
-Changing the inflation rate, investment return or investment period can significantly affect the final education corpus required.`,
-
-  disclaimer:
-    'This calculator provides an estimate for financial planning purposes only. Actual education costs, inflation, investment returns, scholarships, exchange rates, taxes and other expenses may vary significantly over time.',
+The calculation does not include scholarships, loans, taxes, exchange rates, or unexpected changes in the actual course or college fee.`,
+  disclaimer: 'This is a planning estimate only. Future education costs and investment returns are uncertain and actual costs can differ substantially.',
 }

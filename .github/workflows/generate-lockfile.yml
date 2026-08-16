@@ -4,8 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'src/package.json'
-      - 'src/package-lock.json'
+      - 'package.json'
+      - 'package-lock.json'
       - '.github/workflows/generate-lockfile.yml'
   workflow_dispatch:
 
@@ -24,18 +24,17 @@ jobs:
         with:
           node-version: 20
 
-      - name: Generate lockfile
-        working-directory: src
+      - name: Generate root lockfile
         run: npm install --package-lock-only
 
       - name: Commit lockfile
         run: |
-          git add src/package-lock.json
-          if git diff --cached --quiet -- src/package-lock.json; then
-            echo "Lockfile is already up to date."
+          git add package-lock.json
+          if git diff --cached --quiet -- package-lock.json; then
+            echo "Root lockfile is already up to date."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Generate valid src package lockfile"
+          git commit -m "Regenerate root package lockfile for Vite 6"
           git push

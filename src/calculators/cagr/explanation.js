@@ -1,12 +1,11 @@
 export const explanation = {
-  heading: 'How this is calculated',
-  body: `CAGR (Compound Annual Growth Rate) is the steady yearly growth rate that would take an investment from its starting value to its ending value over a given period, smoothing out whatever ups and downs happened along the way.
+  heading: 'What this calculator is doing',
+  body: `This calculator answers: “How fast did my investment grow each year on average?”
 
-We use the standard CAGR formula:
+You enter what you started with, what the investment is worth now, and how long you held it. The calculator works out the average yearly growth rate that would connect those two values.
 
-CAGR = (Final Value / Initial Value)^(1 / Years) − 1
+This average smooths out the ups and downs that happened in between. It does not mean the investment actually grew by exactly that percentage every year.
 
-Final Value is what the investment is worth today, Initial Value is what it started as, and Years is the length of the investment period. Absolute gain is simply Final Value minus Initial Value, and total growth is that gain expressed as a percentage of the initial investment — the same period, without annualizing it.`,
-  disclaimer:
-    'This is an estimate for planning purposes only. It describes past performance between the two values you entered and is not a guarantee of future returns.',
+The technical name for this average yearly growth rate is CAGR (Compound Annual Growth Rate). It is useful for comparing investments over different time periods, but it should not be treated as a promise about future returns.`,
+  disclaimer: 'This calculation describes the growth between the values you enter. It does not predict future investment returns.',
 }

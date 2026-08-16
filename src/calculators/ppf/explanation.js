@@ -1,14 +1,11 @@
 export const explanation = {
-  heading: 'How this is calculated',
-  body: `The Public Provident Fund (PPF) is a long-term, government-backed savings scheme. You deposit a chosen amount each financial year, the government credits interest once a year, and the entire balance — deposits plus interest — is tax-free at maturity.
+  heading: 'What this calculator is doing',
+  body: `PPF (Public Provident Fund) is a long-term government-backed savings scheme. You can add money each financial year and the account earns interest at the rate set by the Government of India.
 
-This calculator assumes your full annual investment is deposited at the start of each year and compounds annually on the running balance:
+This calculator assumes you put the same amount into PPF at the start of each year and that the interest rate you enter stays unchanged for the full period.
 
-Maturity amount = P × [((1 + r)^n − 1) / r] × (1 + r)
+PPF normally starts with a 15-year term and can be extended in 5-year blocks. The actual interest credited to your account can differ from this estimate if your deposits are made later in the year or if the government changes the PPF rate.
 
-P is your annual investment, r is the annual interest rate ÷ 100, and n is the number of years.
-
-In an actual PPF account, interest is worked out monthly on the lowest balance between the 5th and the last day of that month, then credited once a year — so instalments paid later in the month, or spread across the year, earn a little less than this year-start estimate.`,
-  disclaimer:
-    'This is an estimate for planning purposes only. The PPF interest rate is set by the Government of India and reviewed quarterly, so the actual rate over your investment period will likely differ from the rate you enter here.',
+Think of the result as a planning estimate, not a guaranteed maturity amount.`,
+  disclaimer: 'This is an estimate only. PPF interest rates are set by the Government of India and may change over time. Actual interest depends on deposit timing and the applicable rate.',
 }

@@ -1,10 +1,13 @@
 export const explanation = {
-  heading: 'How this is calculated',
-  body: `Your EMI is calculated with the standard reducing-balance formula: EMI = P × r × (1 + r)^n / ((1 + r)^n − 1), where P is the loan amount, r is the monthly interest rate (annual rate ÷ 12 ÷ 100), and n is the number of monthly instalments (tenure in years × 12). At 0% interest, the EMI is simply the loan amount divided evenly across the tenure.
+  heading: 'What this calculator is doing',
+  body: `This calculator helps answer a practical question: “What will my home-loan payment look like, and how much interest could I save if I pay extra?”
 
-Every month is simulated in order: that month's interest is calculated on the balance still outstanding, then the EMI's principal portion reduces the balance, then any extra monthly prepayment you've entered is applied, and then — only in months 12, 24, 36 and so on, i.e. each loan anniversary — your annual lump-sum prepayment is applied. Each step is capped so the balance can never be pushed below ₹0, and the moment it reaches ₹0 the loan is treated as fully repaid, however early that happens.
+First, it calculates the regular monthly loan payment from the loan amount, interest rate, and repayment period.
 
-Because prepayments can be used two different ways, both are calculated in full: keeping your EMI the same and finishing the loan early, or keeping the original tenure and having your EMI step down instead. For the second option, the EMI is recalculated once a year, from the balance left and the time remaining, rather than every single month — closer to how a lender would typically revisit it. The headline numbers above are based on the first option (EMI unchanged, tenure shortened), since it's the simpler of the two to state as one figure; the full breakdown for both, including a month-by-month schedule of opening balance, interest, principal, prepayment and closing balance, is available wherever this calculator's full result is used, even though only three figures are shown here.`,
-  disclaimer:
-    'This is an estimate for planning purposes only. Actual home loan terms, interest rates, processing charges, taxes, and prepayment conditions depend entirely on your lender and loan agreement, and may differ from this calculation.',
+If you enter an extra monthly payment or an extra one-time payment each year, the calculator applies those payments to the outstanding loan balance and estimates how much interest could be saved.
+
+There are two common ways extra payments can help: keep the monthly payment the same and finish the loan earlier, or keep the original end date and reduce the monthly payment over time.
+
+The headline result uses the first approach because it gives the clearest single estimate. The detailed calculation also models the second approach.`,
+  disclaimer: 'This is a planning estimate only. Your actual home-loan rate, fees, prepayment rules, taxes, and lender terms may be different.',
 }

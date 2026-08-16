@@ -1,12 +1,11 @@
 export const explanation = {
-  heading: 'How this is calculated',
-  body: `A Fixed Deposit (FD) means locking in a lump sum with a bank for a fixed tenure at a fixed interest rate. Most Indian banks compound FD interest quarterly, so interest earned in one quarter starts earning its own interest from the next quarter onward.
+  heading: 'What this calculator is doing',
+  body: `A fixed deposit (FD) lets you keep a lump sum with a bank for a fixed period at a stated interest rate.
 
-We use the standard quarterly-compounding FD formula:
+Enter the amount you want to deposit, the interest rate offered by the bank, and how long you want to keep the money there. The calculator estimates what the deposit could be worth when the FD matures.
 
-A = P × (1 + r/4)^(4t)
+This estimate assumes quarterly compounding, which is common for Indian bank FDs. Your bank may use different rules or rounding, so the final maturity amount can differ slightly.
 
-P is your deposit amount, r is the annual interest rate as a decimal (annual rate ÷ 100), and t is the tenure in years.`,
-  disclaimer:
-    'This is an estimate for planning purposes only. Actual FD interest rates, compounding frequency, and tax treatment vary by bank and are not guaranteed.',
+If the FD is taxed, the amount you actually keep after tax can also be lower than the amount shown here.`,
+  disclaimer: 'This is an estimate only. Actual FD rates, compounding rules, tax treatment, and maturity amounts depend on the bank and product you choose.',
 }
