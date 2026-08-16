@@ -41,6 +41,9 @@ jobs:
       - name: Run calculator content validation
         run: npm run content:check
 
+      - name: Run internal link validation
+        run: npm run internal-link:check
+
       - name: Run formula regression tests
         run: npm run formula:check
 
