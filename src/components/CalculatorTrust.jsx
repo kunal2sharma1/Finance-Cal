@@ -1,4 +1,5 @@
 import { getTrustMetadata } from '../trustMetadata.js'
+import './calculator-trust.css'
 
 function inferMethodology(config) {
   const hasRates = config.fields.some((field) => /rate|return|yield|interest/i.test(`${field.name} ${field.label}`))
