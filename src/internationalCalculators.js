@@ -37,6 +37,18 @@ import { explanation as australiaConcessionalSuperExplanation } from './calculat
 import { config as uaeEndOfServiceConfig } from './calculators/uae-end-of-service/config.js'
 import { calculate as uaeEndOfServiceCalculate } from './calculators/uae-end-of-service/formula.js'
 import { explanation as uaeEndOfServiceExplanation } from './calculators/uae-end-of-service/explanation.js'
+import { config as usMortgageConfig } from './calculators/us-mortgage/config.js'
+import { calculate as usMortgageCalculate } from './calculators/us-mortgage/formula.js'
+import { explanation as usMortgageExplanation } from './calculators/us-mortgage/explanation.js'
+import { config as ukMortgageConfig } from './calculators/uk-mortgage/config.js'
+import { calculate as ukMortgageCalculate } from './calculators/uk-mortgage/formula.js'
+import { explanation as ukMortgageExplanation } from './calculators/uk-mortgage/explanation.js'
+import { config as canadaMortgageConfig } from './calculators/canada-mortgage/config.js'
+import { calculate as canadaMortgageCalculate } from './calculators/canada-mortgage/formula.js'
+import { explanation as canadaMortgageExplanation } from './calculators/canada-mortgage/explanation.js'
+import { config as australiaMortgageConfig } from './calculators/australia-mortgage/config.js'
+import { calculate as australiaMortgageCalculate } from './calculators/australia-mortgage/formula.js'
+import { explanation as australiaMortgageExplanation } from './calculators/australia-mortgage/explanation.js'
 
 export const internationalCalculators = [
   { config: us401kConfig, calculate: us401kCalculate, explanation: us401kExplanation },
@@ -52,4 +64,8 @@ export const internationalCalculators = [
   { config: australiaSuperConfig, calculate: australiaSuperCalculate, explanation: australiaSuperExplanation },
   { config: australiaConcessionalSuperConfig, calculate: australiaConcessionalSuperCalculate, explanation: australiaConcessionalSuperExplanation },
   { config: uaeEndOfServiceConfig, calculate: uaeEndOfServiceCalculate, explanation: uaeEndOfServiceExplanation },
+  { config: usMortgageConfig, calculate: usMortgageCalculate, explanation: usMortgageExplanation },
+  { config: ukMortgageConfig, calculate: ukMortgageCalculate, explanation: ukMortgageExplanation },
+  { config: canadaMortgageConfig, calculate: canadaMortgageCalculate, explanation: canadaMortgageExplanation },
+  { config: australiaMortgageConfig, calculate: australiaMortgageCalculate, explanation: australiaMortgageExplanation },
 ]
