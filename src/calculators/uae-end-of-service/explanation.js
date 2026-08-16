@@ -1,0 +1,4 @@
+export const explanation = {
+  body: 'For eligible expatriate workers in the UAE private sector, end-of-service gratuity is based on the last basic salary. Under the standard full-time rule, service of at least one continuous year qualifies for gratuity; the rate is 21 days of basic salary for each year for the first five years, then 30 days for each additional year. The total is capped at the equivalent of two years of wage.\n\nThe calculator is deliberately limited to the standard full-time expatriate private-sector rule and does not attempt to cover UAE nationals, part-time arrangements, free-zone variations or alternative savings-scheme arrangements.',
+  disclaimer: 'Estimate only. Eligibility, service-period treatment, deductions and applicable employment arrangements can change the actual entitlement. Check the current UAE labour rules or your employer/MoHRE guidance for a formal calculation.',
+}
