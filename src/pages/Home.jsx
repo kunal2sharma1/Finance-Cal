@@ -32,7 +32,7 @@ function getDisplayCategory(config) {
   return config.category || 'Other'
 }
 
-export default function Home({ calculators, onSelect }) {
+export default function Home({ calculators, onSelect, country }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [activeCategory, setActiveCategory] = useState('All')
 
@@ -76,6 +76,7 @@ export default function Home({ calculators, onSelect }) {
     : `${filteredCalculators.length} calculator${filteredCalculators.length === 1 ? '' : 's'}`
 
   const showAllState = activeCategory === 'All' && !searchTerm.trim()
+  const countryLabel = country ? `${country.flag} ${country.name}` : '🌎 Global'
 
   return (
     <section className="home">
@@ -90,15 +91,15 @@ export default function Home({ calculators, onSelect }) {
           </p>
           <div className="home_intro_stats">
             <div><strong>{calculators.length}+</strong><span>Calculators</span></div>
-            <div><strong>₹</strong><span>India-focused</span></div>
-            <div><strong>0</strong><span>Data stored</span></div>
+            <div><strong>{country?.currency || 'INR'}</strong><span>Preferred currency</span></div>
+            <div><strong>{countryLabel}</strong><span>Selected region</span></div>
           </div>
         </div>
 
         <div className="home_illustration" aria-hidden="true">
           <div className="illustration_circle"></div>
           <div className="illustration_card illustration_card_main">
-            <span>₹</span><strong>Wealth</strong><small>Planning made simple</small>
+            <span>{country?.currency === 'USD' ? '$' : country?.currency === 'GBP' ? '£' : country?.currency === 'EUR' ? '€' : '₹'}</span><strong>Wealth</strong><small>Planning made simple</small>
           </div>
           <div className="illustration_card illustration_card_top">↗</div>
           <div className="illustration_card illustration_card_bottom">✓</div>
