@@ -1,5 +1,6 @@
 import CalculatorCard from '../components/CalculatorCard.jsx'
 import { topicHubs } from '../topicHubs.js'
+import { getGuidesByTopic } from '../guides.js'
 import './topic-hub.css'
 
 export default function TopicHub({ slug, calculators, onSelect }) {
@@ -10,6 +11,7 @@ export default function TopicHub({ slug, calculators, onSelect }) {
   const selected = hub.calculatorIds
     .map((id) => calculators.find((calculator) => calculator.config.id === id))
     .filter(Boolean)
+  const guides = getGuidesByTopic(slug)
 
   return (
     <section className="topic-hub">
@@ -19,6 +21,24 @@ export default function TopicHub({ slug, calculators, onSelect }) {
         <p>{hub.intro}</p>
         <span className="topic-hub__count">{selected.length} calculators in this topic</span>
       </div>
+
+      {guides.length > 0 && (
+        <section className="topic-hub__guides" aria-labelledby="topic-guides">
+          <div className="topic-hub__guides-heading">
+            <span className="topic-hub__eyebrow">PLAIN-ENGLISH GUIDES</span>
+            <h2 id="topic-guides">Understand the decision before you calculate</h2>
+          </div>
+          <div className="topic-hub__guide-grid">
+            {guides.map((guide) => (
+              <a className="topic-hub__guide-card" key={guide.slug} href={`/guides/${guide.slug}`}>
+                <strong>{guide.title}</strong>
+                <span>{guide.intro}</span>
+                <span>Read guide →</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
 
       <div className="topic-hub__grid">
         {selected.map(({ config }) => (
