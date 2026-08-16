@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import CalculatorForm from '../components/CalculatorForm.jsx'
 import ResultPanel from '../components/ResultPanel.jsx'
 import { calculators } from '../calculators/registry.js'
@@ -25,6 +25,10 @@ function getRelatedCalculators(currentConfig) {
 export default function CalculatorView({ calculator, onBack }) {
   const { config, calculate, explanation } = calculator
   const [values, setValues] = useState(() => buildDefaultValues(config.fields))
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }, [config.id])
 
   const results = useMemo(() => calculate(values), [values, calculate])
   const relatedCalculators = useMemo(() => getRelatedCalculators(config), [config])
