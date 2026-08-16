@@ -194,7 +194,7 @@ export default function App() {
 
       <main className="site-main">
         {selectedCalculator ? (
-          <CalculatorView calculator={selectedCalculator} onBack={goHome} />
+          <CalculatorView calculator={selectedCalculator} onBack={goHome} country={country} />
         ) : selectedGuide ? (
           <GuideView guide={selectedGuide} />
         ) : route.type === 'guides' ? (
