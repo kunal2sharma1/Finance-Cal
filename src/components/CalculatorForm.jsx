@@ -1,3 +1,5 @@
+import './cashflow-editor.css'
+
 // This form doesn't know anything about individual calculators — it just reads
 // whatever fields a calculator's config.js provides. Each field can choose
 // the appropriate control type.
