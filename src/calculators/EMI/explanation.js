@@ -1,12 +1,11 @@
 export const explanation = {
-  heading: 'How this is calculated',
-  body: `An EMI (Equated Monthly Instalment) is the fixed amount you repay each month on a loan. Every instalment first covers that month's interest, and whatever remains reduces the principal — so the interest portion shrinks and the principal portion grows with each payment, even though the EMI itself stays constant throughout the tenure.
+  heading: 'What this calculator is doing',
+  body: `EMI means the amount you pay toward the loan each month.
 
-We use the standard reducing-balance EMI formula:
+Enter the amount you want to borrow, the interest rate, and the repayment period. The calculator estimates your monthly payment and the total amount you could pay over the full loan.
 
-EMI = P × r × (1 + r)^n / ((1 + r)^n − 1)
+Your monthly payment contains both principal (the amount you borrowed) and interest. In the early part of a typical reducing-balance loan, a larger share of the payment goes toward interest. Over time, more of the payment goes toward reducing the borrowed amount.
 
-P is your loan amount, r is the monthly interest rate (annual rate ÷ 12 ÷ 100), and n is the total number of monthly instalments (loan tenure in years × 12). At 0% interest, the EMI is simply the loan amount divided evenly across the tenure.`,
-  disclaimer:
-    'This is an estimate for planning purposes only. Actual EMI amounts may vary by lender due to processing fees, prepayment terms, or floating interest rates.',
+The calculator is an estimate. Your lender's actual EMI can differ because of the exact rate, fees, dates, insurance, rounding, or loan terms.`,
+  disclaimer: 'This is an estimate only and is not a loan offer. Check the lender’s final sanction letter for the actual EMI, fees, and repayment schedule.',
 }

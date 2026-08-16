@@ -1,12 +1,11 @@
 export const explanation = {
-  heading: 'How this is calculated',
-  body: `A Recurring Deposit (RD) means depositing a fixed amount every month with a bank or post office for a fixed tenure. Unlike a lump-sum deposit, each monthly instalment earns interest for a different length of time — the first instalment earns interest the longest, the last one the least — and that interest compounds quarterly even though your deposits happen monthly.
+  heading: 'What this calculator is doing',
+  body: `A recurring deposit (RD) lets you put a fixed amount into a bank or post office every month for a chosen period.
 
-We use the standard Indian Banks' Association formula for RD maturity:
+Enter your monthly deposit, the interest rate offered, and how long you plan to continue. The calculator estimates how much the regular deposits could become at maturity.
 
-M = P × [(1 + i)^n − 1] / [1 − (1 + i)^(−1/3)]
+Each monthly deposit has a different amount of time to earn interest, because your first deposit stays invested longer than your last one. The estimate also assumes quarterly compounding.
 
-P is your monthly deposit, i is the quarterly rate of interest (annual rate ÷ 4 ÷ 100), and n is the number of quarters (years × 12 ÷ 3). The −1/3 exponent is what lets the formula correctly credit interest to deposits that land between one quarterly compounding date and the next.`,
-  disclaimer:
-    'This is an estimate for planning purposes only. Actual RD maturity values depend on the exact compounding and rounding conventions used by your bank and may vary slightly.',
+Your bank or post office may use slightly different rounding or product rules, so the actual maturity amount can differ a little.`,
+  disclaimer: 'This is an estimate only. Actual RD maturity values depend on the institution, rate, compounding method, and rounding rules.',
 }

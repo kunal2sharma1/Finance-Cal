@@ -1,32 +1,15 @@
 export const explanation = {
-  heading: 'How this is calculated',
+  heading: 'What this calculator is doing',
+  body: `This calculator answers: “How much invested money might I need before I can cover my living costs without depending completely on a salary?”
 
-  body: `Financial Independence, Retire Early (FIRE) is a strategy of building enough invested wealth that your portfolio can support your living expenses without depending on employment income.
+This idea is often called FIRE — Financial Independence, Retire Early. You do not need to retire early to use the calculator; the useful part is understanding how much invested wealth your current lifestyle may require.
 
+First, the calculator estimates the investment amount needed to support your yearly spending at the withdrawal rate you enter.
 
-First, we calculate your FIRE number — the approximate portfolio value required to support your annual spending at your selected withdrawal rate.
+Then it projects your current investments and monthly contributions forward using the return and inflation assumptions you entered. The calculator estimates when your projected investments could reach the target amount.
 
+The withdrawal rate is an assumption about how much of the portfolio you take out each year. A lower rate generally requires a larger target.
 
-FIRE number = Annual expenses ÷ Safe withdrawal rate
-
-
-For example, if your annual expenses are ₹10 lakh and you use a 4% withdrawal rate, the estimated FIRE number is ₹2.5 crore.
-
-
-We then project your existing investment corpus and monthly investments forward. The portfolio is assumed to earn the expected annual investment return, while your expenses increase over time according to the assumed inflation rate.
-
-
-This gives us an estimated FIRE age — the point at which your projected investment corpus reaches the inflation-adjusted FIRE target.
-
-
-We also calculate the estimated annual expenses you may have at that point.
-
-
-Finally, the calculator provides a required monthly investment figure based on a 20-year planning horizon. This is a planning reference, not a guaranteed amount or a recommendation.
-
-
-The calculator uses your expected investment return and inflation assumptions, so changing either assumption can significantly change the estimated FIRE timeline.`,
-
-  disclaimer:
-    'This is an estimate for financial planning purposes only. Investment returns are not guaranteed, inflation can vary, and a safe withdrawal rate is an assumption rather than a promise of sustainable income. Consider taxes, fees, healthcare, changing expenses and other financial obligations when making retirement decisions.',
+This is a planning model, not a guarantee that a portfolio will safely last for a particular number of years.`,
+  disclaimer: 'This is a planning estimate only. Investment returns, inflation, taxes, fees, health costs, and future spending can all differ from the assumptions used here.',
 }

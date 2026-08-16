@@ -1,14 +1,13 @@
 export const explanation = {
-  heading: 'How this is calculated',
-  body: `Net worth is a snapshot of your overall financial position: everything you own, minus everything you owe, at this point in time.
+  heading: 'What this calculator is doing',
+  body: `Net worth is simply what you own minus what you owe.
 
-Net Worth = Total Assets − Total Liabilities
+Your net worth = Everything you own − Everything you owe.
 
-Total Assets adds up every category you enter — cash and bank balances, fixed deposits, stocks, mutual funds, retirement investments, gold, real estate, vehicles, and any other assets. Total Liabilities adds up every loan and debt you enter. If liabilities are larger than assets, net worth comes out negative — that's a normal, valid result, not an error, and it is never floored at zero.
+Add the approximate current value of your cash, bank balances, deposits, investments, property, vehicles, and other assets. Then add the amount you still owe on loans and other debts.
 
-Assets are also grouped by how easily they could be turned into cash: liquid (cash and fixed deposits), investment (stocks, mutual funds, retirement investments, gold), and non-liquid (real estate, vehicles, other assets). Investable assets is liquid plus investment assets — broadly, what could be redeployed without selling property or a vehicle.
+The calculator gives you a snapshot of your financial position today. A negative net worth is not an error — it simply means your debts are currently larger than the value of your assets.
 
-This calculator only adds up the numbers you provide; it doesn't look up or estimate what anything is actually worth.`,
-  disclaimer:
-    'Net worth is only as accurate as the values you enter. Property, gold, vehicles, and investments change in value over time, so treat this as a snapshot to revisit periodically with updated estimates, not a fixed, permanent figure.',
+The “investable assets” figure is a rough view of money and investments that are easier to use or reinvest than things such as a home or vehicle.`,
+  disclaimer: 'This is only as accurate as the values you enter. Asset values and outstanding debts change over time, so treat this as a snapshot and update it regularly.',
 }

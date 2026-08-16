@@ -1,22 +1,13 @@
 export const explanation = {
-  heading: 'How this is calculated',
-  body: `Eligibility here is based on FOIR (Fixed Obligation to Income Ratio) — the share of your monthly income a lender is willing to let go toward all EMIs and fixed obligations combined, including the new loan you're asking about.
+  heading: 'What this calculator is doing',
+  body: `This calculator estimates how large a new loan your monthly income may be able to support.
 
-First, we work out the maximum total EMI your income can support at the selected FOIR:
+First, it sets a maximum share of your income that can go toward loan payments and fixed commitments. Then it subtracts the payments and commitments you already have. What remains is the estimated amount available for a new loan payment.
 
-Maximum affordable EMI = Monthly income × FOIR
+It then works backward from that affordable monthly payment to estimate a possible loan amount using the interest rate and repayment period you enter.
 
-Then we subtract what's already committed — your existing EMI plus any other fixed obligations — to see how much room is left for a new EMI:
+Lenders often use a measure called FOIR (Fixed Obligation to Income Ratio) for this kind of assessment. In simple terms, it asks: “How much of your income is already committed to debt and other fixed payments?”
 
-Maximum new EMI = Maximum affordable EMI − Existing EMI − Other obligations
-
-If existing obligations already use up the affordable EMI, or more, the maximum new EMI is ₹0, never negative — and the eligible loan amount is ₹0 too.
-
-Finally, we run the standard reducing-balance EMI formula in reverse — the same formula this project's EMI calculator uses, just solved for the loan principal a lender could offer for that EMI, instead of solving for the EMI a given loan would cost:
-
-P = EMI × [(1 + r)^n − 1] / [r × (1 + r)^n]
-
-P is the eligible loan amount, r is the monthly interest rate (annual rate ÷ 12 ÷ 100), and n is the number of monthly instalments (loan tenure in years × 12). At 0% interest, the eligible amount is simply the maximum new EMI multiplied by the number of months.`,
-  disclaimer:
-    'This is an estimate for planning purposes only, not a loan offer or a guarantee of approval. FOIR is an assumption that varies from lender to lender — actual eligibility also depends on credit score, age, employment type, income stability, lender policy, documentation, property value, loan-to-value ratio, and other factors a lender evaluates individually.',
+The percentage used here is only an assumption. Different banks and lenders can use different limits and also consider your credit score, job, income stability, age, loan type, and other details.`,
+  disclaimer: 'This is a planning estimate, not a loan approval or eligibility guarantee. The actual amount a lender offers can be very different.',
 }

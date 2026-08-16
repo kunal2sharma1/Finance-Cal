@@ -1,29 +1,13 @@
 export const explanation = {
-  heading: 'How this is calculated',
+  heading: 'What this calculator is doing',
+  body: `EPF is a retirement savings system where money is added from your salary and your employer also contributes.
 
-  body: `The Employees' Provident Fund (EPF) is a retirement savings scheme where both the employee and employer make contributions based on the applicable EPF contribution wage.
+To make the estimate, the calculator uses your age, planned retirement age, monthly basic salary, current EPF balance, expected salary growth, and the EPF interest rate.
 
+“Basic salary” means the Basic component shown on your payslip. It is not the same as your total take-home or gross salary.
 
-For this calculator, we estimate the future EPF balance by starting with your current EPF balance and adding monthly employee contributions, the employer's EPF contribution, and estimated interest.
+The employer contribution is split under EPF rules, and the employer's pension contribution (EPS) is kept separate from the projected EPF balance here.
 
-
-The standard employee contribution used here is 12% of the applicable contribution wage. The standard employer contribution is also 12%, but the employer contribution is generally divided between EPF and EPS. The EPF portion used in this calculator is 3.67%, while the EPS portion is kept separate and is not added to the projected EPF corpus.
-
-
-For the standard calculation, the contribution wage is capped at the statutory wage ceiling of ₹15,000 per month.
-
-
-The projection increases the monthly salary once each year according to the annual salary-growth assumption. Monthly interest is estimated using the selected annual EPF interest rate divided by 12.
-
-
-The projected EPF corpus is therefore based on:
-
-
-Starting EPF balance + employee contributions + employer EPF contributions + estimated interest.
-
-
-Employer EPS contributions are not included in the EPF corpus because EPS is a separate pension component.`,
-
-  disclaimer:
-    'This is an estimate for financial planning purposes only. Actual EPF contributions, EPS allocation, interest crediting, applicable wage ceilings, eligibility and future EPF interest rates may differ according to EPFO rules and government notifications.',
+The calculator also assumes the contribution wage rules and interest rate used in its model remain applicable throughout the projection. Actual EPF results can differ as rules, salary, contribution limits, and interest rates change.`,
+  disclaimer: 'This is an estimate for planning only. Actual EPF contributions, EPS allocation, wage ceilings, interest crediting, and government rules can change.',
 }

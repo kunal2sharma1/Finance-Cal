@@ -1,12 +1,11 @@
 export const explanation = {
-  heading: 'How this is calculated',
-  body: `A lumpsum investment means putting in a single amount upfront and letting it grow, rather than investing in instalments. Because the full amount is invested from day one, compounding applies to the entire principal for the whole period.
+  heading: 'What this calculator is doing',
+  body: `A one-time investment means putting in a single amount and leaving it invested.
 
-We use the standard lumpsum future-value formula:
+Enter how much you plan to invest, how many years you expect to keep it invested, and the yearly return you want to use as an estimate. The calculator then shows how the amount could grow over time.
 
-FV = P × (1 + r)^t
+The calculation assumes the return compounds over the full period. That means any growth stays invested and can itself earn more growth.
 
-P is your investment amount, r is the expected annual rate of return (as a decimal), and t is the investment period in years.`,
-  disclaimer:
-    'This is an estimate for planning purposes only. Actual investment returns are not guaranteed and will vary with market performance.',
+The return you enter is an assumption, not a promise. Actual investment returns can move up or down.`,
+  disclaimer: 'This is a planning estimate only. Market-linked investment returns are not guaranteed and actual results will vary.',
 }
