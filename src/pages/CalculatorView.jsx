@@ -62,11 +62,14 @@ export default function CalculatorView({ calculator, onBack }) {
         </div>
       </div>
 
-      <details className="calc-view__explanation">
-        <summary>{explanation.heading}</summary>
-        <p>{explanation.body}</p>
-        <p className="calc-view__disclaimer">{explanation.disclaimer}</p>
-      </details>
+      <section className="calc-view__content" aria-labelledby="how-it-works">
+        <span className="calc-view__eyebrow">PLAIN-ENGLISH GUIDE</span>
+        <h2 id="how-it-works">How the {config.title.toLowerCase()} works</h2>
+        {explanation.body.split('\n').filter(Boolean).map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
+        <p className="calc-view__disclaimer"><strong>Important:</strong> {explanation.disclaimer}</p>
+      </section>
     </section>
   )
 }
