@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import './breadcrumbs.css'
 
 function setBreadcrumbSchema(items) {
@@ -17,13 +18,15 @@ function setBreadcrumbSchema(items) {
       '@type': 'ListItem',
       position: index + 1,
       name: item.label,
-      item: item.href ? `${window.location.origin}${item.href}` : `${window.location.origin}/`,
+      item: item.href ? `${window.location.origin}${item.href}` : `${window.location.origin}${window.location.pathname}`,
     })),
   })
 }
 
 export default function Breadcrumbs({ items }) {
-  setBreadcrumbSchema(items)
+  useEffect(() => {
+    setBreadcrumbSchema(items)
+  }, [items])
 
   return (
     <nav className="breadcrumbs" aria-label="Breadcrumb">
