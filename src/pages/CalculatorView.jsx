@@ -4,6 +4,7 @@ import ResultPanel from '../components/ResultPanel.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import CalculatorSEOSections from '../components/CalculatorSEOSections.jsx'
 import { calculators } from '../calculators/registry.js'
+import { getCalculatorCurrency } from '../calculatorLocale.js'
 import './calculator-view.css'
 
 const categoryPaths = {
@@ -33,7 +34,7 @@ function getRelatedCalculators(currentConfig) {
     .slice(0, 6)
 }
 
-export default function CalculatorView({ calculator, onBack }) {
+export default function CalculatorView({ calculator, onBack, country }) {
   const { config, calculate, explanation } = calculator
   const [values, setValues] = useState(() => buildDefaultValues(config.fields))
   const [results, setResults] = useState({})
@@ -66,6 +67,7 @@ export default function CalculatorView({ calculator, onBack }) {
   }, [values, calculate])
 
   const relatedCalculators = useMemo(() => getRelatedCalculators(config), [config])
+  const displayCurrency = getCalculatorCurrency(config, country)
 
   function handleChange(name, rawValue) {
     setValues((prev) => ({ ...prev, [name]: rawValue }))
@@ -100,7 +102,11 @@ export default function CalculatorView({ calculator, onBack }) {
             </div>
           </div>
 
-          <ResultPanel resultFields={config.resultFields} results={results} />
+          <ResultPanel
+            resultFields={config.resultFields}
+            results={results}
+            defaultCurrency={displayCurrency}
+          />
         </div>
 
         <div className="calc-view__panel calc-view__panel--inputs">
