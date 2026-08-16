@@ -1,0 +1,83 @@
+/* Shared calculator control polish. Keep this file limited to stable, cross-calculator UI behavior. */
+
+.calc-view__panel--inputs input,
+.calc-view__panel--inputs select,
+.calc-view__panel--inputs textarea,
+.calc-view__panel--inputs button {
+  box-sizing: border-box;
+}
+
+.calc-view__panel--inputs input[type='number']::-webkit-outer-spin-button,
+.calc-view__panel--inputs input[type='number']::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.calc-view__panel--inputs input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.calc-view__panel--inputs select {
+  min-height: 52px;
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 40px;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 20px) 22px, calc(100% - 15px) 22px;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.calc-view__panel--inputs :is(input, select, textarea, button):focus-visible,
+.calc-view__back:focus-visible,
+.calc-view__related-link:focus-visible {
+  outline: 3px solid rgba(37, 84, 232, 0.24);
+  outline-offset: 2px;
+}
+
+.calc-view__panel--inputs button {
+  min-height: 44px;
+}
+
+.calc-view__panel--inputs .calc-form__slider {
+  min-height: 32px;
+}
+
+.calc-view__panel--inputs input[type='date'] {
+  min-height: 52px;
+  color-scheme: light;
+}
+
+.calc-view__panel--inputs .calc-form__cashflow-row {
+  min-width: 0;
+}
+
+.calc-view__panel--inputs .calc-form__cashflow-amount-wrap {
+  min-width: 0;
+}
+
+.calc-view__panel--inputs .calc-form__cashflow-amount {
+  min-width: 0;
+}
+
+@media (max-width: 560px) {
+  .calc-view__panel--inputs select,
+  .calc-view__panel--inputs input[type='date'],
+  .calc-view__panel--inputs input[type='number'] {
+    min-height: 48px;
+  }
+
+  .calc-view__panel--inputs .calc-form__slider {
+    min-height: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .calc-view__panel--inputs * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
