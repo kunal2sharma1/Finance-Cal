@@ -310,6 +310,13 @@ import { calculate as FinancialIndependenceDateCalculate } from './financial-ind
 import { explanation as FinancialIndependenceDateExplanation } from './financial-independence-date/explanation.js'
 
 // ============================================================
+// CURRENCY & EXCHANGE
+// ============================================================
+import { config as CurrencyExchangeConfig } from './currency-exchange/config.js'
+import { calculate as CurrencyExchangeCalculate } from './currency-exchange/formula.js'
+import { explanation as CurrencyExchangeExplanation } from './currency-exchange/explanation.js'
+
+// ============================================================
 // CALCULATOR REGISTRY
 // ============================================================
 
@@ -392,4 +399,5 @@ export const calculators = [
   { config: CreditCardEmiConfig, calculate: CreditCardEmiCalculate, explanation: CreditCardEmiExplanation },
   { config: LoanBalanceTransferConfig, calculate: LoanBalanceTransferCalculate, explanation: LoanBalanceTransferExplanation },
   { config: FinancialIndependenceDateConfig, calculate: FinancialIndependenceDateCalculate, explanation: FinancialIndependenceDateExplanation },
+  { config: CurrencyExchangeConfig, calculate: CurrencyExchangeCalculate, explanation: CurrencyExchangeExplanation },
 ]
