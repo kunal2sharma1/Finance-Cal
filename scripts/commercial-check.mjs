@@ -14,10 +14,13 @@ for (const file of files) {
 
 const commercial = await readFile('src/commercial.js', 'utf8')
 if (!commercial.includes('VITE_COMMERCIAL_ENABLED')) failures.push('Commercial feature flag is missing.')
-if (!commercial.includes("return null")) failures.push('Commercial placements must be disabled by default.')
+if (!commercial.includes('return null')) failures.push('Commercial placements must be disabled by default.')
 
 const placement = await readFile('src/components/CommercialPlacement.jsx', 'utf8')
-if (!placement.includes('Affiliate')) failures.push('Commercial placement component must identify affiliate placement semantics.')
+if (!placement.includes('affiliate-slot')) failures.push('Commercial placement component must declare an affiliate placement slot.')
+
+const disclosure = await readFile('src/components/CommercialDisclosure.jsx', 'utf8')
+if (!disclosure.toLowerCase().includes('affiliate')) failures.push('Commercial disclosure must explain affiliate relationships.')
 
 if (failures.length) {
   console.error('Commercial validation failed:')
