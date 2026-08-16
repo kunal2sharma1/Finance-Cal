@@ -18,7 +18,7 @@ function setBreadcrumbSchema(items) {
       '@type': 'ListItem',
       position: index + 1,
       name: item.label,
-      item: item.href ? `${window.location.origin}${item.href}` : `${window.location.origin}${window.location.pathname}`,
+      item: `${window.location.origin}${item.href || window.location.pathname}`,
     })),
   })
 }
