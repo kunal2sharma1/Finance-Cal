@@ -1,21 +1,41 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Home from './pages/Home.jsx'
 import CalculatorView from './pages/CalculatorView.jsx'
+import GuideView from './pages/GuideView.jsx'
+import TopicHub from './pages/TopicHub.jsx'
 import { calculators } from './calculators/registry.js'
+import { guides } from './guides.js'
+import { topicHubs } from './topicHubs.js'
 import { buildCalculatorSEO, setSiteSEO } from './seo.js'
 
 const HOME_HISTORY_STATE = { finCalcView: 'home' }
+const TOPIC_SLUGS = new Set(Object.keys(topicHubs))
 
-function getCalculatorIdFromLocation() {
-  const pathMatch = window.location.pathname.match(/^\/calculators\/([^/]+)\/?$/)
-  if (pathMatch) return decodeURIComponent(pathMatch[1])
+function getRouteFromLocation() {
+  const pathname = window.location.pathname.replace(/\/+$/, '') || '/'
 
-  // Backward compatibility for the old hash URLs. We immediately migrate them
-  // to crawlable path URLs rather than continuing to use fragments.
+  const calculatorMatch = pathname.match(/^\/calculators\/([^/]+)$/)
+  if (calculatorMatch) {
+    return { type: 'calculator', id: decodeURIComponent(calculatorMatch[1]) }
+  }
+
+  const guideMatch = pathname.match(/^\/guides\/([^/]+)$/)
+  if (guideMatch) {
+    return { type: 'guide', slug: decodeURIComponent(guideMatch[1]) }
+  }
+
+  const hubSlug = pathname.replace(/^\//, '')
+  if (TOPIC_SLUGS.has(hubSlug)) {
+    return { type: 'hub', slug: hubSlug }
+  }
+
+  // Backward compatibility for the old hash URLs.
   const hashMatch = window.location.hash.match(/^#calculator\/(.+)$/)
-  if (hashMatch) return decodeURIComponent(hashMatch[1])
+  if (hashMatch) {
+    return { type: 'calculator', id: decodeURIComponent(hashMatch[1]) }
+  }
 
-  return null
+  return { type: 'home' }
 }
 
 function normalizeLegacyHashUrl() {
@@ -32,25 +52,45 @@ function normalizeLegacyHashUrl() {
 }
 
 export default function App() {
-  const [selectedId, setSelectedId] = useState(() => getCalculatorIdFromLocation())
+  const [route, setRoute] = useState(() => getRouteFromLocation())
 
   useEffect(() => {
     normalizeLegacyHashUrl()
+    setRoute(getRouteFromLocation())
 
-    if (!window.history.state?.finCalcView && !getCalculatorIdFromLocation()) {
-      window.history.replaceState(HOME_HISTORY_STATE, '', window.location.pathname + window.location.search)
+    if (!window.history.state?.finCalcView && getRouteFromLocation().type === 'home') {
+      window.history.replaceState(
+        HOME_HISTORY_STATE,
+        '',
+        window.location.pathname + window.location.search,
+      )
     }
 
     function handlePopState() {
-      setSelectedId(getCalculatorIdFromLocation())
+      setRoute(getRouteFromLocation())
     }
 
     window.addEventListener('popstate', handlePopState)
     return () => window.removeEventListener('popstate', handlePopState)
   }, [])
 
-  const selectedCalculator = calculators.find(
-    (item) => item.config.id === selectedId,
+  const selectedCalculator = useMemo(
+    () => route.type === 'calculator'
+      ? calculators.find((item) => item.config.id === route.id)
+      : null,
+    [route],
+  )
+
+  const selectedGuide = useMemo(
+    () => route.type === 'guide'
+      ? guides.find((guide) => guide.slug === route.slug)
+      : null,
+    [route],
+  )
+
+  const selectedHub = useMemo(
+    () => route.type === 'hub' ? topicHubs[route.slug] : null,
+    [route],
   )
 
   useEffect(() => {
@@ -64,27 +104,40 @@ export default function App() {
       return
     }
 
+    if (selectedGuide) {
+      setSiteSEO({
+        title: selectedGuide.metaTitle,
+        description: selectedGuide.metaDescription,
+        pathname: `/guides/${selectedGuide.slug}`,
+      })
+      return
+    }
+
+    if (selectedHub) {
+      setSiteSEO({
+        title: selectedHub.metaTitle,
+        description: selectedHub.metaDescription,
+        pathname: `/${selectedHub.slug}`,
+      })
+      return
+    }
+
     setSiteSEO({})
-  }, [selectedCalculator])
+  }, [selectedCalculator, selectedGuide, selectedHub])
 
   function openCalculator(id) {
-    setSelectedId(id)
-
-    const nextUrl = `${window.location.pathname}${window.location.search}`
     const target = `/calculators/${encodeURIComponent(id)}`
     window.history.pushState(
       { finCalcView: 'calculator', calculatorId: id },
       '',
       target,
     )
+    setRoute({ type: 'calculator', id })
   }
 
   function goHome() {
-    if (getCalculatorIdFromLocation()) {
-      window.history.back()
-    } else {
-      setSelectedId(null)
-    }
+    window.history.pushState(HOME_HISTORY_STATE, '', '/')
+    setRoute({ type: 'home' })
   }
 
   return (
@@ -100,9 +153,14 @@ export default function App() {
 
       <main className="site-main">
         {selectedCalculator ? (
-          <CalculatorView
-            calculator={selectedCalculator}
-            onBack={goHome}
+          <CalculatorView calculator={selectedCalculator} onBack={goHome} />
+        ) : selectedGuide ? (
+          <GuideView guide={selectedGuide} />
+        ) : selectedHub ? (
+          <TopicHub
+            slug={route.slug}
+            calculators={calculators}
+            onSelect={openCalculator}
           />
         ) : (
           <Home calculators={calculators} onSelect={openCalculator} />
