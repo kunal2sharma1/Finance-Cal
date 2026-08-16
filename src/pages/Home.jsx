@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import CalculatorCard from '../components/CalculatorCard.jsx'
 import TopicHubLinks from '../components/TopicHubLinks.jsx'
 import './home-filters.css'
+import './home-hero.css'
 
 // Keep familiar categories first, then automatically include every category
 // used by a calculator so newly added calculators never disappear from filters.
