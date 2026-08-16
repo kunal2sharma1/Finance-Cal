@@ -1,4 +1,51 @@
+import { useEffect, useState } from 'react'
 import './cashflow-editor.css'
+
+const CURRENCY_API = 'https://api.frankfurter.dev/v2/currencies'
+const FALLBACK_CURRENCIES = [
+  { value: 'INR', label: 'Indian Rupee (INR)' },
+  { value: 'USD', label: 'US Dollar (USD)' },
+  { value: 'EUR', label: 'Euro (EUR)' },
+  { value: 'GBP', label: 'British Pound (GBP)' },
+  { value: 'AED', label: 'UAE Dirham (AED)' },
+  { value: 'CAD', label: 'Canadian Dollar (CAD)' },
+  { value: 'AUD', label: 'Australian Dollar (AUD)' },
+  { value: 'SGD', label: 'Singapore Dollar (SGD)' },
+  { value: 'JPY', label: 'Japanese Yen (JPY)' },
+  { value: 'CNY', label: 'Chinese Yuan (CNY)' },
+]
+
+const PRIORITY_CURRENCIES = ['INR', 'USD', 'EUR', 'GBP', 'AED', 'CAD', 'AUD', 'SGD', 'JPY', 'CNY']
+let currencyPromise
+
+function loadCurrencies() {
+  if (!currencyPromise) {
+    currencyPromise = fetch(CURRENCY_API)
+      .then((response) => {
+        if (!response.ok) throw new Error(`Currency list request failed: ${response.status}`)
+        return response.json()
+      })
+      .then((data) => {
+        const currencies = Object.values(data || {})
+          .map((currency) => ({
+            value: currency.iso_code,
+            label: `${currency.name} (${currency.iso_code})${currency.symbol ? ` — ${currency.symbol}` : ''}`,
+          }))
+          .filter((currency) => /^[A-Z]{3}$/.test(currency.value))
+
+        const byCode = new Map(currencies.map((currency) => [currency.value, currency]))
+        const priority = PRIORITY_CURRENCIES.filter((code) => byCode.has(code)).map((code) => byCode.get(code))
+        const rest = currencies
+          .filter((currency) => !PRIORITY_CURRENCIES.includes(currency.value))
+          .sort((a, b) => a.label.localeCompare(b.label))
+
+        return [...priority, ...rest]
+      })
+      .catch(() => FALLBACK_CURRENCIES)
+  }
+
+  return currencyPromise
+}
 
 function updateCashFlowRows(rows, index, key, value) {
   return rows.map((row, rowIndex) =>
@@ -88,6 +135,34 @@ function CashFlowEditor({ field, value, onChange }) {
   )
 }
 
+function CurrencySelect({ field, value, onChange }) {
+  const [currencies, setCurrencies] = useState(FALLBACK_CURRENCIES)
+
+  useEffect(() => {
+    let active = true
+    loadCurrencies().then((nextCurrencies) => {
+      if (active) setCurrencies(nextCurrencies)
+    })
+    return () => { active = false }
+  }, [])
+
+  return (
+    <select
+      id={field.name}
+      name={field.name}
+      className="calc-form__input calc-form__select"
+      value={value ?? field.defaultValue ?? ''}
+      onChange={(event) => onChange(field.name, event.target.value)}
+    >
+      {currencies.map((currency) => (
+        <option key={currency.value} value={currency.value}>
+          {currency.label}
+        </option>
+      ))}
+    </select>
+  )
+}
+
 export default function CalculatorForm({ fields, values, onChange }) {
   return (
     <div className="calc-form">
@@ -95,7 +170,8 @@ export default function CalculatorForm({ fields, values, onChange }) {
         const isTextarea = field.type === 'textarea'
         const isCashFlows = field.type === 'cashflows'
         const isSelect = field.type === 'select'
-        const hasSlider = !isTextarea && !isCashFlows && !isSelect && Number.isFinite(Number(field.min)) && Number.isFinite(Number(field.max))
+        const isCurrencySelect = field.type === 'currency-select'
+        const hasSlider = !isTextarea && !isCashFlows && !isSelect && !isCurrencySelect && Number.isFinite(Number(field.min)) && Number.isFinite(Number(field.max))
         const numericValue = Number(values[field.name])
         const percent =
           hasSlider && Number.isFinite(numericValue)
@@ -111,6 +187,8 @@ export default function CalculatorForm({ fields, values, onChange }) {
 
             {isCashFlows ? (
               <CashFlowEditor field={field} value={values[field.name]} onChange={onChange} />
+            ) : isCurrencySelect ? (
+              <CurrencySelect field={field} value={values[field.name]} onChange={onChange} />
             ) : isTextarea ? (
               <textarea
                 id={field.name}
