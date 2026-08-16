@@ -10,6 +10,7 @@ import { calculators } from './calculators/registry.js'
 import { guides } from './guides.js'
 import { topicHubs } from './topicHubs.js'
 import { buildCalculatorSEO, setSiteSEO } from './seo.js'
+import { buildCalculatorPath, findCalculatorByRouteId } from './routeUtils.js'
 import './site-footer.css'
 
 const HOME_HISTORY_STATE = { finCalcView: 'home' }
@@ -21,7 +22,10 @@ function getRouteFromLocation() {
 
   const calculatorMatch = pathname.match(/^\/calculators\/([^/]+)$/)
   if (calculatorMatch) {
-    return { type: 'calculator', id: decodeURIComponent(calculatorMatch[1]) }
+    const calculator = findCalculatorByRouteId(calculators, calculatorMatch[1])
+    return calculator
+      ? { type: 'calculator', id: calculator.config.id }
+      : { type: 'not-found' }
   }
 
   const guideMatch = pathname.match(/^\/guides\/([^/]+)$/)
@@ -46,20 +50,40 @@ function getRouteFromLocation() {
 
   const hashMatch = window.location.hash.match(/^#calculator\/(.+)$/)
   if (hashMatch) {
-    return { type: 'calculator', id: decodeURIComponent(hashMatch[1]) }
+    const calculator = findCalculatorByRouteId(calculators, hashMatch[1])
+    return calculator
+      ? { type: 'calculator', id: calculator.config.id }
+      : { type: 'not-found' }
   }
 
   return { type: 'home' }
+}
+
+function normalizeCalculatorLocation(route) {
+  if (route.type !== 'calculator') return route
+
+  const canonicalPath = buildCalculatorPath(route.id)
+  if (window.location.pathname !== canonicalPath || window.location.hash) {
+    window.history.replaceState(
+      { finCalcView: 'calculator', calculatorId: route.id },
+      '',
+      canonicalPath,
+    )
+  }
+
+  return route
 }
 
 function normalizeLegacyHashUrl() {
   const hashMatch = window.location.hash.match(/^#calculator\/(.+)$/)
   if (!hashMatch) return
 
-  const id = decodeURIComponent(hashMatch[1])
-  const nextPath = `/calculators/${encodeURIComponent(id)}`
+  const calculator = findCalculatorByRouteId(calculators, hashMatch[1])
+  if (!calculator) return
+
+  const nextPath = buildCalculatorPath(calculator.config.id)
   window.history.replaceState(
-    { finCalcView: 'calculator', calculatorId: id },
+    { finCalcView: 'calculator', calculatorId: calculator.config.id },
     '',
     nextPath,
   )
@@ -70,9 +94,10 @@ export default function App() {
 
   useEffect(() => {
     normalizeLegacyHashUrl()
-    setRoute(getRouteFromLocation())
+    const normalizedRoute = normalizeCalculatorLocation(getRouteFromLocation())
+    setRoute(normalizedRoute)
 
-    if (!window.history.state?.finCalcView && getRouteFromLocation().type === 'home') {
+    if (!window.history.state?.finCalcView && normalizedRoute.type === 'home') {
       window.history.replaceState(
         HOME_HISTORY_STATE,
         '',
@@ -81,7 +106,8 @@ export default function App() {
     }
 
     function handlePopState() {
-      setRoute(getRouteFromLocation())
+      const nextRoute = normalizeCalculatorLocation(getRouteFromLocation())
+      setRoute(nextRoute)
     }
 
     window.addEventListener('popstate', handlePopState)
@@ -114,7 +140,7 @@ export default function App() {
       const seo = buildCalculatorSEO(selectedCalculator.config)
       setSiteSEO({
         ...seo,
-        pathname: `/calculators/${encodeURIComponent(selectedCalculator.config.id)}`,
+        pathname: buildCalculatorPath(selectedCalculator.config.id),
         calculator: true,
       })
       return
@@ -163,13 +189,17 @@ export default function App() {
   }, [route, selectedCalculator, selectedGuide, selectedHub])
 
   function openCalculator(id) {
-    const target = `/calculators/${encodeURIComponent(id)}`
+    const calculator = findCalculatorByRouteId(calculators, id)
+    if (!calculator) return
+
+    const canonicalId = calculator.config.id
+    const target = buildCalculatorPath(canonicalId)
     window.history.pushState(
-      { finCalcView: 'calculator', calculatorId: id },
+      { finCalcView: 'calculator', calculatorId: canonicalId },
       '',
       target,
     )
-    setRoute({ type: 'calculator', id })
+    setRoute({ type: 'calculator', id: canonicalId })
   }
 
   function goHome() {
