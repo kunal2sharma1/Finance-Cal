@@ -11,6 +11,6 @@ export const config = {
   resultFields: [
     { name: 'convertedAmount', label: 'Converted amount', primary: true, type: 'dynamicCurrency' },
     { name: 'exchangeRate', label: 'Exchange rate', unit: 'rate' },
-    { name: 'sourceDate', label: 'Rate date', unit: 'date' },
+    { name: 'sourceDate', label: 'Rate date', type: 'date', unit: 'date' },
   ],
 }
