@@ -1,3 +1,5 @@
+import { getCalculatorSEO } from './calculatorSeo.js'
+
 const SITE_NAME = 'FinCalc'
 
 function getCanonicalUrl(pathname) {
@@ -27,13 +29,14 @@ function upsertLink(rel, href) {
   element.setAttribute('href', href)
 }
 
-export function setSiteSEO({ title, description, pathname, calculator }) {
+export function setSiteSEO({ title, description, pathname, calculator, noindex = false }) {
   const pageTitle = title || `${SITE_NAME} — Simple Financial Calculators`
   const pageDescription = description || 'Free, practical financial calculators for investing, loans, salary, savings, retirement and everyday money decisions.'
   const canonical = getCanonicalUrl(pathname || window.location.pathname)
 
   document.title = pageTitle
   upsertMeta('name', 'description', pageDescription)
+  upsertMeta('name', 'robots', noindex ? 'noindex, follow' : 'index, follow')
   upsertMeta('property', 'og:title', pageTitle)
   upsertMeta('property', 'og:description', pageDescription)
   upsertMeta('property', 'og:type', 'website')
@@ -75,6 +78,10 @@ export function setSiteSEO({ title, description, pathname, calculator }) {
 }
 
 export function buildCalculatorSEO(config) {
+  const custom = getCalculatorSEO(config.id)
+
+  if (custom) return custom
+
   return {
     title: `${config.title} | ${SITE_NAME}`,
     description: `${config.shortDescription} Free, instant calculation with clear results and plain-English guidance.`,

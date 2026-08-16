@@ -25,7 +25,7 @@ export const guides = [
       ['Why interest changes over time', 'Interest is based on the outstanding balance. Early payments can contain a larger interest component because the balance is still high.'],
       ['Use the result carefully', 'A calculator is an estimate. Actual lender schedules can differ because of fees, rate resets, insurance and other loan terms.'],
     ],
-    calculatorLinks: [['EMI Calculator','/calculators/EMI'],['Personal Loan Calculator','/calculators/personal-loan'],['Loan Prepayment Calculator','/calculators/loan-prepayment']],
+    calculatorLinks: [['EMI Calculator','/calculators/emi'],['Personal Loan Calculator','/calculators/personal-loan'],['Loan Prepayment Calculator','/calculators/loan-prepayment']],
   },
   {
     slug: 'ctc-vs-in-hand-salary',

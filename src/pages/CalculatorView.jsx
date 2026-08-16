@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import CalculatorForm from '../components/CalculatorForm.jsx'
 import ResultPanel from '../components/ResultPanel.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
+import CalculatorSEOSections from '../components/CalculatorSEOSections.jsx'
 import { calculators } from '../calculators/registry.js'
 import './calculator-view.css'
 
@@ -103,6 +104,8 @@ export default function CalculatorView({ calculator, onBack }) {
           <p key={paragraph}>{paragraph}</p>
         ))}
       </section>
+
+      <CalculatorSEOSections calculatorId={config.id} />
 
       <section className="calc-view__content calc-view__content--compact" aria-labelledby="calculator-overview">
         <span className="calc-view__eyebrow">QUICK OVERVIEW</span>

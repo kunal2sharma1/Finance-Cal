@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "seo:check": "node scripts/seo-check.mjs",
+    "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "vite build",
     "preview": "vite preview"
   },

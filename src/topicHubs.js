@@ -19,7 +19,7 @@ export const topicHubs = {
     metaDescription: 'Free loan and debt calculators for EMI, personal loans, car loans, home loans, prepayment, debt payoff and credit-card interest.',
     intro: 'Compare borrowing costs, understand monthly payments and build a clearer plan for becoming debt-free.',
     calculatorIds: [
-      'EMI', 'home-loan', 'loan-eligibility', 'personal-loan', 'car-loan', 'home-loan-affordability',
+      'emi', 'home-loan', 'loan-eligibility', 'personal-loan', 'car-loan', 'home-loan-affordability',
       'down-payment', 'loan-comparison', 'loan-prepayment', 'debt-payoff', 'debt-snowball',
       'debt-avalanche', 'credit-card-interest', 'credit-card-emi', 'loan-balance-transfer',
     ],
@@ -42,7 +42,7 @@ export const topicHubs = {
     metaDescription: 'Free retirement calculators for NPS, retirement income, retirement age, financial independence, net worth and long-term wealth planning.',
     intro: 'Plan for long-term financial security by estimating the corpus, income and savings required for the future you want.',
     calculatorIds: [
-      'fd', 'rd', 'ppf', 'EPF', 'fire', 'retirement', 'net-worth', 'nps', 'nps-vs-epf',
+      'fd', 'rd', 'ppf', 'epf', 'fire', 'retirement', 'net-worth', 'nps', 'nps-vs-epf',
       'retirement-withdrawal', 'retirement-income', 'retirement-age', 'fi-progress', 'future-net-worth',
       'wealth-accumulation', 'monthly-investment-required', 'retirement-gap', 'financial-independence-date',
     ],
