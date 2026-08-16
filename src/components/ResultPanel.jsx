@@ -22,12 +22,12 @@ function formatNumber(value, maximumFractionDigits = 0) {
   }).format(value)
 }
 
-function formatResultValue(value, field, results) {
+function formatResultValue(value, field, results, defaultCurrency) {
   if (field.type === 'date') return value || '—'
   if (!isValidNumeric(value)) return '—'
 
   if (field.type === 'dynamicCurrency') {
-    return formatCurrency(value, results.targetCurrency || 'INR')
+    return formatCurrency(value, results.targetCurrency || defaultCurrency || 'INR')
   }
 
   if (field.unit === '%') {
@@ -43,10 +43,10 @@ function formatResultValue(value, field, results) {
     return `${formatNumber(value)} ${field.unit}`
   }
 
-  return formatCurrency(value)
+  return formatCurrency(value, defaultCurrency || 'INR')
 }
 
-export default function ResultPanel({ resultFields, results = {} }) {
+export default function ResultPanel({ resultFields, results = {}, defaultCurrency = 'INR' }) {
   const primary = resultFields.find((field) => field.primary)
   const secondary = resultFields.filter((field) => !field.primary)
   const isInvalid = results.isValid === false
@@ -77,7 +77,7 @@ export default function ResultPanel({ resultFields, results = {} }) {
         <div className="result-panel__primary">
           <span className="result-panel__primary-label">{primary.label}</span>
           <span className="result-panel__primary-value">
-            {formatResultValue(results[primary.name], primary, results)}
+            {formatResultValue(results[primary.name], primary, results, defaultCurrency)}
           </span>
         </div>
       )}
@@ -99,7 +99,7 @@ export default function ResultPanel({ resultFields, results = {} }) {
         {secondary.map((field) => (
           <div className="result-panel__row" key={field.name}>
             <dt>{field.label}</dt>
-            <dd>{formatResultValue(results[field.name], field, results)}</dd>
+            <dd>{formatResultValue(results[field.name], field, results, defaultCurrency)}</dd>
           </div>
         ))}
       </dl>
