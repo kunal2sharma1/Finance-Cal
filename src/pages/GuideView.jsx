@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { setSiteSEO } from '../seo.js'
+import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import './guide.css'
 
 export default function GuideView({ guide }) {
@@ -13,6 +14,14 @@ export default function GuideView({ guide }) {
 
   return (
     <article className="guide-page">
+      <Breadcrumbs
+        items={[
+          { label: 'FinCalc', href: '/' },
+          { label: 'Financial Guides', href: '/financial-planning' },
+          { label: guide.title },
+        ]}
+      />
+
       <header className="guide-page__header">
         <span className="guide-page__eyebrow">FINANCIAL GUIDE</span>
         <h1>{guide.title}</h1>
