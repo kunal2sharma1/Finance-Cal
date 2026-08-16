@@ -45,6 +45,9 @@ jobs:
       - name: Trust validation
         run: npm run trust:check
 
+      - name: Analytics validation
+        run: npm run analytics:check
+
       - name: SEO validation
         run: npm run seo:check
 
