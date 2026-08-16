@@ -3,6 +3,7 @@ import CalculatorForm from '../components/CalculatorForm.jsx'
 import ResultPanel from '../components/ResultPanel.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import CalculatorSEOSections from '../components/CalculatorSEOSections.jsx'
+import CalculatorTrust from '../components/CalculatorTrust.jsx'
 import { calculators, getCalculatorsByCategory } from '../calculatorCatalog.js'
 import { getCalculatorCurrency } from '../calculatorLocale.js'
 import './calculator-view.css'
@@ -92,6 +93,7 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
         {explanation.body.split('\n').filter(Boolean).map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
       </section>
       <CalculatorSEOSections calculatorId={config.id} config={config} />
+      <CalculatorTrust config={config} explanation={explanation} />
       <section className="calc-view__content calc-view__content--compact" aria-labelledby="calculator-overview">
         <span className="calc-view__eyebrow">QUICK OVERVIEW</span>
         <h2 id="calculator-overview">What you enter and what you get</h2>
