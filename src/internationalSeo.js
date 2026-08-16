@@ -12,6 +12,10 @@ const SEO = {
   'australia-super': { title: 'Australian Superannuation Calculator – Estimate Super Growth | FinCalc', description: 'Estimate employer super guarantee contributions, voluntary contributions and projected super balance using Australian assumptions.' },
   'australia-concessional-super': { title: 'Australia Super Concessional Contribution Calculator | FinCalc', description: 'Estimate concessional super contributions against the A$30,000 general annual cap for the current income year.' },
   'uae-end-of-service': { title: 'UAE End-of-Service Gratuity Calculator | FinCalc', description: 'Estimate UAE private-sector expatriate end-of-service gratuity from basic salary and completed service years.' },
+  'us-mortgage': { title: 'US Mortgage Calculator – Estimate Monthly Payment | FinCalc', description: 'Estimate a US mortgage monthly payment, total interest and total paid from loan amount, rate and term.' },
+  'uk-mortgage': { title: 'UK Mortgage Calculator – Estimate Monthly Payment | FinCalc', description: 'Estimate a UK mortgage monthly payment, total interest and total paid from borrowing, rate and term assumptions.' },
+  'canada-mortgage': { title: 'Canada Mortgage Calculator – Estimate Monthly Payment | FinCalc', description: 'Estimate a Canadian mortgage monthly payment, total interest and total paid from loan amount, rate and term.' },
+  'australia-mortgage': { title: 'Australia Mortgage Calculator – Estimate Monthly Payment | FinCalc', description: 'Estimate an Australian mortgage monthly payment, total interest and total paid from loan amount, rate and term.' },
 }
 
 export function getInternationalSEO(id) {
