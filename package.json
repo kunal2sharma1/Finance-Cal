@@ -8,6 +8,7 @@
     "seo:check": "node scripts/seo-check.mjs",
     "seo:growth": "node scripts/seo-growth-check.mjs",
     "discovery:check": "node scripts/discovery-check.mjs",
+    "trust:check": "node scripts/trust-check.mjs",
     "international:check": "node scripts/international-check.mjs",
     "formula:check": "node scripts/formula-check.mjs",
     "prebuild": "node scripts/generate-global-sitemap.mjs",
