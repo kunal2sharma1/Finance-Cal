@@ -2,6 +2,7 @@
 // To add a new calculator: create its folder (config.js, formula.js,
 // explanation.js), import the three pieces below, then add one object
 // to the `calculators` array. Nothing else in the app needs to change.
+// Cloudflare deployment trigger: Lumpsum calculator files are present on main.
 
 import { config as sipConfig } from './sip/config.js'
 import { calculate as sipCalculate } from './sip/formula.js'
