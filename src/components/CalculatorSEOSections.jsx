@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 import { calculatorSEOContent } from '../seoCalculatorContent.js'
+import { phase4CalculatorSEOContent } from '../seoPhase4Content.js'
 
 function buildFallbackContent(calculatorId, fields, resultFields) {
   const inputLabels = fields.map((field) => field.label).filter(Boolean).slice(0, 5).join(', ')
@@ -21,7 +22,7 @@ function buildFallbackContent(calculatorId, fields, resultFields) {
 
 export default function CalculatorSEOSections({ calculatorId, config }) {
   const content = useMemo(
-    () => calculatorSEOContent[calculatorId] || buildFallbackContent(calculatorId, config?.fields || [], config?.resultFields || []),
+    () => calculatorSEOContent[calculatorId] || phase4CalculatorSEOContent[calculatorId] || buildFallbackContent(calculatorId, config?.fields || [], config?.resultFields || []),
     [calculatorId, config],
   )
 
