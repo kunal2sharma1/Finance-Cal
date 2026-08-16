@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import Home from './pages/Home.jsx'
 import CalculatorView from './pages/CalculatorView.jsx'
 import GuideView from './pages/GuideView.jsx'
+import GuidesIndex from './pages/GuidesIndex.jsx'
 import TopicHub from './pages/TopicHub.jsx'
 import InfoPage from './pages/InfoPage.jsx'
 import { calculators } from './calculators/registry.js'
@@ -27,6 +28,10 @@ function getRouteFromLocation() {
     return { type: 'guide', slug: decodeURIComponent(guideMatch[1]) }
   }
 
+  if (pathname === '/guides') {
+    return { type: 'guides' }
+  }
+
   const hubSlug = pathname.replace(/^\//, '')
   if (TOPIC_SLUGS.has(hubSlug)) {
     return { type: 'hub', slug: hubSlug }
@@ -36,7 +41,6 @@ function getRouteFromLocation() {
     return { type: 'info', slug: hubSlug }
   }
 
-  // Backward compatibility for the old hash URLs.
   const hashMatch = window.location.hash.match(/^#calculator\/(.+)$/)
   if (hashMatch) {
     return { type: 'calculator', id: decodeURIComponent(hashMatch[1]) }
@@ -120,6 +124,15 @@ export default function App() {
       return
     }
 
+    if (route.type === 'guides') {
+      setSiteSEO({
+        title: 'Financial Guides | Practical Money Explanations | FinCalc',
+        description: 'Plain-English financial guides covering investing, loans, salary, budgeting, retirement and major money decisions.',
+        pathname: '/guides',
+      })
+      return
+    }
+
     if (selectedHub) {
       setSiteSEO({
         title: selectedHub.metaTitle,
@@ -175,6 +188,8 @@ export default function App() {
           <CalculatorView calculator={selectedCalculator} onBack={goHome} />
         ) : selectedGuide ? (
           <GuideView guide={selectedGuide} />
+        ) : route.type === 'guides' ? (
+          <GuidesIndex />
         ) : selectedHub ? (
           <TopicHub
             slug={route.slug}
@@ -190,6 +205,7 @@ export default function App() {
 
       <footer className="site-footer">
         <nav aria-label="FinCalc information">
+          <a href="/guides">Guides</a>
           <a href="/about">About</a>
           <a href="/how-it-works">How calculations work</a>
           <a href="/privacy">Privacy</a>
