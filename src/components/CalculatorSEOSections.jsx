@@ -1,8 +1,9 @@
 import { calculatorSEOContent } from '../seoCalculatorContent.js'
+import { buildFallbackCalculatorContent } from '../calculatorContent.js'
+import './calculator-seo-sections.css'
 
-export default function CalculatorSEOSections({ calculatorId }) {
-  const content = calculatorSEOContent[calculatorId]
-  if (!content) return null
+export default function CalculatorSEOSections({ calculator }) {
+  const content = calculatorSEOContent[calculator.config.id] || buildFallbackCalculatorContent(calculator.config)
 
   return (
     <section className="calc-view__seo-content" aria-labelledby="calculator-guide">
