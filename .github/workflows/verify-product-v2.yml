@@ -48,6 +48,9 @@ jobs:
       - name: Analytics validation
         run: npm run analytics:check
 
+      - name: Commercial validation
+        run: npm run commercial:check
+
       - name: SEO validation
         run: npm run seo:check
 
