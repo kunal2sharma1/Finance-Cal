@@ -1,0 +1,123 @@
+.calc-form__cashflows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.calc-form__cashflow-head,
+.calc-form__cashflow-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(150px, 1fr) 36px;
+  gap: 10px;
+  align-items: center;
+}
+
+.calc-form__cashflow-head {
+  padding: 0 4px;
+  color: var(--color-muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.calc-form__cashflow-row {
+  padding: 10px;
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+  background: var(--color-surface);
+}
+
+.calc-form__cashflow-row .calc-form__input {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+
+.calc-form__cashflow-amount-wrap {
+  position: relative;
+  min-width: 0;
+}
+
+.calc-form__cashflow-sign {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-muted);
+  font-size: 12px;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.calc-form__cashflow-amount {
+  padding-left: 27px !important;
+}
+
+.calc-form__cashflow-remove,
+.calc-form__cashflow-add {
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  color: var(--color-body);
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 750;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.calc-form__cashflow-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 10px;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.calc-form__cashflow-remove:hover:not(:disabled) {
+  border-color: rgba(37, 84, 232, 0.35);
+  color: var(--color-primary);
+  background: rgba(37, 84, 232, 0.05);
+}
+
+.calc-form__cashflow-remove:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.calc-form__cashflow-add {
+  align-self: flex-start;
+  padding: 9px 13px;
+  border-radius: 10px;
+  color: var(--color-primary);
+  font-size: 12px;
+  background: rgba(37, 84, 232, 0.04);
+}
+
+.calc-form__cashflow-add:hover {
+  border-color: rgba(37, 84, 232, 0.35);
+  background: rgba(37, 84, 232, 0.08);
+}
+
+@media (max-width: 560px) {
+  .calc-form__cashflow-head {
+    display: none;
+  }
+
+  .calc-form__cashflow-row {
+    grid-template-columns: minmax(0, 1fr) 40px;
+    gap: 8px;
+  }
+
+  .calc-form__cashflow-date {
+    grid-column: 1 / -1;
+  }
+
+  .calc-form__cashflow-amount-wrap {
+    grid-column: 1;
+  }
+}
