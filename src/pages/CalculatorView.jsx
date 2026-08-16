@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import CalculatorForm from '../components/CalculatorForm.jsx'
 import ResultPanel from '../components/ResultPanel.jsx'
+import { calculators } from '../calculators/registry.js'
 import './calculator-view.css'
 
 function buildDefaultValues(fields) {
@@ -11,11 +12,22 @@ function buildDefaultValues(fields) {
   return values
 }
 
+function getRelatedCalculators(currentConfig) {
+  const sameCategory = calculators.filter(
+    (item) => item.config.id !== currentConfig.id && item.config.category === currentConfig.category,
+  )
+  const fallback = calculators.filter((item) => item.config.id !== currentConfig.id)
+  return [...sameCategory, ...fallback]
+    .filter((item, index, items) => items.findIndex((candidate) => candidate.config.id === item.config.id) === index)
+    .slice(0, 6)
+}
+
 export default function CalculatorView({ calculator, onBack }) {
   const { config, calculate, explanation } = calculator
   const [values, setValues] = useState(() => buildDefaultValues(config.fields))
 
   const results = useMemo(() => calculate(values), [values, calculate])
+  const relatedCalculators = useMemo(() => getRelatedCalculators(config), [config])
 
   function handleChange(name, rawValue) {
     setValues((prev) => ({ ...prev, [name]: rawValue }))
@@ -68,8 +80,44 @@ export default function CalculatorView({ calculator, onBack }) {
         {explanation.body.split('\n').filter(Boolean).map((paragraph) => (
           <p key={paragraph}>{paragraph}</p>
         ))}
+      </section>
+
+      <section className="calc-view__content calc-view__content--compact" aria-labelledby="calculator-overview">
+        <span className="calc-view__eyebrow">QUICK OVERVIEW</span>
+        <h2 id="calculator-overview">What you enter and what you get</h2>
+        <div className="calc-view__overview-grid">
+          <div>
+            <h3>What you enter</h3>
+            <ul>
+              {config.fields.map((field) => <li key={field.name}>{field.label}</li>)}
+            </ul>
+          </div>
+          <div>
+            <h3>What you get</h3>
+            <ul>
+              {config.resultFields.map((field) => <li key={field.name}>{field.label}</li>)}
+            </ul>
+          </div>
+        </div>
         <p className="calc-view__disclaimer"><strong>Important:</strong> {explanation.disclaimer}</p>
       </section>
+
+      {relatedCalculators.length > 0 && (
+        <nav className="calc-view__related" aria-labelledby="related-calculators">
+          <div>
+            <span className="calc-view__eyebrow">KEEP EXPLORING</span>
+            <h2 id="related-calculators">Related financial calculators</h2>
+          </div>
+          <div className="calc-view__related-grid">
+            {relatedCalculators.map(({ config: related }) => (
+              <a key={related.id} href={`/calculators/${encodeURIComponent(related.id)}`} className="calc-view__related-link">
+                <span>{related.title}</span>
+                <small>{related.shortDescription}</small>
+              </a>
+            ))}
+          </div>
+        </nav>
+      )}
     </section>
   )
 }
