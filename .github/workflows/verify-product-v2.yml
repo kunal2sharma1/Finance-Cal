@@ -56,3 +56,6 @@ jobs:
 
       - name: Production build
         run: npm run build
+
+      - name: Performance budget validation
+        run: npm run performance:check
