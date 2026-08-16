@@ -26,6 +26,10 @@ export function getCalculatorsForCountry(countryCode) {
   })
 }
 
+export function getCalculatorsByCategory(category) {
+  return calculators.filter(({ config }) => config.category === category)
+}
+
 export function getGlobalCalculators() {
   return calculators.filter(({ config }) => {
     const countries = Array.isArray(config.countries) ? config.countries : []
