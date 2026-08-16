@@ -10,6 +10,7 @@ const SEO = {
   'canada-fhsa': { title: 'Canada FHSA Calculator – Estimate First Home Savings Room | FinCalc', description: 'Estimate FHSA contribution room and projected value using the C$8,000 annual and C$40,000 lifetime limits.' },
   'singapore-cpf': { title: 'Singapore CPF Calculator – Estimate CPF Contributions | FinCalc', description: 'Estimate employee and employer CPF contributions using Singapore 2026 contribution rates and the ordinary wage ceiling.' },
   'australia-concessional-super': { title: 'Australia Super Concessional Contribution Calculator | FinCalc', description: 'Estimate concessional super contributions against the A$30,000 general annual cap for the current income year.' },
+  'uae-end-of-service': { title: 'UAE End-of-Service Gratuity Calculator | FinCalc', description: 'Estimate UAE private-sector expatriate end-of-service gratuity from basic salary and completed service years.' },
 }
 
 export function getInternationalSEO(id) {
