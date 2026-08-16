@@ -7,7 +7,9 @@ import CalculatorTrust from '../components/CalculatorTrust.jsx'
 import CommercialDisclosure from '../components/CommercialDisclosure.jsx'
 import CommercialPlacement from '../components/CommercialPlacement.jsx'
 import { calculators, getCalculatorsByCategory } from '../calculatorCatalog.js'
+import { guides } from '../guides.js'
 import { getCalculatorCurrency } from '../calculatorLocale.js'
+import { setBreadcrumbSchema } from '../seo.js'
 import { trackEvent } from '../analytics.js'
 import './calculator-view.css'
 
@@ -38,6 +40,12 @@ function getRelatedCalculators(currentConfig) {
     .slice(0, 6)
 }
 
+function getSupportingGuides(calculatorId) {
+  return guides
+    .filter((guide) => guide.calculatorLinks.some(([, href]) => href === `/calculators/${calculatorId}`))
+    .slice(0, 4)
+}
+
 export default function CalculatorView({ calculator, onBack, country, numberSystem }) {
   const { config, calculate, explanation } = calculator
   const [values, setValues] = useState(() => buildDefaultValues(config.fields))
@@ -48,6 +56,11 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
     completionTrackedRef.current = false
     trackEvent('calculator_open', { calculatorId: config.id, category: config.category || 'Other' })
+    setBreadcrumbSchema([
+      { label: 'FinCalc', href: '/' },
+      { label: config.category, href: categoryPaths[config.category] || '/financial-planning' },
+      { label: config.title },
+    ])
 
     const key = 'fincalc-recent-calculators'
     try {
@@ -57,7 +70,7 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
     } catch {
       // Storage may be unavailable; calculator use should still work.
     }
-  }, [config.id, config.category])
+  }, [config.id, config.category, config.title])
 
   useEffect(() => {
     let active = true
@@ -78,6 +91,7 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
   }, [values, calculate, config.id])
 
   const relatedCalculators = useMemo(() => getRelatedCalculators(config), [config])
+  const supportingGuides = useMemo(() => getSupportingGuides(config.id), [config.id])
   const displayCurrency = getCalculatorCurrency(config, country)
 
   function handleChange(name, rawValue) { setValues((prev) => ({ ...prev, [name]: rawValue })) }
@@ -114,6 +128,12 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
         <div className="calc-view__overview-grid"><div><h3>What you enter</h3><ul>{config.fields.map((field) => <li key={field.name}>{field.label}</li>)}</ul></div><div><h3>What you get</h3><ul>{config.resultFields.map((field) => <li key={field.name}>{field.label}</li>)}</ul></div></div>
         <p className="calc-view__disclaimer"><strong>Important:</strong> {explanation.disclaimer}</p>
       </section>
+      {supportingGuides.length > 0 && (
+        <nav className="calc-view__related" aria-labelledby="supporting-guides">
+          <div><span className="calc-view__eyebrow">LEARN MORE</span><h2 id="supporting-guides">Guides related to this calculator</h2></div>
+          <div className="calc-view__related-grid">{supportingGuides.map((guide) => <a key={guide.slug} href={`/guides/${guide.slug}`} className="calc-view__related-link"><span>{guide.title}</span><small>{guide.metaDescription}</small></a>)}</div>
+        </nav>
+      )}
       <CommercialDisclosure />
       <CommercialPlacement placement="calculatorEnd" label="Optional partner placement" />
       {relatedCalculators.length > 0 && (

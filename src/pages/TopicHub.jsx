@@ -1,11 +1,21 @@
+import { useEffect } from 'react'
 import CalculatorCard from '../components/CalculatorCard.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import { topicHubs } from '../topicHubs.js'
 import { getGuidesByTopic } from '../guides.js'
+import { setBreadcrumbSchema } from '../seo.js'
 import './topic-hub.css'
 
 export default function TopicHub({ slug, calculators, onSelect }) {
   const hub = topicHubs[slug]
+
+  useEffect(() => {
+    if (!hub) return
+    setBreadcrumbSchema([
+      { label: 'FinCalc', href: '/' },
+      { label: hub.title },
+    ])
+  }, [hub])
 
   if (!hub) return null
 

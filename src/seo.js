@@ -78,6 +78,28 @@ export function setSiteSEO({ title, description, pathname, calculator, noindex =
   schema.textContent = JSON.stringify(graph)
 }
 
+export function setBreadcrumbSchema(items) {
+  const schemaId = 'fincalc-breadcrumb-schema'
+  let schema = document.getElementById(schemaId)
+  if (!schema) {
+    schema = document.createElement('script')
+    schema.id = schemaId
+    schema.type = 'application/ld+json'
+    document.head.appendChild(schema)
+  }
+
+  schema.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.label,
+      ...(item.href ? { item: getCanonicalUrl(item.href) } : {}),
+    })),
+  })
+}
+
 export function buildCalculatorSEO(config) {
   const custom = getCalculatorSEO(config.id) || getInternationalSEO(config.id)
   if (custom) return custom

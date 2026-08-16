@@ -1,6 +1,8 @@
 import { useEffect, useMemo } from 'react'
 import { calculatorSEOContent } from '../seoCalculatorContent.js'
 import { phase4CalculatorSEOContent } from '../seoPhase4Content.js'
+import { seoGrowthCalculatorContent } from '../seoGrowthCalculatorContent.js'
+import { seoIntentContent } from '../seoIntentContent.js'
 
 function buildFallbackContent(calculatorId, fields, resultFields) {
   const inputLabels = fields.map((field) => field.label).filter(Boolean).slice(0, 5).join(', ')
@@ -22,9 +24,13 @@ function buildFallbackContent(calculatorId, fields, resultFields) {
 
 export default function CalculatorSEOSections({ calculatorId, config }) {
   const content = useMemo(
-    () => calculatorSEOContent[calculatorId] || phase4CalculatorSEOContent[calculatorId] || buildFallbackContent(calculatorId, config?.fields || [], config?.resultFields || []),
+    () => calculatorSEOContent[calculatorId]
+      || phase4CalculatorSEOContent[calculatorId]
+      || seoGrowthCalculatorContent[calculatorId]
+      || buildFallbackContent(calculatorId, config?.fields || [], config?.resultFields || []),
     [calculatorId, config],
   )
+  const intent = seoIntentContent[calculatorId]
 
   useEffect(() => {
     const schemaId = `fincalc-faq-${calculatorId}`
@@ -53,6 +59,23 @@ export default function CalculatorSEOSections({ calculatorId, config }) {
     <section className="calc-view__seo-content" aria-labelledby="calculator-guide">
       <span className="calc-view__eyebrow">USEFUL TO KNOW</span>
       <h2 id="calculator-guide">Understand the calculation before you use it</h2>
+
+      {intent && (
+        <section className="calc-view__intent" aria-labelledby="search-intent">
+          <div>
+            <span className="calc-view__eyebrow">SEARCH INTENT</span>
+            <h3 id="search-intent">{intent.intentLabel}</h3>
+            <p>{intent.bestFor}</p>
+          </div>
+          <div className="calc-view__intent-questions">
+            <strong>Common questions this calculator helps you explore</strong>
+            <ul>
+              {intent.questions.map((question) => <li key={question}>{question}</li>)}
+            </ul>
+          </div>
+        </section>
+      )}
+
       <div className="calc-view__seo-sections">
         {content.sections.map(([heading, body]) => (
           <section key={heading} className="calc-view__seo-section">
@@ -61,6 +84,17 @@ export default function CalculatorSEOSections({ calculatorId, config }) {
           </section>
         ))}
       </div>
+
+      {intent?.guideLinks?.length > 0 && (
+        <nav className="calc-view__intent-guides" aria-label="Related financial guides">
+          <span className="calc-view__eyebrow">READ NEXT</span>
+          <div>
+            {intent.guideLinks.map(([label, href]) => (
+              <a key={href} href={href}>{label} →</a>
+            ))}
+          </div>
+        </nav>
+      )}
 
       <div className="calc-view__seo-sections" aria-labelledby="calculator-faqs">
         <section className="calc-view__seo-section">
