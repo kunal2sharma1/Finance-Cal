@@ -1,0 +1,120 @@
+/* Mobile-first safety layer for every calculator page. */
+.calc-view,
+.calc-view__grid,
+.calc-view__panel,
+.calc-view__content,
+.calc-view__related,
+.calc-view__seo-content {
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (max-width: 560px) {
+  .calc-view {
+    width: 100%;
+    overflow-x: clip;
+  }
+
+  .calc-view__grid {
+    width: 100%;
+    gap: 14px;
+  }
+
+  .calc-view__panel {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .calc-view__panel--inputs,
+  .calc-view__panel--results {
+    padding: 14px;
+  }
+
+  .calc-view__panel--inputs .calc-form {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .calc-view__panel--inputs .calc-form__row {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .calc-view__panel--inputs .calc-form__input,
+  .calc-view__panel--inputs .calc-form__textarea,
+  .calc-view__panel--inputs .calc-form__slider,
+  .calc-view__panel--inputs select,
+  .calc-view__panel--inputs input,
+  .calc-view__panel--inputs textarea {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .calc-view__panel--results .result-panel {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px 16px;
+  }
+
+  .calc-view__panel--results .result-panel__primary-value {
+    font-size: clamp(28px, 9vw, 38px);
+    overflow-wrap: anywhere;
+  }
+
+  .calc-view__panel--results .result-panel__row {
+    gap: 12px;
+  }
+
+  .calc-view__panel--results .result-panel__row dd {
+    max-width: 55%;
+    overflow-wrap: anywhere;
+  }
+
+  .calc-view__panel--inputs .calc-form__label {
+    gap: 8px;
+  }
+
+  .calc-view__panel--inputs .calc-form__unit {
+    white-space: nowrap;
+  }
+
+  .calc-view__seo-content,
+  .calc-view__content,
+  .calc-view__related {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 380px) {
+  .calc-view__panel--inputs,
+  .calc-view__panel--results {
+    padding: 12px;
+  }
+
+  .calc-view__panel--results .result-panel {
+    padding: 18px 13px;
+  }
+
+  .calc-view__panel--results .result-panel__row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .calc-view__panel--results .result-panel__row dd {
+    max-width: 100%;
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .calc-view *,
+  .calc-view *::before,
+  .calc-view *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
