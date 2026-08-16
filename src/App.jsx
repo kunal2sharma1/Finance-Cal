@@ -2,22 +2,43 @@ import { useEffect, useState } from 'react'
 import Home from './pages/Home.jsx'
 import CalculatorView from './pages/CalculatorView.jsx'
 import { calculators } from './calculators/registry.js'
+import { buildCalculatorSEO, setSiteSEO } from './seo.js'
 
 const HOME_HISTORY_STATE = { finCalcView: 'home' }
 
 function getCalculatorIdFromLocation() {
-  const match = window.location.hash.match(/^#calculator\/(.+)$/)
-  return match ? decodeURIComponent(match[1]) : null
+  const pathMatch = window.location.pathname.match(/^\/calculators\/([^/]+)\/?$/)
+  if (pathMatch) return decodeURIComponent(pathMatch[1])
+
+  // Backward compatibility for the old hash URLs. We immediately migrate them
+  // to crawlable path URLs rather than continuing to use fragments.
+  const hashMatch = window.location.hash.match(/^#calculator\/(.+)$/)
+  if (hashMatch) return decodeURIComponent(hashMatch[1])
+
+  return null
+}
+
+function normalizeLegacyHashUrl() {
+  const hashMatch = window.location.hash.match(/^#calculator\/(.+)$/)
+  if (!hashMatch) return
+
+  const id = decodeURIComponent(hashMatch[1])
+  const nextPath = `/calculators/${encodeURIComponent(id)}`
+  window.history.replaceState(
+    { finCalcView: 'calculator', calculatorId: id },
+    '',
+    nextPath,
+  )
 }
 
 export default function App() {
-  // Calculator selection is mirrored into browser history so the device or
-  // browser Back button returns to FinCalc home instead of leaving the site.
   const [selectedId, setSelectedId] = useState(() => getCalculatorIdFromLocation())
 
   useEffect(() => {
+    normalizeLegacyHashUrl()
+
     if (!window.history.state?.finCalcView && !getCalculatorIdFromLocation()) {
-      window.history.replaceState(HOME_HISTORY_STATE, '', window.location.href)
+      window.history.replaceState(HOME_HISTORY_STATE, '', window.location.pathname + window.location.search)
     }
 
     function handlePopState() {
@@ -28,14 +49,33 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState)
   }, [])
 
+  const selectedCalculator = calculators.find(
+    (item) => item.config.id === selectedId,
+  )
+
+  useEffect(() => {
+    if (selectedCalculator) {
+      const seo = buildCalculatorSEO(selectedCalculator.config)
+      setSiteSEO({
+        ...seo,
+        pathname: `/calculators/${encodeURIComponent(selectedCalculator.config.id)}`,
+        calculator: true,
+      })
+      return
+    }
+
+    setSiteSEO({})
+  }, [selectedCalculator])
+
   function openCalculator(id) {
     setSelectedId(id)
 
-    const nextUrl = `${window.location.pathname}${window.location.search}#calculator/${encodeURIComponent(id)}`
+    const nextUrl = `${window.location.pathname}${window.location.search}`
+    const target = `/calculators/${encodeURIComponent(id)}`
     window.history.pushState(
       { finCalcView: 'calculator', calculatorId: id },
       '',
-      nextUrl,
+      target,
     )
   }
 
@@ -46,10 +86,6 @@ export default function App() {
       setSelectedId(null)
     }
   }
-
-  const selectedCalculator = calculators.find(
-    (item) => item.config.id === selectedId
-  )
 
   return (
     <div className="app-shell">
