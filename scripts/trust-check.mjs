@@ -1,14 +1,14 @@
 import { calculators } from '../src/calculatorCatalog.js'
-import { getTrustMetadata } from '../src/trustMetadata.js'
+import { getTrustMetadata, trustMetadata } from '../src/trustMetadata.js'
 
 const failures = []
-const officialSourceIds = new Set(Object.keys(await import('../src/trustMetadata.js')).trustMetadata)
+const officialSourceIds = Object.keys(trustMetadata)
 
 function assert(condition, message) {
   if (!condition) failures.push(message)
 }
 
-assert(officialSourceIds.size >= 10, `Expected at least 10 calculators with official source metadata, found ${officialSourceIds.size}`)
+assert(officialSourceIds.length >= 10, `Expected at least 10 calculators with official source metadata, found ${officialSourceIds.length}`)
 
 for (const calculator of calculators) {
   const { config, explanation } = calculator
@@ -28,4 +28,4 @@ if (failures.length) {
   process.exit(1)
 }
 
-console.log(`Trust validation passed for ${calculators.length} calculators; ${officialSourceIds.size} have official source metadata.`)
+console.log(`Trust validation passed for ${calculators.length} calculators; ${officialSourceIds.length} have official source metadata.`)
