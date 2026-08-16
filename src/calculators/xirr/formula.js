@@ -33,7 +33,9 @@ function toMs(date) {
 function npv(rate, flows, firstMs) {
   return flows.reduce((sum, flow) => {
     const years = (toMs(flow.date) - firstMs) / (365 * 24 * 60 * 60 * 1000)
-    return sum + flow.amount / Math.pow(1 + rate, years)
+    const denominator = Math.pow(1 + rate, years)
+    if (!Number.isFinite(denominator) || denominator === 0) return Number.NaN
+    return sum + flow.amount / denominator
   }, 0)
 }
 
@@ -44,9 +46,12 @@ function solveXIRR(flows) {
   let fLow = npv(low, flows, toMs(flows[0].date))
   let fHigh = npv(high, flows, toMs(flows[0].date))
 
+  if (!Number.isFinite(fLow) || !Number.isFinite(fHigh)) return null
+
   for (let i = 0; i < 20 && fLow * fHigh > 0; i++) {
     high *= 2
     fHigh = npv(high, flows, toMs(flows[0].date))
+    if (!Number.isFinite(fHigh)) return null
   }
 
   if (fLow * fHigh > 0) return null
@@ -55,7 +60,9 @@ function solveXIRR(flows) {
     const mid = (low + high) / 2
     const fMid = npv(mid, flows, toMs(flows[0].date))
 
+    if (!Number.isFinite(fMid)) return null
     if (Math.abs(fMid) < 1e-7) return mid
+
     if (fLow * fMid <= 0) {
       high = mid
       fHigh = fMid
@@ -65,24 +72,13 @@ function solveXIRR(flows) {
     }
   }
 
-  return (low + high) / 2
+  const result = (low + high) / 2
+  return Number.isFinite(result) ? result : null
 }
 
 export function calculate(inputs) {
   const flows = parseCashFlows(inputs.cashFlows)
     .sort((a, b) => toMs(a.date) - toMs(b.date))
-
-  if (flows.length < 2) {
-    return {
-      xirr: 0,
-      netCashFlow: 0,
-      totalInvested: 0,
-      totalReceived: 0,
-    }
-  }
-
-  const hasPositive = flows.some((flow) => flow.amount > 0)
-  const hasNegative = flows.some((flow) => flow.amount < 0)
 
   const invested = Math.abs(
     flows
@@ -93,21 +89,44 @@ export function calculate(inputs) {
     .filter((flow) => flow.amount > 0)
     .reduce((sum, flow) => sum + flow.amount, 0)
 
+  const summary = {
+    netCashFlow: Math.round(received - invested),
+    totalInvested: Math.round(invested),
+    totalReceived: Math.round(received),
+  }
+
+  if (flows.length < 2) {
+    return {
+      ...summary,
+      isValid: false,
+      message: 'XIRR needs at least one investment and one received cash flow.',
+    }
+  }
+
+  const hasPositive = flows.some((flow) => flow.amount > 0)
+  const hasNegative = flows.some((flow) => flow.amount < 0)
+
   if (!hasPositive || !hasNegative) {
     return {
-      xirr: 0,
-      netCashFlow: Math.round(received - invested),
-      totalInvested: Math.round(invested),
-      totalReceived: Math.round(received),
+      ...summary,
+      isValid: false,
+      message: 'XIRR needs at least one investment and one received cash flow.',
     }
   }
 
   const rate = solveXIRR(flows)
 
+  if (rate === null) {
+    return {
+      ...summary,
+      isValid: false,
+      message: 'XIRR could not find a valid annualized return for these cash flows.',
+    }
+  }
+
   return {
-    xirr: rate === null ? 0 : Math.round(rate * 10000) / 100,
-    netCashFlow: Math.round(received - invested),
-    totalInvested: Math.round(invested),
-    totalReceived: Math.round(received),
+    ...summary,
+    xirr: Math.round(rate * 10000) / 100,
+    isValid: true,
   }
 }
