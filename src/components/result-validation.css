@@ -1,0 +1,11 @@
+.result-panel__error {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 214, 102, 0.34);
+  border-radius: 12px;
+  background: rgba(255, 214, 102, 0.10);
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.5;
+}
