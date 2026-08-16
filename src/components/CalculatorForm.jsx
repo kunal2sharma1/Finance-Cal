@@ -1,9 +1,5 @@
 import './cashflow-editor.css'
 
-// This form doesn't know anything about individual calculators — it just reads
-// whatever fields a calculator's config.js provides. Each field can choose
-// the appropriate control type.
-
 function updateCashFlowRows(rows, index, key, value) {
   return rows.map((row, rowIndex) =>
     rowIndex === index ? { ...row, [key]: value } : row,
@@ -98,7 +94,8 @@ export default function CalculatorForm({ fields, values, onChange }) {
       {fields.map((field) => {
         const isTextarea = field.type === 'textarea'
         const isCashFlows = field.type === 'cashflows'
-        const hasSlider = !isTextarea && !isCashFlows && Number.isFinite(Number(field.min)) && Number.isFinite(Number(field.max))
+        const isSelect = field.type === 'select'
+        const hasSlider = !isTextarea && !isCashFlows && !isSelect && Number.isFinite(Number(field.min)) && Number.isFinite(Number(field.max))
         const numericValue = Number(values[field.name])
         const percent =
           hasSlider && Number.isFinite(numericValue)
@@ -124,6 +121,20 @@ export default function CalculatorForm({ fields, values, onChange }) {
                 placeholder={field.placeholder}
                 onChange={(event) => onChange(field.name, event.target.value)}
               />
+            ) : isSelect ? (
+              <select
+                id={field.name}
+                name={field.name}
+                className="calc-form__input calc-form__select"
+                value={values[field.name] ?? field.defaultValue ?? ''}
+                onChange={(event) => onChange(field.name, event.target.value)}
+              >
+                {(field.options || []).map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             ) : (
               <>
                 <input
