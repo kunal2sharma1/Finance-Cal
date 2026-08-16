@@ -4,6 +4,8 @@ import ResultPanel from '../components/ResultPanel.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import CalculatorSEOSections from '../components/CalculatorSEOSections.jsx'
 import CalculatorTrust from '../components/CalculatorTrust.jsx'
+import CommercialDisclosure from '../components/CommercialDisclosure.jsx'
+import CommercialPlacement from '../components/CommercialPlacement.jsx'
 import { calculators, getCalculatorsByCategory } from '../calculatorCatalog.js'
 import { getCalculatorCurrency } from '../calculatorLocale.js'
 import { trackEvent } from '../analytics.js'
@@ -112,6 +114,8 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
         <div className="calc-view__overview-grid"><div><h3>What you enter</h3><ul>{config.fields.map((field) => <li key={field.name}>{field.label}</li>)}</ul></div><div><h3>What you get</h3><ul>{config.resultFields.map((field) => <li key={field.name}>{field.label}</li>)}</ul></div></div>
         <p className="calc-view__disclaimer"><strong>Important:</strong> {explanation.disclaimer}</p>
       </section>
+      <CommercialDisclosure />
+      <CommercialPlacement placement="calculatorEnd" label="Optional partner placement" />
       {relatedCalculators.length > 0 && (
         <nav className="calc-view__related" aria-labelledby="related-calculators">
           <div><span className="calc-view__eyebrow">KEEP EXPLORING</span><h2 id="related-calculators">Related financial calculators</h2></div>
