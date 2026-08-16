@@ -3,12 +3,9 @@ import CalculatorForm from '../components/CalculatorForm.jsx'
 import ResultPanel from '../components/ResultPanel.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import CalculatorSEOSections from '../components/CalculatorSEOSections.jsx'
-import { calculators as coreCalculators } from '../calculators/registry.js'
-import { internationalCalculators } from '../internationalCalculators.js'
+import { calculators, getCalculatorsByCategory } from '../calculatorCatalog.js'
 import { getCalculatorCurrency } from '../calculatorLocale.js'
 import './calculator-view.css'
-
-const calculators = [...coreCalculators, ...internationalCalculators]
 
 const categoryPaths = {
   Investing: '/investing',
@@ -37,11 +34,15 @@ function buildDefaultValues(fields) {
 }
 
 function getRelatedCalculators(currentConfig) {
-  const sameCategory = calculators.filter(
-    (item) => item.config.id !== currentConfig.id && item.config.category === currentConfig.category,
-  )
+  const categoryMatches = getCalculatorsByCategory(currentConfig.category)
+  const sameCountry = calculators.filter((item) => {
+    if (item.config.id === currentConfig.id) return false
+    const currentCountries = Array.isArray(currentConfig.countries) ? currentConfig.countries : []
+    if (currentCountries.length === 0) return true
+    return (item.config.countries || []).some((code) => currentCountries.includes(code))
+  })
   const fallback = calculators.filter((item) => item.config.id !== currentConfig.id)
-  return [...sameCategory, ...fallback]
+  return [...categoryMatches, ...sameCountry, ...fallback]
     .filter((item, index, items) => items.findIndex((candidate) => candidate.config.id === item.config.id) === index)
     .slice(0, 6)
 }
@@ -147,7 +148,7 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
         ))}
       </section>
 
-      <CalculatorSEOSections calculatorId={config.id} />
+      <CalculatorSEOSections calculatorId={config.id} config={config} />
 
       <section className="calc-view__content calc-view__content--compact" aria-labelledby="calculator-overview">
         <span className="calc-view__eyebrow">QUICK OVERVIEW</span>
