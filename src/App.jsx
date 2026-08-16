@@ -9,6 +9,7 @@ import NotFound from './pages/NotFound.jsx'
 import CountryPage from './pages/CountryPage.jsx'
 import CountriesIndex from './pages/CountriesIndex.jsx'
 import CountrySelector from './components/CountrySelector.jsx'
+import SiteSearch from './components/SiteSearch.jsx'
 import { useCountry } from './useCountry.js'
 import { useNumberSystem } from './useNumberSystem.js'
 import { getCountryPageBySlug } from './countryPages.js'
@@ -169,6 +170,7 @@ export default function App() {
         <div className="site-header__inner">
           <a className="site-header__mark" href="/">FinCalc</a>
           <span className="site-header__tagline">Simple, transparent money math</span>
+          <SiteSearch country={country} />
           <CountrySelector />
         </div>
       </header>
