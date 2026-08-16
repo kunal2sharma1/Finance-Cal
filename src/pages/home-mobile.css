@@ -1,0 +1,131 @@
+/* Mobile hero overrides. Imported after the global stylesheet so the
+   page shell cannot accidentally re-apply the desktop flex layout. */
+@media (max-width: 700px) {
+  .home_intro {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    align-items: start !important;
+    gap: 24px !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    padding: 30px 24px 34px !important;
+    overflow: hidden !important;
+  }
+
+  .home_build_badge {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+    font-size: 12px !important;
+  }
+
+  .home_intro_text {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
+
+  .home_kicker {
+    margin-bottom: 16px !important;
+    font-size: 12px !important;
+  }
+
+  .home_intro h1 {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    font-size: clamp(34px, 10vw, 46px) !important;
+    line-height: 1.06 !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  .home_intro p {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 18px 0 0 !important;
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+  }
+
+  .home_intro_stats {
+    display: flex !important;
+    width: 100% !important;
+    margin-top: 24px !important;
+  }
+
+  .home_intro_stats > div {
+    min-width: 0 !important;
+    flex: 1 1 0 !important;
+    padding: 0 10px !important;
+  }
+
+  .home_intro_stats > div:first-child {
+    padding-left: 0 !important;
+  }
+
+  .home_intro_stats > div:last-child {
+    padding-right: 0 !important;
+  }
+
+  .home_intro_stats > div + div {
+    border-left: 1px solid rgba(14, 27, 51, 0.10) !important;
+  }
+
+  .home_intro_stats strong {
+    font-size: 18px !important;
+  }
+
+  .home_intro_stats span {
+    white-space: normal !important;
+    font-size: 10px !important;
+    line-height: 1.25 !important;
+  }
+
+  .home_illustration {
+    justify-self: center !important;
+    width: min(220px, 72vw) !important;
+    height: 180px !important;
+    margin: 0 !important;
+    flex: 0 0 auto !important;
+  }
+
+  .illustration_circle {
+    inset: 8px 18px !important;
+  }
+
+  .illustration_card_main {
+    left: 50% !important;
+    top: 42px !important;
+    width: 168px !important;
+    min-height: 88px !important;
+    transform: translateX(-50%) !important;
+  }
+
+  .illustration_card_top {
+    top: 18px !important;
+    right: 2px !important;
+  }
+
+  .illustration_card_bottom {
+    right: 8px !important;
+    bottom: 8px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .home_intro {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  .home_intro h1 {
+    font-size: 33px !important;
+  }
+
+  .home_intro_stats strong {
+    font-size: 16px !important;
+  }
+}
