@@ -11,6 +11,9 @@ on:
       - 'vite.config.js'
   workflow_dispatch:
 
+env:
+  VERIFY_RUN: "2026-08-16T00:43:22Z"
+
 jobs:
   build:
     runs-on: ubuntu-latest
