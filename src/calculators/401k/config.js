@@ -1,0 +1,25 @@
+export const config = {
+  id: '401k',
+  title: '401(k) Calculator',
+  shortDescription: 'Estimate employee and employer 401(k) contributions and projected retirement savings under your assumptions.',
+  category: 'Retirement',
+  countries: ['US'],
+  currency: 'USD',
+  fields: [
+    { name: 'age', label: 'Current age', unit: 'years', defaultValue: 30, min: 18, max: 75, step: 1 },
+    { name: 'salary', label: 'Annual salary', unit: '$', defaultValue: 80000, min: 0, max: 5000000, step: 1000 },
+    { name: 'employeeRate', label: 'Employee contribution', unit: '%', defaultValue: 8, min: 0, max: 100, step: 0.5 },
+    { name: 'employerRate', label: 'Employer match rate', unit: '%', defaultValue: 4, min: 0, max: 100, step: 0.5 },
+    { name: 'employerCap', label: 'Employer match cap on salary', unit: '%', defaultValue: 6, min: 0, max: 100, step: 0.5 },
+    { name: 'years', label: 'Years until retirement', unit: 'years', defaultValue: 30, min: 1, max: 60, step: 1 },
+    { name: 'returnRate', label: 'Expected annual return', unit: '%', defaultValue: 7, min: -20, max: 30, step: 0.1 },
+  ],
+  resultFields: [
+    { name: 'annualEmployee', label: 'Annual employee contribution', primary: true, unit: '$' },
+    { name: 'annualEmployer', label: 'Annual employer contribution', unit: '$' },
+    { name: 'annualTotal', label: 'Annual total contribution', unit: '$' },
+    { name: 'projectedBalance', label: 'Projected balance', unit: '$' },
+    { name: 'contributionLimit', label: '2026 employee deferral limit', unit: '$' },
+    { name: 'limitWarning', label: 'Contribution check', unit: '' },
+  ],
+}
