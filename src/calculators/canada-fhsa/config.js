@@ -6,7 +6,7 @@ export const config = {
   countries: ['CA'],
   currency: 'CAD',
   fields: [
-    { name: 'currentRoom', label: 'Current FHSA room', unit: 'C$', defaultValue: 8000, min: 0, max: 40000, step: 100 },
+    { name: 'existingContributions', label: 'Existing lifetime FHSA contributions', unit: 'C$', defaultValue: 0, min: 0, max: 40000, step: 100 },
     { name: 'annualContribution', label: 'Planned annual contribution', unit: 'C$', defaultValue: 8000, min: 0, max: 8000, step: 100 },
     { name: 'years', label: 'Years of contributions', unit: 'years', defaultValue: 5, min: 1, max: 15, step: 1 },
     { name: 'returnRate', label: 'Expected annual return', unit: '%', defaultValue: 5, min: -20, max: 30, step: 0.1 },
