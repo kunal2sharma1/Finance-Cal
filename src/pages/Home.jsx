@@ -2,7 +2,25 @@ import { useMemo, useState } from 'react'
 import CalculatorCard from '../components/CalculatorCard.jsx'
 import './home-filters.css'
 
-const CATEGORY_ORDER = ['All', 'Investing', 'Savings', 'Loans', 'Retirement', 'Tax', 'Education']
+// Keep familiar categories first, then automatically include every category
+// used by a calculator so newly added calculators never disappear from filters.
+const CATEGORY_ORDER = [
+  'All',
+  'Investing',
+  'Investing & Markets',
+  'Savings',
+  'Savings & Investing',
+  'Budgeting',
+  'Loans',
+  'Loans & Debt',
+  'Salary & Employment',
+  'Retirement',
+  'Retirement & Wealth',
+  'Tax',
+  'Education',
+  'Major Financial Decisions',
+  'Other',
+]
 
 function getDisplayCategory(config) {
   if (config.id === 'education') return 'Education'
@@ -29,7 +47,12 @@ export default function Home({ calculators, onSelect }) {
 
   const categories = useMemo(() => {
     const available = new Set(normalizedCalculators.map(({ config }) => config.category))
-    return CATEGORY_ORDER.filter((category) => category === 'All' || available.has(category))
+    const preferred = CATEGORY_ORDER.filter((category) => category === 'All' || available.has(category))
+    const additional = [...available]
+      .filter((category) => category !== 'All' && !CATEGORY_ORDER.includes(category))
+      .sort((a, b) => a.localeCompare(b))
+
+    return [...preferred, ...additional]
   }, [normalizedCalculators])
 
   const filteredCalculators = useMemo(() => {
