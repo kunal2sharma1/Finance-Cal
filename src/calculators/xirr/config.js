@@ -11,12 +11,12 @@ export const config = {
       type: 'cashflows',
       label: 'Enter your investments and withdrawals',
       defaultValue: [
-        { date: '2020-01-01', amount: '-100000' },
-        { date: '2021-06-01', amount: '-50000' },
-        { date: '2025-01-01', amount: '220000' },
+        { date: '2020-01-01', direction: 'invested', amount: '100000' },
+        { date: '2021-06-01', direction: 'invested', amount: '50000' },
+        { date: '2025-01-01', direction: 'received', amount: '220000' },
       ],
       help:
-        'Add each money movement. Use a negative amount for money you invest and a positive amount for money you receive or the current value.',
+        'Pick a date, choose whether the money was invested or received, and enter the amount. You do not need to type negative numbers.',
     },
   ],
 
