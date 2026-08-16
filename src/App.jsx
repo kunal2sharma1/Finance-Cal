@@ -3,6 +3,7 @@ import Home from './pages/Home.jsx'
 import CalculatorView from './pages/CalculatorView.jsx'
 import GuideView from './pages/GuideView.jsx'
 import TopicHub from './pages/TopicHub.jsx'
+import InfoPage from './pages/InfoPage.jsx'
 import { calculators } from './calculators/registry.js'
 import { guides } from './guides.js'
 import { topicHubs } from './topicHubs.js'
@@ -10,6 +11,7 @@ import { buildCalculatorSEO, setSiteSEO } from './seo.js'
 
 const HOME_HISTORY_STATE = { finCalcView: 'home' }
 const TOPIC_SLUGS = new Set(Object.keys(topicHubs))
+const INFO_SLUGS = new Set(['about', 'how-it-works', 'privacy', 'contact'])
 
 function getRouteFromLocation() {
   const pathname = window.location.pathname.replace(/\/+$/, '') || '/'
@@ -27,6 +29,10 @@ function getRouteFromLocation() {
   const hubSlug = pathname.replace(/^\//, '')
   if (TOPIC_SLUGS.has(hubSlug)) {
     return { type: 'hub', slug: hubSlug }
+  }
+
+  if (INFO_SLUGS.has(hubSlug)) {
+    return { type: 'info', slug: hubSlug }
   }
 
   // Backward compatibility for the old hash URLs.
@@ -122,8 +128,20 @@ export default function App() {
       return
     }
 
+    if (route.type === 'info') {
+      const infoSEO = {
+        about: ['About FinCalc | Simple Financial Calculators', 'Learn what FinCalc is, who its calculators are designed for and what the tools are intended to help you understand.'],
+        'how-it-works': ['How FinCalc Calculations Work | Assumptions & Limitations', 'Understand how FinCalc calculators use your inputs, what the results mean and why real-world outcomes can differ from estimates.'],
+        privacy: ['Privacy | FinCalc', 'Learn how FinCalc handles information entered into its browser-based financial calculators.'],
+        contact: ['Contact FinCalc | Feedback & Calculator Issues', 'Contact FinCalc about calculator errors, confusing results, broken links, accessibility issues or product feedback.'],
+      }
+      const [title, description] = infoSEO[route.slug]
+      setSiteSEO({ title, description, pathname: `/${route.slug}` })
+      return
+    }
+
     setSiteSEO({})
-  }, [selectedCalculator, selectedGuide, selectedHub])
+  }, [route, selectedCalculator, selectedGuide, selectedHub])
 
   function openCalculator(id) {
     const target = `/calculators/${encodeURIComponent(id)}`
@@ -144,7 +162,7 @@ export default function App() {
     <div className="app-shell">
       <header className="site-header">
         <div className="site-header__inner">
-          <span className="site-header__mark">FinCalc</span>
+          <a className="site-header__mark" href="/">FinCalc</a>
           <span className="site-header__tagline">
             Simple, transparent money math
           </span>
@@ -162,15 +180,22 @@ export default function App() {
             calculators={calculators}
             onSelect={openCalculator}
           />
+        ) : route.type === 'info' ? (
+          <InfoPage slug={route.slug} />
         ) : (
           <Home calculators={calculators} onSelect={openCalculator} />
         )}
       </main>
 
       <footer className="site-footer">
+        <nav aria-label="FinCalc information">
+          <a href="/about">About</a>
+          <a href="/how-it-works">How calculations work</a>
+          <a href="/privacy">Privacy</a>
+          <a href="/contact">Contact</a>
+        </nav>
         <p>
-          All calculations happen in your browser. Nothing you type is sent
-          anywhere or stored.
+          Calculations are estimates based on the assumptions you enter. FinCalc is not a bank, lender, insurer or financial adviser.
         </p>
       </footer>
     </div>
