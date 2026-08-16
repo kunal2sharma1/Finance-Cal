@@ -1,4 +1,5 @@
 import CalculatorCard from '../components/CalculatorCard.jsx'
+import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import { topicHubs } from '../topicHubs.js'
 import { getGuidesByTopic } from '../guides.js'
 import './topic-hub.css'
@@ -15,6 +16,13 @@ export default function TopicHub({ slug, calculators, onSelect }) {
 
   return (
     <section className="topic-hub">
+      <Breadcrumbs
+        items={[
+          { label: 'FinCalc', href: '/' },
+          { label: hub.title },
+        ]}
+      />
+
       <div className="topic-hub__hero">
         <span className="topic-hub__eyebrow">FINANCIAL TOOLKIT</span>
         <h1>{hub.title}</h1>
