@@ -4,6 +4,7 @@ import ResultPanel from '../components/ResultPanel.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import CalculatorSEOSections from '../components/CalculatorSEOSections.jsx'
 import { calculators } from '../calculators/registry.js'
+import { guides } from '../guides.js'
 import { safeCalculate } from '../calculatorValidation.js'
 import './calculator-view.css'
 import './calculator-ui.css'
@@ -36,6 +37,12 @@ function getRelatedCalculators(currentConfig) {
     .slice(0, 6)
 }
 
+function getRelatedGuides(calculatorId) {
+  return guides.filter((guide) =>
+    guide.calculatorLinks.some(([, href]) => href === `/calculators/${calculatorId}`),
+  ).slice(0, 3)
+}
+
 export default function CalculatorView({ calculator, onBack }) {
   const { config, calculate, explanation } = calculator
   const [values, setValues] = useState(() => buildDefaultValues(config.fields))
@@ -46,6 +53,7 @@ export default function CalculatorView({ calculator, onBack }) {
 
   const results = useMemo(() => safeCalculate(calculate, values), [values, calculate])
   const relatedCalculators = useMemo(() => getRelatedCalculators(config), [config])
+  const relatedGuides = useMemo(() => getRelatedGuides(config.id), [config.id])
 
   function handleChange(name, rawValue) {
     setValues((prev) => ({ ...prev, [name]: rawValue }))
@@ -108,7 +116,7 @@ export default function CalculatorView({ calculator, onBack }) {
         ))}
       </section>
 
-      <CalculatorSEOSections calculatorId={config.id} />
+      <CalculatorSEOSections calculator={calculator} />
 
       <section className="calc-view__content calc-view__content--compact" aria-labelledby="calculator-overview">
         <span className="calc-view__eyebrow">QUICK OVERVIEW</span>
@@ -129,6 +137,23 @@ export default function CalculatorView({ calculator, onBack }) {
         </div>
         <p className="calc-view__disclaimer"><strong>Important:</strong> {explanation.disclaimer}</p>
       </section>
+
+      {relatedGuides.length > 0 && (
+        <nav className="calc-view__related calc-view__related--guides" aria-labelledby="related-guides">
+          <div>
+            <span className="calc-view__eyebrow">READ NEXT</span>
+            <h2 id="related-guides">Guides related to this calculator</h2>
+          </div>
+          <div className="calc-view__related-grid">
+            {relatedGuides.map((guide) => (
+              <a key={guide.slug} href={`/guides/${encodeURIComponent(guide.slug)}`} className="calc-view__related-link">
+                <span>{guide.title}</span>
+                <small>{guide.metaDescription}</small>
+              </a>
+            ))}
+          </div>
+        </nav>
+      )}
 
       {relatedCalculators.length > 0 && (
         <nav className="calc-view__related" aria-labelledby="related-calculators">
