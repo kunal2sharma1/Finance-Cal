@@ -1,4 +1,5 @@
 import { getCalculatorSEO } from './calculatorSeo.js'
+import { getInternationalSEO } from './internationalSeo.js'
 
 const SITE_NAME = 'FinCalc'
 
@@ -78,8 +79,7 @@ export function setSiteSEO({ title, description, pathname, calculator, noindex =
 }
 
 export function buildCalculatorSEO(config) {
-  const custom = getCalculatorSEO(config.id)
-
+  const custom = getCalculatorSEO(config.id) || getInternationalSEO(config.id)
   if (custom) return custom
 
   return {

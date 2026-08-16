@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "vite",
     "seo:check": "node scripts/seo-check.mjs",
-    "formula:check": "node scripts/formula-check.mjs",
     "international:check": "node scripts/international-check.mjs",
-    "prebuild": "node scripts/generate-sitemap.mjs",
+    "formula:check": "node scripts/formula-check.mjs",
+    "prebuild": "node scripts/generate-global-sitemap.mjs",
     "build": "vite build",
     "preview": "vite preview"
   },
