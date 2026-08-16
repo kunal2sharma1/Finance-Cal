@@ -1,12 +1,11 @@
 export const explanation = {
-  heading: 'How this is calculated',
-  body: `A Systematic Investment Plan (SIP) means investing a fixed amount every month, usually into a mutual fund. Each month's contribution has a different amount of time to grow, which is why the total compounds faster the longer you stay invested.
+  heading: 'What this calculator is doing',
+  body: `A SIP means investing a fixed amount regularly, usually every month. This calculator shows what those regular investments could grow into if they earned the yearly return you entered.
 
-We use the standard SIP future-value formula:
+For example, if you invest ₹10,000 every month for 10 years, the calculator adds up all of those contributions and estimates how much the investment could be worth at the end.
 
-FV = P × [((1 + i)^n − 1) / i] × (1 + i)
+The result is only an estimate. Your actual investment value can be higher or lower because market returns change over time.
 
-P is your monthly investment, i is the monthly rate of return (annual rate ÷ 12 ÷ 100), and n is the number of months (years × 12).`,
-  disclaimer:
-    'This is an estimate for planning purposes only. Actual mutual fund returns are not guaranteed and will vary with market performance.',
+The yearly return you enter is an assumption, not a guaranteed return.`,
+  disclaimer: 'This is a planning estimate only. Mutual fund and market-linked returns are not guaranteed and actual results will vary.',
 }

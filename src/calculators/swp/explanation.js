@@ -1,12 +1,11 @@
 export const explanation = {
-  heading: 'How this is calculated',
-  body: `A Systematic Withdrawal Plan (SWP) lets you withdraw a fixed amount every month from an existing lump-sum corpus, while the rest stays invested and keeps earning returns.
+  heading: 'What this calculator is doing',
+  body: `This calculator answers: “If I already have money invested and take out a fixed amount every month, how much could be left later?”
 
-We simulate this one month at a time. Each month, the withdrawal is taken out of the corpus first, and the expected annual return — converted to a monthly rate — is then applied to whatever remains. This repeats for every month in your chosen period.
+It starts with your current investment, removes the monthly withdrawal, and applies the yearly return you entered to the remaining amount. It repeats that process for the number of years you choose.
 
-Monthly rate = annual return ÷ 12 ÷ 100
+The technical term for this kind of regular withdrawal plan is SWP (Systematic Withdrawal Plan).
 
-If withdrawals are large enough to use up the corpus before your period ends, withdrawals simply stop once the balance reaches ₹0 — the remaining corpus is never shown as negative.`,
-  disclaimer:
-    'This is an estimate for planning purposes only. Actual returns are not guaranteed and will vary with market performance.',
+If your withdrawals are too large compared with the investment and its growth, the money can run out before the end of the period. The calculator never shows a negative balance.`,
+  disclaimer: 'This is a planning estimate only. Actual investment returns and the amount you can safely withdraw may be very different from this estimate.',
 }
