@@ -1,7 +1,8 @@
-import { calculators } from '../src/calculators/registry.js'
+import { calculators } from '../src/calculatorCatalog.js'
 import { guides } from '../src/guides.js'
 import { topicHubs } from '../src/topicHubs.js'
 import { getCalculatorSEO } from '../src/calculatorSeo.js'
+import { getInternationalSEO } from '../src/internationalSeo.js'
 
 const calculatorIds = calculators.map(({ config }) => config.id)
 const idSet = new Set(calculatorIds)
@@ -21,7 +22,7 @@ const seenTitles = new Map()
 const seenDescriptions = new Map()
 
 for (const { config } of calculators) {
-  const seo = getCalculatorSEO(config.id)
+  const seo = getCalculatorSEO(config.id) || getInternationalSEO(config.id)
   if (!seo?.title || !seo?.description) {
     errors.push(`Missing custom SEO metadata for calculator: ${config.id}`)
     continue
