@@ -7,6 +7,7 @@ import { calculators } from '../calculators/registry.js'
 import { safeCalculate } from '../calculatorValidation.js'
 import './calculator-view.css'
 import './calculator-ui.css'
+import './calculator-mobile-audit.css'
 
 const categoryPaths = {
   Investing: '/investing',
