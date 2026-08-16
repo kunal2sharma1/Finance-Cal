@@ -13,25 +13,26 @@ function updateCashFlowRows(rows, index, key, value) {
 function CashFlowEditor({ field, value, onChange }) {
   const rows = Array.isArray(value) && value.length > 0
     ? value
-    : [{ date: '', amount: '' }]
+    : [{ date: '', direction: 'invested', amount: '' }]
 
   function setRow(index, key, nextValue) {
     onChange(field.name, updateCashFlowRows(rows, index, key, nextValue))
   }
 
   function addRow() {
-    onChange(field.name, [...rows, { date: '', amount: '' }])
+    onChange(field.name, [...rows, { date: '', direction: 'invested', amount: '' }])
   }
 
   function removeRow(index) {
     const nextRows = rows.filter((_, rowIndex) => rowIndex !== index)
-    onChange(field.name, nextRows.length > 0 ? nextRows : [{ date: '', amount: '' }])
+    onChange(field.name, nextRows.length > 0 ? nextRows : [{ date: '', direction: 'invested', amount: '' }])
   }
 
   return (
     <div className="calc-form__cashflows">
       <div className="calc-form__cashflow-head">
         <span>Date</span>
+        <span>What happened?</span>
         <span>Amount</span>
         <span aria-hidden="true" />
       </div>
@@ -45,6 +46,17 @@ function CashFlowEditor({ field, value, onChange }) {
             aria-label={`Cash flow ${index + 1} date`}
             onChange={(event) => setRow(index, 'date', event.target.value)}
           />
+
+          <select
+            className="calc-form__input calc-form__cashflow-direction"
+            value={row.direction || 'invested'}
+            aria-label={`Cash flow ${index + 1} type`}
+            onChange={(event) => setRow(index, 'direction', event.target.value)}
+          >
+            <option value="invested">I invested money</option>
+            <option value="received">I received money</option>
+          </select>
+
           <div className="calc-form__cashflow-amount-wrap">
             <span className="calc-form__cashflow-sign">₹</span>
             <input
@@ -52,11 +64,13 @@ function CashFlowEditor({ field, value, onChange }) {
               className="calc-form__input calc-form__cashflow-amount"
               value={row.amount ?? ''}
               aria-label={`Cash flow ${index + 1} amount`}
-              placeholder="e.g. -100000"
+              placeholder="e.g. 100000"
+              min="0"
               step="1"
               onChange={(event) => setRow(index, 'amount', event.target.value)}
             />
           </div>
+
           <button
             type="button"
             className="calc-form__cashflow-remove"
