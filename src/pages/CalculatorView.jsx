@@ -6,6 +6,7 @@ import CalculatorSEOSections from '../components/CalculatorSEOSections.jsx'
 import { calculators } from '../calculators/registry.js'
 import { safeCalculate } from '../calculatorValidation.js'
 import './calculator-view.css'
+import './calculator-ui.css'
 
 const categoryPaths = {
   Investing: '/investing',
