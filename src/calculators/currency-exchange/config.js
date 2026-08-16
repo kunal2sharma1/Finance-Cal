@@ -25,7 +25,7 @@ export const config = {
   id: 'currency-exchange',
   title: 'Money Exchange Calculator',
   shortDescription: 'Convert money between major currencies using the latest available daily exchange rate.',
-  category: 'Planning',
+  category: 'Travel & Currency',
   fields: [
     { name: 'amount', label: 'How much money do you want to exchange?', unit: '', defaultValue: 10000, min: 0, max: 100000000, step: 100 },
     { name: 'fromCurrency', label: 'From currency', type: 'select', defaultValue: 'INR', options: currencies },
