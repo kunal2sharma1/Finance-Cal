@@ -100,7 +100,7 @@ export default function Home({ calculators, onSelect, country }) {
             saving, retirement, and everyday financial decisions.
           </p>
           <div className="home_intro_stats">
-            <div><strong>{calculators.length}+</strong><span>Calculators</span></div>
+            <div><strong>{normalizedCalculators.length}+</strong><span>Calculators for you</span></div>
             <div><strong>{preferredCurrency}</strong><span>Preferred currency</span></div>
             <div><strong>{regionFlag} {regionCode}</strong><span>Selected region</span></div>
           </div>
