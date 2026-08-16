@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import App from './App.jsx'
 import TopicHub from './pages/TopicHub.jsx'
 import GuideView from './pages/GuideView.jsx'
+import CountrySelector from './components/CountrySelector.jsx'
 import { calculators } from './calculators/registry.js'
 import { topicHubs } from './topicHubs.js'
 import { getGuide } from './guides.js'
@@ -46,6 +47,7 @@ export default function AppSeo() {
         <div className="site-header__inner">
           <a className="site-header__mark" href="/" onClick={(event) => { event.preventDefault(); window.history.pushState({}, '', '/'); setRoute({ type: 'app' }); window.dispatchEvent(new PopStateEvent('popstate')) }}>FinCalc</a>
           <span className="site-header__tagline">Simple, transparent money math</span>
+          <CountrySelector />
         </div>
       </header>
       <main className="site-main">
