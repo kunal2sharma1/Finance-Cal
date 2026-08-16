@@ -14,6 +14,7 @@
     "formula:check": "node scripts/formula-check.mjs",
     "prebuild": "node scripts/generate-global-sitemap.mjs",
     "build": "vite build",
+    "performance:check": "node scripts/performance-check.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
