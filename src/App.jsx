@@ -5,6 +5,7 @@ import GuideView from './pages/GuideView.jsx'
 import GuidesIndex from './pages/GuidesIndex.jsx'
 import TopicHub from './pages/TopicHub.jsx'
 import InfoPage from './pages/InfoPage.jsx'
+import NotFound from './pages/NotFound.jsx'
 import { calculators } from './calculators/registry.js'
 import { guides } from './guides.js'
 import { topicHubs } from './topicHubs.js'
@@ -40,6 +41,8 @@ function getRouteFromLocation() {
   if (INFO_SLUGS.has(hubSlug)) {
     return { type: 'info', slug: hubSlug }
   }
+
+  if (pathname !== '/') return { type: 'not-found' }
 
   const hashMatch = window.location.hash.match(/^#calculator\/(.+)$/)
   if (hashMatch) {
@@ -105,6 +108,8 @@ export default function App() {
   )
 
   useEffect(() => {
+    if (route.type === 'not-found') return
+
     if (selectedCalculator) {
       const seo = buildCalculatorSEO(selectedCalculator.config)
       setSiteSEO({
@@ -198,6 +203,8 @@ export default function App() {
           />
         ) : route.type === 'info' ? (
           <InfoPage slug={route.slug} />
+        ) : route.type === 'not-found' ? (
+          <NotFound />
         ) : (
           <Home calculators={calculators} onSelect={openCalculator} />
         )}
