@@ -1,3 +1,5 @@
+import { getCalculatorSEO } from './calculatorSeo.js'
+
 const SITE_NAME = 'FinCalc'
 
 function getCanonicalUrl(pathname) {
@@ -75,6 +77,10 @@ export function setSiteSEO({ title, description, pathname, calculator }) {
 }
 
 export function buildCalculatorSEO(config) {
+  const custom = getCalculatorSEO(config.id)
+
+  if (custom) return custom
+
   return {
     title: `${config.title} | ${SITE_NAME}`,
     description: `${config.shortDescription} Free, instant calculation with clear results and plain-English guidance.`,
