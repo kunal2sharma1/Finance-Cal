@@ -50,7 +50,7 @@ export const guides = [
     intro: 'There is no universal retirement number. A useful estimate starts with your expected spending and the length of time your assets may need to support you.',
     sections: [
       ['Start with spending', 'Estimate annual retirement spending and separate essential costs from flexible lifestyle spending where useful.'],
-      ['Include inflation', 'Future costs can be much higher than today's costs. Ignoring inflation can make an apparently comfortable plan look better than it really is.'],
+      ['Include inflation', 'Future costs can be much higher than current costs. Ignoring inflation can make an apparently comfortable plan look better than it really is.'],
       ['Treat withdrawal rates as scenarios', 'A withdrawal rate is an assumption, not a guarantee. Use different scenarios and review the plan as your income, assets and goals change.'],
     ],
     calculatorLinks: [['Retirement Calculator','/calculators/retirement'],['Retirement Gap Calculator','/calculators/retirement-gap'],['Retirement Income Calculator','/calculators/retirement-income']],
