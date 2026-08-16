@@ -9,6 +9,7 @@ const SEO = {
   'canada-rrsp': { title: 'Canada RRSP Calculator – Estimate Contribution Room | FinCalc', description: 'Estimate basic RRSP contribution room from previous-year earned income, pension adjustment and unused room.' },
   'canada-fhsa': { title: 'Canada FHSA Calculator – Estimate First Home Savings Room | FinCalc', description: 'Estimate FHSA contribution room and projected value using the C$8,000 annual and C$40,000 lifetime limits.' },
   'singapore-cpf': { title: 'Singapore CPF Calculator – Estimate CPF Contributions | FinCalc', description: 'Estimate employee and employer CPF contributions using Singapore 2026 contribution rates and the ordinary wage ceiling.' },
+  'australia-super': { title: 'Australian Superannuation Calculator – Estimate Super Growth | FinCalc', description: 'Estimate employer super guarantee contributions, voluntary contributions and projected super balance using Australian assumptions.' },
   'australia-concessional-super': { title: 'Australia Super Concessional Contribution Calculator | FinCalc', description: 'Estimate concessional super contributions against the A$30,000 general annual cap for the current income year.' },
   'uae-end-of-service': { title: 'UAE End-of-Service Gratuity Calculator | FinCalc', description: 'Estimate UAE private-sector expatriate end-of-service gratuity from basic salary and completed service years.' },
 }
