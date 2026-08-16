@@ -85,6 +85,27 @@ const SEO = {
   'debt-to-income': { title: 'Debt-to-Income Ratio Calculator | FinCalc', description: 'Calculate your debt-to-income ratio from monthly income and debt payments to understand your current debt burden.' },
 }
 
+const SERP_OVERRIDES = {
+  sip: { title: 'SIP Calculator – Estimate Returns & Maturity | FinCalc', description: 'Estimate SIP returns, maturity value and total investment from your monthly contribution, expected return and investment period.' },
+  ppf: { title: 'PPF Calculator – Estimate Maturity Value | FinCalc', description: 'Estimate PPF maturity value and interest from yearly contributions, rate and investment period for long-term planning.' },
+  fd: { title: 'FD Calculator – Calculate Maturity & Interest | FinCalc', description: 'Calculate fixed-deposit maturity and interest from deposit amount, rate and tenure with a clear estimate of total returns.' },
+  rd: { title: 'RD Calculator – Calculate Maturity & Interest | FinCalc', description: 'Calculate recurring-deposit maturity and interest from monthly deposit, rate and tenure with a simple breakdown.' },
+  emi: { title: 'EMI Calculator – Calculate Monthly EMI & Interest | FinCalc', description: 'Calculate monthly EMI, total interest and total repayment from loan amount, interest rate and tenure.' },
+  'home-loan': { title: 'Home Loan EMI Calculator – Calculate Payments | FinCalc', description: 'Calculate home-loan EMI, total interest and repayment from loan amount, rate and tenure before comparing loan options.' },
+  'loan-prepayment': { title: 'Loan Prepayment Calculator – Estimate Interest Saved | FinCalc', description: 'Estimate how an extra loan payment could reduce interest, remaining balance or tenure under your loan assumptions.' },
+  'debt-payoff': { title: 'Debt Payoff Calculator – Find Debt-Free Date | FinCalc', description: 'Estimate how long debt may take to repay and the interest cost under different balances, rates and payment amounts.' },
+  xirr: { title: 'XIRR Calculator – Calculate Returns on Dated Cash Flows | FinCalc', description: 'Calculate annualized investment return when deposits and withdrawals occur on different dates and in different amounts.' },
+  'compound-interest': { title: 'Compound Interest Calculator – Calculate Growth | FinCalc', description: 'Calculate compound growth from an initial amount, regular contributions, return rate and investment period.' },
+  'savings-goal': { title: 'Savings Goal Calculator – Calculate Monthly Savings | FinCalc', description: 'Calculate the monthly amount you may need to save to reach a target by a chosen date using your return and goal assumptions.' },
+  'monthly-savings': { title: 'Monthly Savings Calculator – Calculate Savings Needed | FinCalc', description: 'Calculate the monthly saving amount needed for a target using your goal, timeline, existing savings and return assumptions.' },
+  'emergency-fund': { title: 'Emergency Fund Calculator – Calculate Your Target | FinCalc', description: 'Estimate an emergency-fund target from essential monthly expenses and the number of months you want your reserve to cover.' },
+  nps: { title: 'NPS Calculator – Estimate Corpus & Retirement Income | FinCalc', description: 'Estimate NPS corpus and potential retirement income from contributions, time to retirement and return assumptions.' },
+  retirement: { title: 'Retirement Calculator – Estimate Retirement Corpus | FinCalc', description: 'Estimate the retirement corpus and savings you may need using spending, inflation, returns and retirement timing assumptions.' },
+  'salary-take-home': { title: 'Take-Home Salary Calculator – Calculate In-Hand Pay | FinCalc', description: 'Estimate monthly in-hand salary after common deductions so you can compare job offers using a more realistic pay figure.' },
+  'net-worth': { title: 'Net Worth Calculator – Calculate Assets Minus Liabilities | FinCalc', description: 'Calculate net worth by adding your assets and subtracting debts and other liabilities for a clear personal balance-sheet view.' },
+  'sip-vs-lumpsum': { title: 'SIP vs Lump Sum Calculator – Compare Outcomes | FinCalc', description: 'Compare estimated SIP and lump-sum outcomes using contribution amount, return assumptions and investment period.' },
+}
+
 export function getCalculatorSEO(id) {
-  return SEO[id] || null
+  return SERP_OVERRIDES[id] || SEO[id] || null
 }
