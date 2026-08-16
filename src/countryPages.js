@@ -34,7 +34,7 @@ const countryHighlights = {
     title: 'Financial Calculators for Australia',
     description: 'Australian financial calculators covering superannuation contributions, investing, savings, debt and retirement planning.',
     intro: 'Use Australian super contribution tools alongside global calculators in Australian dollars.',
-    priorityCalculatorIds: ['australia-concessional-super', 'compound-interest', 'cagr', 'investment-return', 'monthly-savings', 'emergency-fund', 'retirement', 'net-worth', 'loan-comparison', 'debt-payoff', 'currency-exchange'],
+    priorityCalculatorIds: ['australia-super', 'australia-concessional-super', 'compound-interest', 'cagr', 'investment-return', 'monthly-savings', 'emergency-fund', 'retirement', 'net-worth', 'loan-comparison', 'debt-payoff', 'currency-exchange'],
   },
   AE: {
     slug: 'uae',
