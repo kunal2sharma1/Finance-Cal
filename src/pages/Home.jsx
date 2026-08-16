@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import CalculatorCard from '../components/CalculatorCard.jsx'
 import TopicHubLinks from '../components/TopicHubLinks.jsx'
+import { getCalculatorCountries } from '../calculatorLocale.js'
 import './home-filters.css'
 import './home-hero.css'
 
@@ -32,19 +33,26 @@ function getDisplayCategory(config) {
   return config.category || 'Other'
 }
 
+function isAvailableForCountry(config, countryCode) {
+  const supportedCountries = getCalculatorCountries(config)
+  return !supportedCountries || supportedCountries.includes(countryCode)
+}
+
 export default function Home({ calculators, onSelect, country }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [activeCategory, setActiveCategory] = useState('All')
 
   const normalizedCalculators = useMemo(
-    () => calculators.map((calculator) => ({
-      ...calculator,
-      config: {
-        ...calculator.config,
-        category: getDisplayCategory(calculator.config),
-      },
-    })),
-    [calculators],
+    () => calculators
+      .filter(({ config }) => isAvailableForCountry(config, country?.code))
+      .map((calculator) => ({
+        ...calculator,
+        config: {
+          ...calculator.config,
+          category: getDisplayCategory(calculator.config),
+        },
+      })),
+    [calculators, country?.code],
   )
 
   const categories = useMemo(() => {
