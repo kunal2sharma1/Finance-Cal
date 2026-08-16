@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import CalculatorCard from '../components/CalculatorCard.jsx'
+import TopicHubLinks from '../components/TopicHubLinks.jsx'
 import './home-filters.css'
 
 // Keep familiar categories first, then automatically include every category
@@ -185,6 +186,8 @@ export default function Home({ calculators, onSelect }) {
           </button>
         </div>
       )}
+
+      <TopicHubLinks />
     </section>
   )
 }
