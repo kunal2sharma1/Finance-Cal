@@ -7,6 +7,7 @@
     "dev": "vite",
     "seo:check": "node scripts/seo-check.mjs",
     "formula:check": "node scripts/formula-check.mjs",
+    "route:check": "node scripts/route-check.mjs",
     "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "vite build",
     "preview": "vite preview"
