@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import CalculatorForm from '../components/CalculatorForm.jsx'
 import ResultPanel from '../components/ResultPanel.jsx'
+import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import { calculators } from '../calculators/registry.js'
 import './calculator-view.css'
 
@@ -39,6 +40,14 @@ export default function CalculatorView({ calculator, onBack }) {
 
   return (
     <section className="calc-view">
+      <Breadcrumbs
+        items={[
+          { label: 'FinCalc', href: '/' },
+          { label: config.category, href: `/${config.category.toLowerCase()}` },
+          { label: config.title },
+        ]}
+      />
+
       <button className="calc-view__back" onClick={onBack} type="button">
         ← Back to calculators
       </button>
