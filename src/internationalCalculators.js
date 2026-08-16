@@ -1,0 +1,71 @@
+import { config as us401kConfig } from './calculators/401k/config.js'
+import { calculate as us401kCalculate } from './calculators/401k/formula.js'
+import { explanation as us401kExplanation } from './calculators/401k/explanation.js'
+import { config as rothIraConfig } from './calculators/roth-ira/config.js'
+import { calculate as rothIraCalculate } from './calculators/roth-ira/formula.js'
+import { explanation as rothIraExplanation } from './calculators/roth-ira/explanation.js'
+import { config as hsaConfig } from './calculators/hsa/config.js'
+import { calculate as hsaCalculate } from './calculators/hsa/formula.js'
+import { explanation as hsaExplanation } from './calculators/hsa/explanation.js'
+import { config as ukIsaConfig } from './calculators/uk-isa/config.js'
+import { calculate as ukIsaCalculate } from './calculators/uk-isa/formula.js'
+import { explanation as ukIsaExplanation } from './calculators/uk-isa/explanation.js'
+import { config as ukPensionConfig } from './calculators/uk-pension/config.js'
+import { calculate as ukPensionCalculate } from './calculators/uk-pension/formula.js'
+import { explanation as ukPensionExplanation } from './calculators/uk-pension/explanation.js'
+import { config as ukLifetimeIsaConfig } from './calculators/uk-lifetime-isa/config.js'
+import { calculate as ukLifetimeIsaCalculate } from './calculators/uk-lifetime-isa/formula.js'
+import { explanation as ukLifetimeIsaExplanation } from './calculators/uk-lifetime-isa/explanation.js'
+import { config as canadaTfsaConfig } from './calculators/canada-tfsa/config.js'
+import { calculate as canadaTfsaCalculate } from './calculators/canada-tfsa/formula.js'
+import { explanation as canadaTfsaExplanation } from './calculators/canada-tfsa/explanation.js'
+import { config as canadaRrspConfig } from './calculators/canada-rrsp/config.js'
+import { calculate as canadaRrspCalculate } from './calculators/canada-rrsp/formula.js'
+import { explanation as canadaRrspExplanation } from './calculators/canada-rrsp/explanation.js'
+import { config as canadaFhsaConfig } from './calculators/canada-fhsa/config.js'
+import { calculate as canadaFhsaCalculate } from './calculators/canada-fhsa/formula.js'
+import { explanation as canadaFhsaExplanation } from './calculators/canada-fhsa/explanation.js'
+import { config as singaporeCpfConfig } from './calculators/singapore-cpf/config.js'
+import { calculate as singaporeCpfCalculate } from './calculators/singapore-cpf/formula.js'
+import { explanation as singaporeCpfExplanation } from './calculators/singapore-cpf/explanation.js'
+import { config as australiaSuperConfig } from './calculators/australia-super/config.js'
+import { calculate as australiaSuperCalculate } from './calculators/australia-super/formula.js'
+import { explanation as australiaSuperExplanation } from './calculators/australia-super/explanation.js'
+import { config as australiaConcessionalSuperConfig } from './calculators/australia-concessional-super/config.js'
+import { calculate as australiaConcessionalSuperCalculate } from './calculators/australia-concessional-super/formula.js'
+import { explanation as australiaConcessionalSuperExplanation } from './calculators/australia-concessional-super/explanation.js'
+import { config as uaeEndOfServiceConfig } from './calculators/uae-end-of-service/config.js'
+import { calculate as uaeEndOfServiceCalculate } from './calculators/uae-end-of-service/formula.js'
+import { explanation as uaeEndOfServiceExplanation } from './calculators/uae-end-of-service/explanation.js'
+import { config as usMortgageConfig } from './calculators/us-mortgage/config.js'
+import { calculate as usMortgageCalculate } from './calculators/us-mortgage/formula.js'
+import { explanation as usMortgageExplanation } from './calculators/us-mortgage/explanation.js'
+import { config as ukMortgageConfig } from './calculators/uk-mortgage/config.js'
+import { calculate as ukMortgageCalculate } from './calculators/uk-mortgage/formula.js'
+import { explanation as ukMortgageExplanation } from './calculators/uk-mortgage/explanation.js'
+import { config as canadaMortgageConfig } from './calculators/canada-mortgage/config.js'
+import { calculate as canadaMortgageCalculate } from './calculators/canada-mortgage/formula.js'
+import { explanation as canadaMortgageExplanation } from './calculators/canada-mortgage/explanation.js'
+import { config as australiaMortgageConfig } from './calculators/australia-mortgage/config.js'
+import { calculate as australiaMortgageCalculate } from './calculators/australia-mortgage/formula.js'
+import { explanation as australiaMortgageExplanation } from './calculators/australia-mortgage/explanation.js'
+
+export const internationalCalculators = [
+  { config: us401kConfig, calculate: us401kCalculate, explanation: us401kExplanation },
+  { config: rothIraConfig, calculate: rothIraCalculate, explanation: rothIraExplanation },
+  { config: hsaConfig, calculate: hsaCalculate, explanation: hsaExplanation },
+  { config: ukIsaConfig, calculate: ukIsaCalculate, explanation: ukIsaExplanation },
+  { config: ukPensionConfig, calculate: ukPensionCalculate, explanation: ukPensionExplanation },
+  { config: ukLifetimeIsaConfig, calculate: ukLifetimeIsaCalculate, explanation: ukLifetimeIsaExplanation },
+  { config: canadaTfsaConfig, calculate: canadaTfsaCalculate, explanation: canadaTfsaExplanation },
+  { config: canadaRrspConfig, calculate: canadaRrspCalculate, explanation: canadaRrspExplanation },
+  { config: canadaFhsaConfig, calculate: canadaFhsaCalculate, explanation: canadaFhsaExplanation },
+  { config: singaporeCpfConfig, calculate: singaporeCpfCalculate, explanation: singaporeCpfExplanation },
+  { config: australiaSuperConfig, calculate: australiaSuperCalculate, explanation: australiaSuperExplanation },
+  { config: australiaConcessionalSuperConfig, calculate: australiaConcessionalSuperCalculate, explanation: australiaConcessionalSuperExplanation },
+  { config: uaeEndOfServiceConfig, calculate: uaeEndOfServiceCalculate, explanation: uaeEndOfServiceExplanation },
+  { config: usMortgageConfig, calculate: usMortgageCalculate, explanation: usMortgageExplanation },
+  { config: ukMortgageConfig, calculate: ukMortgageCalculate, explanation: ukMortgageExplanation },
+  { config: canadaMortgageConfig, calculate: canadaMortgageCalculate, explanation: canadaMortgageExplanation },
+  { config: australiaMortgageConfig, calculate: australiaMortgageCalculate, explanation: australiaMortgageExplanation },
+]

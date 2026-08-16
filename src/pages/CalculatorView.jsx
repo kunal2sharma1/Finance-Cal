@@ -3,8 +3,12 @@ import CalculatorForm from '../components/CalculatorForm.jsx'
 import ResultPanel from '../components/ResultPanel.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import CalculatorSEOSections from '../components/CalculatorSEOSections.jsx'
-import { calculators } from '../calculators/registry.js'
+import { calculators as coreCalculators } from '../calculators/registry.js'
+import { internationalCalculators } from '../internationalCalculators.js'
+import { getCalculatorCurrency } from '../calculatorLocale.js'
 import './calculator-view.css'
+
+const calculators = [...coreCalculators, ...internationalCalculators]
 
 const categoryPaths = {
   Investing: '/investing',
@@ -13,6 +17,15 @@ const categoryPaths = {
   Retirement: '/retirement',
   Budgeting: '/budgeting',
   'Financial Planning': '/financial-planning',
+  Savings: '/financial-planning',
+  'Savings & Investing': '/investing',
+  'Salary & Employment': '/salary',
+  'Investing & Markets': '/investing',
+  'Loans & Debt': '/loans',
+  Tax: '/financial-planning',
+  Education: '/financial-planning',
+  'Major Financial Decisions': '/financial-planning',
+  Other: '/financial-planning',
 }
 
 function buildDefaultValues(fields) {
@@ -33,7 +46,7 @@ function getRelatedCalculators(currentConfig) {
     .slice(0, 6)
 }
 
-export default function CalculatorView({ calculator, onBack }) {
+export default function CalculatorView({ calculator, onBack, country, numberSystem }) {
   const { config, calculate, explanation } = calculator
   const [values, setValues] = useState(() => buildDefaultValues(config.fields))
   const [results, setResults] = useState({})
@@ -66,6 +79,7 @@ export default function CalculatorView({ calculator, onBack }) {
   }, [values, calculate])
 
   const relatedCalculators = useMemo(() => getRelatedCalculators(config), [config])
+  const displayCurrency = getCalculatorCurrency(config, country)
 
   function handleChange(name, rawValue) {
     setValues((prev) => ({ ...prev, [name]: rawValue }))
@@ -100,7 +114,12 @@ export default function CalculatorView({ calculator, onBack }) {
             </div>
           </div>
 
-          <ResultPanel resultFields={config.resultFields} results={results} />
+          <ResultPanel
+            resultFields={config.resultFields}
+            results={results}
+            defaultCurrency={displayCurrency}
+            numberSystem={numberSystem}
+          />
         </div>
 
         <div className="calc-view__panel calc-view__panel--inputs">

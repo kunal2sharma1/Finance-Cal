@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import CalculatorCard from '../components/CalculatorCard.jsx'
 import TopicHubLinks from '../components/TopicHubLinks.jsx'
+import { getCalculatorCountries } from '../calculatorLocale.js'
 import './home-filters.css'
 import './home-hero.css'
 
@@ -32,19 +33,26 @@ function getDisplayCategory(config) {
   return config.category || 'Other'
 }
 
-export default function Home({ calculators, onSelect }) {
+function isAvailableForCountry(config, countryCode) {
+  const supportedCountries = getCalculatorCountries(config)
+  return !supportedCountries || supportedCountries.includes(countryCode)
+}
+
+export default function Home({ calculators, onSelect, country }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [activeCategory, setActiveCategory] = useState('All')
 
   const normalizedCalculators = useMemo(
-    () => calculators.map((calculator) => ({
-      ...calculator,
-      config: {
-        ...calculator.config,
-        category: getDisplayCategory(calculator.config),
-      },
-    })),
-    [calculators],
+    () => calculators
+      .filter(({ config }) => isAvailableForCountry(config, country?.code))
+      .map((calculator) => ({
+        ...calculator,
+        config: {
+          ...calculator.config,
+          category: getDisplayCategory(calculator.config),
+        },
+      })),
+    [calculators, country?.code],
   )
 
   const categories = useMemo(() => {
@@ -76,6 +84,9 @@ export default function Home({ calculators, onSelect }) {
     : `${filteredCalculators.length} calculator${filteredCalculators.length === 1 ? '' : 's'}`
 
   const showAllState = activeCategory === 'All' && !searchTerm.trim()
+  const preferredCurrency = country?.currency || 'INR'
+  const regionCode = country?.code || 'IN'
+  const regionFlag = country?.flag || '🌎'
 
   return (
     <section className="home">
@@ -89,16 +100,16 @@ export default function Home({ calculators, onSelect }) {
             saving, retirement, and everyday financial decisions.
           </p>
           <div className="home_intro_stats">
-            <div><strong>{calculators.length}+</strong><span>Calculators</span></div>
-            <div><strong>₹</strong><span>India-focused</span></div>
-            <div><strong>0</strong><span>Data stored</span></div>
+            <div><strong>{normalizedCalculators.length}+</strong><span>Calculators for you</span></div>
+            <div><strong>{preferredCurrency}</strong><span>Preferred currency</span></div>
+            <div><strong>{regionFlag} {regionCode}</strong><span>Selected region</span></div>
           </div>
         </div>
 
         <div className="home_illustration" aria-hidden="true">
           <div className="illustration_circle"></div>
           <div className="illustration_card illustration_card_main">
-            <span>₹</span><strong>Wealth</strong><small>Planning made simple</small>
+            <span>{preferredCurrency === 'USD' ? '$' : preferredCurrency === 'GBP' ? '£' : preferredCurrency === 'EUR' ? '€' : '₹'}</span><strong>Wealth</strong><small>Planning made simple</small>
           </div>
           <div className="illustration_card illustration_card_top">↗</div>
           <div className="illustration_card illustration_card_bottom">✓</div>
