@@ -2,17 +2,16 @@ name: Verify build
 
 on:
   push:
-    branches: [main]
+    branches: [main, seo-development]
     paths:
       - 'package.json'
       - 'package-lock.json'
       - 'src/**'
+      - 'public/**'
       - 'index.html'
       - 'vite.config.js'
+      - 'scripts/**'
   workflow_dispatch:
-
-env:
-  VERIFY_RUN: "2026-08-16T00:43:22Z"
 
 jobs:
   build:
