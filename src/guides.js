@@ -83,6 +83,62 @@ export const guides = [
     ],
     calculatorLinks: [['Rent vs Buy Calculator','/calculators/rent-vs-buy'],['Home Loan Affordability Calculator','/calculators/home-loan-affordability'],['Down Payment Calculator','/calculators/down-payment']],
   },
+  {
+    slug: 'savings-rate-and-wealth',
+    topic: 'investing',
+    title: 'Why Your Savings Rate Matters More Than You Think',
+    metaTitle: 'Savings Rate Guide | Build Wealth More Deliberately | FinCalc',
+    metaDescription: 'Understand savings rate, investing capacity and how income, spending and time affect long-term wealth building.',
+    intro: 'Savings rate is the share of income you keep rather than spend. It is a simple way to see how much of your cash flow is available for goals, reserves and investing.',
+    sections: [
+      ['What savings rate measures', 'A savings rate compares money saved or invested with income over the same period. Define the numerator consistently so your comparisons are meaningful.'],
+      ['Why it matters', 'A higher savings rate can increase the amount available to invest and can also reduce the spending level you may need to support later.'],
+      ['Use scenarios', 'Test the effect of a raise, a spending cut or a larger monthly investment instead of treating the savings rate as a fixed score.'],
+    ],
+    calculatorLinks: [['Savings Rate Calculator','/calculators/savings-rate'],['Monthly Savings Calculator','/calculators/monthly-savings'],['Wealth Accumulation Calculator','/calculators/wealth-accumulation']],
+  },
+  {
+    slug: 'real-return-vs-inflation',
+    topic: 'investing',
+    title: 'Real Return vs Inflation: What Your Return Is Actually Buying',
+    metaTitle: 'Real Return vs Inflation Guide | FinCalc',
+    metaDescription: 'Learn why nominal investment returns can overstate purchasing-power growth when inflation is high.',
+    intro: 'A return percentage is not the same thing as growth in purchasing power. Inflation can reduce what future money can actually buy.',
+    sections: [
+      ['Nominal return', 'Nominal return is the growth rate before adjusting for inflation. It is useful for describing an investment result, but it does not tell the whole purchasing-power story.'],
+      ['Real return', 'Real return adjusts for inflation. It is usually more informative when comparing long-term wealth growth with future living costs.'],
+      ['Why the gap matters', 'Two investments with the same nominal return can have different real outcomes if the inflation environment differs.'],
+    ],
+    calculatorLinks: [['Real Return Calculator','/calculators/real-return'],['Inflation Calculator','/calculators/inflation'],['Investment Return Calculator','/calculators/investment-return']],
+  },
+  {
+    slug: 'debt-to-income-ratio-explained',
+    topic: 'loans',
+    title: 'Debt-to-Income Ratio Explained',
+    metaTitle: 'Debt-to-Income Ratio Guide | FinCalc',
+    metaDescription: 'Understand debt-to-income ratio, what it measures and why lenders and borrowers use it as a planning metric.',
+    intro: 'Debt-to-income ratio compares recurring debt obligations with income. It is a useful planning measure, but it does not capture every part of affordability.',
+    sections: [
+      ['How it is calculated', 'Divide qualifying recurring debt payments by the income measure used by the calculation. Keep the time period consistent between the numerator and denominator.'],
+      ['Why it matters', 'A higher ratio means more income is already committed to debt. That can leave less room for housing, savings and unexpected expenses.'],
+      ['Use it with other numbers', 'Combine debt-to-income with cash savings, essential spending, loan rate and repayment term instead of treating one ratio as a complete affordability decision.'],
+    ],
+    calculatorLinks: [['Debt-to-Income Calculator','/calculators/debt-to-income'],['Loan Eligibility Calculator','/calculators/loan-eligibility'],['Home Loan Affordability Calculator','/calculators/home-loan-affordability']],
+  },
+  {
+    slug: 'auto-loan-cost',
+    topic: 'loans',
+    title: 'How to Compare the True Cost of an Auto Loan',
+    metaTitle: 'Auto Loan Cost Guide | FinCalc',
+    metaDescription: 'Compare auto-loan payment, interest and financed amount instead of judging a car loan only by monthly EMI.',
+    intro: 'A low monthly payment can be misleading when the repayment period is long. The useful comparison is the full cost of financing.',
+    sections: [
+      ['Look at total repayment', 'Compare the total amount repaid and total interest, not only the monthly payment.'],
+      ['Test the down payment', 'A larger upfront payment reduces the amount financed, which can lower interest and monthly payment, but it also uses cash that could serve another purpose.'],
+      ['Check alternative scenarios', 'Compare different rates, terms and down payments before deciding what is actually affordable.'],
+    ],
+    calculatorLinks: [['Auto Loan Calculator','/calculators/auto-loan'],['Car Loan Calculator','/calculators/car-loan'],['Car Loan vs Cash Calculator','/calculators/car-loan-vs-cash']],
+  },
 ]
 
 export function getGuide(slug) {
