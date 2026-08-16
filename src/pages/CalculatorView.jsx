@@ -3,9 +3,12 @@ import CalculatorForm from '../components/CalculatorForm.jsx'
 import ResultPanel from '../components/ResultPanel.jsx'
 import Breadcrumbs from '../components/Breadcrumbs.jsx'
 import CalculatorSEOSections from '../components/CalculatorSEOSections.jsx'
-import { calculators } from '../calculators/registry.js'
+import { calculators as coreCalculators } from '../calculators/registry.js'
+import { internationalCalculators } from '../internationalCalculators.js'
 import { getCalculatorCurrency } from '../calculatorLocale.js'
 import './calculator-view.css'
+
+const calculators = [...coreCalculators, ...internationalCalculators]
 
 const categoryPaths = {
   Investing: '/investing',
@@ -14,6 +17,15 @@ const categoryPaths = {
   Retirement: '/retirement',
   Budgeting: '/budgeting',
   'Financial Planning': '/financial-planning',
+  Savings: '/financial-planning',
+  'Savings & Investing': '/investing',
+  'Salary & Employment': '/salary',
+  'Investing & Markets': '/investing',
+  'Loans & Debt': '/loans',
+  Tax: '/financial-planning',
+  Education: '/financial-planning',
+  'Major Financial Decisions': '/financial-planning',
+  Other: '/financial-planning',
 }
 
 function buildDefaultValues(fields) {
