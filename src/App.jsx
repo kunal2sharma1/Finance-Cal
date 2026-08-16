@@ -10,6 +10,7 @@ import CountryPage from './pages/CountryPage.jsx'
 import CountriesIndex from './pages/CountriesIndex.jsx'
 import CountrySelector from './components/CountrySelector.jsx'
 import { useCountry } from './useCountry.js'
+import { useNumberSystem } from './useNumberSystem.js'
 import { getCountryPageBySlug } from './countryPages.js'
 import { calculators as coreCalculators } from './calculators/registry.js'
 import { internationalCalculators } from './internationalCalculators.js'
@@ -64,6 +65,7 @@ function normalizeLegacyHashUrl() {
 export default function App() {
   const [route, setRoute] = useState(() => getRouteFromLocation())
   const country = useCountry()
+  const numberSystem = useNumberSystem()
 
   useEffect(() => {
     normalizeLegacyHashUrl()
@@ -175,7 +177,7 @@ export default function App() {
 
       <main className="site-main">
         {selectedCalculator ? (
-          <CalculatorView calculator={selectedCalculator} onBack={goHome} country={country} calculators={calculators} />
+          <CalculatorView calculator={selectedCalculator} onBack={goHome} country={country} numberSystem={numberSystem} />
         ) : selectedGuide ? (
           <GuideView guide={selectedGuide} />
         ) : route.type === 'guides' ? (
