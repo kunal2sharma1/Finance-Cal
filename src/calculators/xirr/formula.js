@@ -21,7 +21,7 @@ function parseCashFlows(value) {
       const [date, amount] = line.split(',').map((part) => part.trim())
       return { date, amount: Number(amount) }
     })
-    .filter((item) => item.date && Number.isFinite(item.amount))
+    .filter((item) => item.date && Number.isFinite(item.amount) && item.amount !== 0)
 }
 
 function toMs(date) {
@@ -49,12 +49,13 @@ function solveXIRR(flows) {
     fHigh = npv(high, flows, toMs(flows[0].date))
   }
 
-  if (fLow * fHigh > 0) return null
+  if (!Number.isFinite(fLow) || !Number.isFinite(fHigh) || fLow * fHigh > 0) return null
 
   for (let i = 0; i < 200; i++) {
     const mid = (low + high) / 2
     const fMid = npv(mid, flows, toMs(flows[0].date))
 
+    if (!Number.isFinite(fMid)) return null
     if (Math.abs(fMid) < 1e-7) return mid
     if (fLow * fMid <= 0) {
       high = mid
@@ -65,20 +66,34 @@ function solveXIRR(flows) {
     }
   }
 
-  return (low + high) / 2
+  const result = (low + high) / 2
+  return Number.isFinite(result) ? result : null
+}
+
+function invalidResult(message, invested = 0, received = 0) {
+  return {
+    isValid: false,
+    message,
+    xirr: null,
+    netCashFlow: Math.round(received - invested),
+    totalInvested: Math.round(invested),
+    totalReceived: Math.round(received),
+  }
 }
 
 export function calculate(inputs) {
-  const flows = parseCashFlows(inputs.cashFlows)
-    .sort((a, b) => toMs(a.date) - toMs(b.date))
+  let flows
+
+  try {
+    flows = parseCashFlows(inputs.cashFlows)
+      .map((flow) => ({ ...flow, dateMs: toMs(flow.date) }))
+      .sort((a, b) => a.dateMs - b.dateMs)
+  } catch {
+    return invalidResult('Enter valid dates for every cash flow.')
+  }
 
   if (flows.length < 2) {
-    return {
-      xirr: 0,
-      netCashFlow: 0,
-      totalInvested: 0,
-      totalReceived: 0,
-    }
+    return invalidResult('Add at least two valid cash flows to calculate XIRR.')
   }
 
   const hasPositive = flows.some((flow) => flow.amount > 0)
@@ -94,18 +109,27 @@ export function calculate(inputs) {
     .reduce((sum, flow) => sum + flow.amount, 0)
 
   if (!hasPositive || !hasNegative) {
-    return {
-      xirr: 0,
-      netCashFlow: Math.round(received - invested),
-      totalInvested: Math.round(invested),
-      totalReceived: Math.round(received),
-    }
+    return invalidResult(
+      'XIRR needs at least one investment and one received cash flow.',
+      invested,
+      received,
+    )
   }
 
   const rate = solveXIRR(flows)
 
+  if (rate === null || !Number.isFinite(rate)) {
+    return invalidResult(
+      'A valid XIRR could not be found for these cash flows. Check the dates and amounts.',
+      invested,
+      received,
+    )
+  }
+
   return {
-    xirr: rate === null ? 0 : Math.round(rate * 10000) / 100,
+    isValid: true,
+    message: null,
+    xirr: Math.round(rate * 10000) / 100,
     netCashFlow: Math.round(received - invested),
     totalInvested: Math.round(invested),
     totalReceived: Math.round(received),
