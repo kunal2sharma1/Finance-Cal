@@ -38,5 +38,8 @@ jobs:
       - name: Run formula regression tests
         run: npm run formula:check
 
+      - name: Run route regression tests
+        run: npm run route:check
+
       - name: Build
         run: npm run build
