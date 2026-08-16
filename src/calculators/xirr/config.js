@@ -8,14 +8,15 @@ export const config = {
   fields: [
     {
       name: 'cashFlows',
-      type: 'textarea',
-      label: 'Enter your dated cash flows',
-      unit: '',
-      defaultValue:
-        '2020-01-01, -100000\n2021-06-01, -50000\n2025-01-01, 220000',
-      rows: 7,
+      type: 'cashflows',
+      label: 'Enter your investments and withdrawals',
+      defaultValue: [
+        { date: '2020-01-01', amount: '-100000' },
+        { date: '2021-06-01', amount: '-50000' },
+        { date: '2025-01-01', amount: '220000' },
+      ],
       help:
-        'One line per cash flow: YYYY-MM-DD, amount. Money invested = negative. Money received/current value = positive.',
+        'Add each money movement. Use a negative amount for money you invest and a positive amount for money you receive or the current value.',
     },
   ],
 
