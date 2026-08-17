@@ -25,6 +25,7 @@
     "international:check": "node scripts/international-check.mjs",
     "calculator:contract": "node scripts/validate-calculator-contract.mjs",
     "input-groups:check": "node scripts/input-group-check.mjs",
+    "input-control:check": "node scripts/input-control-policy-check.mjs",
     "formula:check": "node scripts/formula-check.mjs",
     "formula:golden": "node scripts/formula-golden-check.mjs",
     "formula:boundary": "node scripts/formula-boundary-check.mjs",
