@@ -39,6 +39,9 @@ jobs:
       - name: Validate input grouping
         run: npm run input-groups:check
 
+      - name: Validate input control policy
+        run: npm run input-control:check
+
       - name: Run golden formula regression tests
         run: npm run formula:golden
 
