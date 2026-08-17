@@ -1,5 +1,6 @@
 import { getCalculatorScope } from './calculatorScope.js'
 import { getResultCertainty } from './calculatorCertainty.js'
+import { getPrecisionPolicy } from './precisionPolicy.js'
 
 const DOMAIN_MAP = [
   ['invest', 'investing'],
@@ -125,6 +126,7 @@ export function getCalculatorMeta(config) {
     modelingScopeNote,
     resultCertainty,
     resultCertaintyNote,
+    precisionPolicy: getPrecisionPolicy(resultCertainty),
     calculatorClass: inferCalculatorClass(config),
     riskLevel: inferRisk(config, modelType),
     primaryJourney: inferJourney(domain),
