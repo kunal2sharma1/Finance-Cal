@@ -1,14 +1,14 @@
 const SIGNALS = [
   { pattern: /compare|vs\b|versus|comparison|better than/, intent: 'compare' },
   { pattern: /can i afford|afford|eligible|eligibility|qualify|can i/, intent: 'check' },
-  { pattern: /plan|planning|goal|target|how much should|how much do i need|save for/, intent: 'plan' },
+  { pattern: /should i.*(?:save|invest|repay|pay)|plan|planning|goal|target|how much should|how much do i need|save for|retire|retirement/, intent: 'plan' },
   { pattern: /future|projection|projected|growth|value later|corpus|return/, intent: 'project' },
   { pattern: /rate|ratio|percentage|cagr|xirr|irr|interest|yield/, intent: 'measure' },
   { pattern: /calculate|calculator|compute|how much|what is|emi|payment/, intent: 'calculate' },
 ]
 
 const DOMAIN_SIGNALS = [
-  { pattern: /loan|mortgage|emi|borrow|home loan|housing/, domain: 'borrowing', priority: 100 },
+  { pattern: /loan|mortgage|emi|borrow|home loan|housing|house|property/, domain: 'borrowing', priority: 100 },
   { pattern: /debt|credit card|credit score|debt-to-income/, domain: 'debt', priority: 95 },
   { pattern: /net worth|savings rate|financial health/, domain: 'financial-health', priority: 90 },
   { pattern: /retire|retirement|nps|epf|401\(k\)|pension/, domain: 'retirement', priority: 85 },
