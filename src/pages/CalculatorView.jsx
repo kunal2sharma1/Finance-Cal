@@ -12,6 +12,7 @@ import { getCalculatorCurrency } from '../calculatorLocale.js'
 import { setBreadcrumbSchema } from '../seo.js'
 import { trackEvent } from '../analytics.js'
 import './calculator-view.css'
+import './calculator-toolbar.css'
 
 const categoryPaths = {
   Investing: '/investing', Loans: '/loans', Salary: '/salary', Retirement: '/retirement', Budgeting: '/budgeting',
@@ -122,8 +123,10 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
 
   return (
     <section className="calc-view">
-      <Breadcrumbs items={[{ label: 'FinCalc', href: '/' }, { label: config.category, href: categoryPaths[config.category] || '/financial-planning' }, { label: config.title }]} />
-      <button className="calc-view__back" onClick={onBack} type="button">← Back to calculators</button>
+      <div className="calc-view__topbar">
+        <Breadcrumbs items={[{ label: 'FinCalc', href: '/' }, { label: config.category, href: categoryPaths[config.category] || '/financial-planning' }]} />
+        <button className="calc-view__back" onClick={onBack} type="button">← Back to calculators</button>
+      </div>
       <div className="calc-view__header">
         <span className="calc-view__eyebrow">FINANCIAL CALCULATOR</span>
         <h1 className="calc-view__title">{config.title}</h1>
@@ -163,7 +166,7 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
       {relatedCalculators.length > 0 && (
         <nav className="calc-view__related" aria-labelledby="related-calculators">
           <div><span className="calc-view__eyebrow">KEEP EXPLORING</span><h2 id="related-calculators">Related financial calculators</h2></div>
-          <div className="calc-view__related-grid">{relatedCalculators.map(({ config: related }) => <a key={related.id} href={`/calculators/${encodeURIComponent(related.id)}`} className="calc-view__related-link"><span>{related.title}</span><small>{related.shortDescription}</small></a>)}</div>
+          <div className="calc-view__related-grid">{relatedCalculators.map(({ config: related }) => <a key={related.id} href={`/calculators/${encodeURIComponent(related.id)}"`} className="calc-view__related-link"><span>{related.title}</span><small>{related.shortDescription}</small></a>)}</div>
         </nav>
       )}
     </section>
