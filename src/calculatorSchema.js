@@ -42,6 +42,15 @@ export const CALCULATOR_MODEL_TYPES = Object.freeze([
   'live-data',
 ])
 
+export const CALCULATOR_MODEL_SCOPES = Object.freeze([
+  'exact',
+  'standard-model',
+  'simplified-model',
+  'rule-based-illustration',
+  'projection',
+  'live-data',
+])
+
 export const CALCULATOR_CLASSES = Object.freeze([
   'standard',
   'select-based',
@@ -64,4 +73,8 @@ export function isSupportedFieldType(type) {
 
 export function isSupportedResultType(type) {
   return SUPPORTED_RESULT_TYPES.includes(type)
+}
+
+export function isSupportedModelScope(scope) {
+  return CALCULATOR_MODEL_SCOPES.includes(scope)
 }
