@@ -29,5 +29,11 @@ export function isValidTrustDefinition(definition) {
     const value = definition.effectivePeriod[key]
     if (value !== null && (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value))) return false
   }
+
+  const methodology = definition.methodology
+  if (!methodology || typeof methodology !== 'object') return false
+  for (const key of ['summary', 'approach', 'limitations']) {
+    if (typeof methodology[key] !== 'string' || methodology[key].trim() === '') return false
+  }
   return true
 }
