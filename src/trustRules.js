@@ -15,6 +15,25 @@ const RULE_SCOPE = Object.freeze({
   'uae-end-of-service': 'Standard private-sector end-of-service gratuity framework.',
 })
 
+function isDateOrNull(value) {
+  return value === null || (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value))
+}
+
+export function isValidTrustRule(rule) {
+  if (!rule || typeof rule !== 'object') return false
+  if (typeof rule.id !== 'string' || !rule.id) return false
+  if (typeof rule.calculatorId !== 'string' || !rule.calculatorId) return false
+  if (typeof rule.statement !== 'string' || !rule.statement) return false
+  if (!rule.source || typeof rule.source !== 'object') return false
+  if (typeof rule.source.label !== 'string' || !rule.source.label) return false
+  if (typeof rule.source.url !== 'string' || !/^https:\/\//.test(rule.source.url)) return false
+  if (!rule.effectivePeriod || typeof rule.effectivePeriod !== 'object') return false
+  if (!isDateOrNull(rule.effectivePeriod.from) || !isDateOrNull(rule.effectivePeriod.to)) return false
+  if (typeof rule.reviewedAt !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(rule.reviewedAt)) return false
+  if (!Array.isArray(rule.validationCases)) return false
+  return true
+}
+
 export const trustRules = Object.fromEntries(
   Object.entries(trustMetadata).map(([calculatorId, metadata]) => [calculatorId, [
     {
