@@ -1,3 +1,5 @@
+import { getCalculatorScope } from './calculatorScope.js'
+
 const DOMAIN_MAP = [
   ['invest', 'investing'],
   ['stock', 'investing'],
@@ -111,11 +113,14 @@ export function getCalculatorMeta(config) {
   const domain = inferDomain(config)
   const intent = inferIntent(config)
   const modelType = inferModelType(config)
+  const { modelScope, note: modelingScopeNote } = getCalculatorScope(config, modelType)
 
   return {
     domain,
     intent,
     modelType,
+    modelScope,
+    modelingScopeNote,
     calculatorClass: inferCalculatorClass(config),
     riskLevel: inferRisk(config, modelType),
     primaryJourney: inferJourney(domain),
