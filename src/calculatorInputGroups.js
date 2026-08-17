@@ -18,10 +18,16 @@ const GROUP_RULES = [
     pattern: /year|month|tenure|term|age|date|period|retirement|duration|timeline/i,
   },
   {
+    id: 'cashflows',
+    label: 'Cash flows',
+    description: 'Add dated money movements in the order they occurred.',
+    types: new Set(['cashflows']),
+  },
+  {
     id: 'options',
     label: 'Options & preferences',
     description: 'Choose the product, country, currency or other calculation options.',
-    types: new Set(['select', 'currency-select', 'cashflows']),
+    types: new Set(['select', 'currency-select']),
   },
 ]
 
