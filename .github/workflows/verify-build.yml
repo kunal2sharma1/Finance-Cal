@@ -78,6 +78,9 @@ jobs:
       - name: Validate modeling scope
         run: npm run model-scope:check
 
+      - name: Validate result certainty
+        run: npm run result-certainty:check
+
       - name: Validate analytics
         run: npm run analytics:check
 
