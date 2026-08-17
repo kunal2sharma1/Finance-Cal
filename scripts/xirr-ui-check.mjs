@@ -8,10 +8,10 @@ const failures = []
 const assert = (condition, message) => { if (!condition) failures.push(message) }
 
 assert(formSource.includes('aria-label="XIRR cash flow entries"'), 'XIRR editor needs an explicit accessible container label.')
-assert(formSource.includes('Cash flow ${index + 1} date'), 'Each XIRR row needs an accessible date label.')
-assert(formSource.includes('Cash flow ${index + 1} transaction type'), 'Each XIRR row needs an accessible transaction-type label.')
-assert(formSource.includes('Cash flow ${index + 1} amount'), 'Each XIRR row needs an accessible amount label.')
-assert(formSource.includes('Remove ${rowLabel}'), 'Each XIRR row needs an accessible remove action.')
+assert(formSource.includes('aria-label={`${rowLabel} date`}'), 'Each XIRR row needs an accessible date label.')
+assert(formSource.includes('aria-label={`${rowLabel} transaction type`}'), 'Each XIRR row needs an accessible transaction-type label.')
+assert(formSource.includes('aria-label={`${rowLabel} amount`}'), 'Each XIRR row needs an accessible amount label.')
+assert(formSource.includes('aria-label={`Remove ${rowLabel}`}'), 'Each XIRR row needs an accessible remove action.')
 assert(formSource.includes('>Remove</button>'), 'Remove actions must use text labels rather than icon-only controls.')
 assert(cssSource.includes('@media (max-width: 560px)'), 'XIRR editor must define a mobile layout.')
 assert(cssSource.includes('.calc-form__cashflow-field > span'), 'Mobile XIRR rows must expose field labels.')
