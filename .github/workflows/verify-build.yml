@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
 
 env:
-  VERIFY_RUN: "2026-08-17T18:08:00+05:30"
+  VERIFY_RUN: "2026-08-17T18:12:00+05:30"
 
 jobs:
   build:
@@ -60,8 +60,26 @@ jobs:
       - name: Validate SEO configuration
         run: npm run seo:check
 
+      - name: Validate discovery
+        run: npm run discovery:check
+
+      - name: Validate trust
+        run: npm run trust:check
+
+      - name: Validate analytics
+        run: npm run analytics:check
+
+      - name: Validate commercial configuration
+        run: npm run commercial:check
+
+      - name: Validate international coverage
+        run: npm run international:check
+
       - name: Run formula regression tests
         run: npm run formula:check
 
       - name: Build
         run: npm run build
+
+      - name: Validate performance budget
+        run: npm run performance:check
