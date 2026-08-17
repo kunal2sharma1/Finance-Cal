@@ -21,6 +21,7 @@
     "result-certainty:check": "node scripts/result-certainty-check.mjs",
     "result-hierarchy:check": "node scripts/result-hierarchy-check.mjs",
     "result-card:check": "node scripts/result-card-cleanup-check.mjs",
+    "search-index:check": "node scripts/search-index-check.mjs",
     "precision:check": "node scripts/precision-policy-check.mjs",
     "analytics:check": "node scripts/analytics-check.mjs",
     "commercial:check": "node scripts/commercial-check.mjs",
