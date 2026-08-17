@@ -51,6 +51,9 @@ jobs:
       - name: Validate result hierarchy
         run: npm run result-hierarchy:check
 
+      - name: Validate result card cleanup
+        run: npm run result-card:check
+
       - name: Run golden formula regression tests
         run: npm run formula:golden
 
