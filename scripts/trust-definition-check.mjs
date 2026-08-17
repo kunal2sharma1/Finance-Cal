@@ -22,6 +22,13 @@ for (const [calculatorId, metadata] of Object.entries(trustMetadata)) {
   if (definition.reviewedAt !== metadata.reviewed) {
     failures.push(`Trust review-date mismatch: ${calculatorId}`)
   }
+
+  const { methodology } = definition
+  for (const key of ['summary', 'approach', 'limitations']) {
+    if (typeof methodology?.[key] !== 'string' || methodology[key].trim() === '') {
+      failures.push(`Missing methodology ${key}: ${calculatorId}`)
+    }
+  }
 }
 
 if (failures.length > 0) {
@@ -30,4 +37,4 @@ if (failures.length > 0) {
   process.exit(1)
 }
 
-console.log(`TrustDefinition validation passed: ${Object.keys(trustDefinitions).length} normalized definitions.`)
+console.log(`TrustDefinition validation passed: ${Object.keys(trustDefinitions).length} definitions with methodology metadata.`)
