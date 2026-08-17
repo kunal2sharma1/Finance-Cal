@@ -19,9 +19,11 @@ Baseline: created from `main` before new generation work.
 - [x] Master 88-phase plan committed.
 - [x] Phases 1–16 completed and independently validated.
 - [x] Phase 17 rule provenance implemented and independently validated.
+- [x] Phase 18 methodology metadata implemented and independently validated.
+- [x] Phase 19 modeling scope cleanup implemented and independently validated.
 - [ ] Current production baseline recorded.
 - [ ] PR #10 incorporated.
-- [ ] Phases 18–21 trust governance implemented.
+- [ ] Phases 20–21 trust governance implemented.
 - [ ] Phases 22–28 UX/mobile implementation completed.
 - [ ] Phases 29–34 search/discovery implementation completed.
 - [ ] Phases 35–40 content/decision implementation completed.
