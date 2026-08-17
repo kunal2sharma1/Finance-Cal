@@ -17,6 +17,7 @@
     "trust:check": "node scripts/trust-check.mjs",
     "trust:definition": "node scripts/trust-definition-check.mjs",
     "trust:provenance": "node scripts/trust-provenance-check.mjs",
+    "model-scope:check": "node scripts/model-scope-check.mjs",
     "analytics:check": "node scripts/analytics-check.mjs",
     "commercial:check": "node scripts/commercial-check.mjs",
     "international:check": "node scripts/international-check.mjs",
