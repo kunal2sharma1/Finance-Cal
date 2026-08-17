@@ -1,6 +1,7 @@
 import { getCalculatorScope } from './calculatorScope.js'
 import { getResultCertainty } from './calculatorCertainty.js'
 import { getPrecisionPolicy } from './precisionPolicy.js'
+import { normalizeCalculatorFields } from './inputControlPolicy.js'
 
 const DOMAIN_MAP = [
   ['invest', 'investing'],
@@ -135,8 +136,14 @@ export function getCalculatorMeta(config) {
 }
 
 export function withCalculatorMeta(calculator) {
+  const config = {
+    ...calculator.config,
+    fields: normalizeCalculatorFields(calculator.config?.fields || []),
+  }
+
   return {
     ...calculator,
-    meta: getCalculatorMeta(calculator.config),
+    config,
+    meta: getCalculatorMeta(config),
   }
 }
