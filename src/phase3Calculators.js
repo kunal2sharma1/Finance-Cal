@@ -14,10 +14,27 @@ import { config as debtToIncomeConfig } from './calculators/debt-to-income/confi
 import { calculate as debtToIncomeCalculate } from './calculators/debt-to-income/formula.js'
 import { explanation as debtToIncomeExplanation } from './calculators/debt-to-income/explanation.js'
 
+function normalizeExplanation(explanation) {
+  if (explanation?.body) return explanation
+
+  const sections = Array.isArray(explanation?.sections)
+    ? explanation.sections.flatMap((section) => {
+        if (Array.isArray(section) && section.length >= 2) return [`${section[0]}: ${section[1]}`]
+        if (typeof section === 'string') return [section]
+        return []
+      })
+    : []
+
+  return {
+    ...explanation,
+    body: [explanation?.overview, ...sections].filter(Boolean).join('\n\n'),
+  }
+}
+
 export const phase3Calculators = [
-  { config: savingsRateConfig, calculate: savingsRateCalculate, explanation: savingsRateExplanation },
-  { config: realReturnConfig, calculate: realReturnCalculate, explanation: realReturnExplanation },
-  { config: bondReturnConfig, calculate: bondReturnCalculate, explanation: bondReturnExplanation },
-  { config: autoLoanConfig, calculate: autoLoanCalculate, explanation: autoLoanExplanation },
-  { config: debtToIncomeConfig, calculate: debtToIncomeCalculate, explanation: debtToIncomeExplanation },
+  { config: savingsRateConfig, calculate: savingsRateCalculate, explanation: normalizeExplanation(savingsRateExplanation) },
+  { config: realReturnConfig, calculate: realReturnCalculate, explanation: normalizeExplanation(realReturnExplanation) },
+  { config: bondReturnConfig, calculate: bondReturnCalculate, explanation: normalizeExplanation(bondReturnExplanation) },
+  { config: autoLoanConfig, calculate: autoLoanCalculate, explanation: normalizeExplanation(autoLoanExplanation) },
+  { config: debtToIncomeConfig, calculate: debtToIncomeCalculate, explanation: normalizeExplanation(debtToIncomeExplanation) },
 ]
