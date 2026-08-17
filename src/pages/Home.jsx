@@ -1,12 +1,11 @@
 import { useMemo, useState } from 'react'
 import CalculatorCard from '../components/CalculatorCard.jsx'
 import TopicHubLinks from '../components/TopicHubLinks.jsx'
+import { searchSite } from '../searchCatalog.js'
 import { getCalculatorCountries } from '../calculatorLocale.js'
 import './home-filters.css'
 import './home-hero.css'
 
-// Keep familiar categories first, then automatically include every category
-// used by a calculator so newly added calculators never disappear from filters.
 const CATEGORY_ORDER = [
   'All',
   'Investing',
@@ -66,18 +65,17 @@ export default function Home({ calculators, onSelect, country }) {
   }, [normalizedCalculators])
 
   const filteredCalculators = useMemo(() => {
-    const query = searchTerm.trim().toLowerCase()
+    const query = searchTerm.trim()
+    const matches = query
+      ? new Set(searchSite(query, { countryCode: country?.code, types: ['calculator'] }).map((result) => result.id))
+      : null
 
     return normalizedCalculators.filter(({ config }) => {
       const matchesCategory = activeCategory === 'All' || config.category === activeCategory
-      const searchableText = [config.title, config.shortDescription, config.category]
-        .filter(Boolean)
-        .join(' ')
-        .toLowerCase()
-      const matchesSearch = !query || searchableText.includes(query)
+      const matchesSearch = !matches || matches.has(config.id)
       return matchesCategory && matchesSearch
     })
-  }, [normalizedCalculators, searchTerm, activeCategory])
+  }, [normalizedCalculators, searchTerm, activeCategory, country?.code])
 
   const resultLabel = searchTerm.trim()
     ? `${filteredCalculators.length} result${filteredCalculators.length === 1 ? '' : 's'} for "${searchTerm.trim()}"`
