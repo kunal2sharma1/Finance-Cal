@@ -34,6 +34,22 @@
   min-width: 0;
 }
 
+.calc-form__row--error .calc-form__input,
+.calc-form__row--error .calc-form__textarea {
+  border-color: #b45353;
+}
+
+.calc-form__row--error .calc-form__slider {
+  accent-color: #b45353;
+}
+
+.calc-form__error {
+  margin-top: 5px;
+  color: #9f3f3f;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
 @media (max-width: 560px) {
   .calc-form__group {
     gap: 10px;
@@ -42,5 +58,9 @@
 
   .calc-form__group-fields {
     gap: 12px;
+  }
+
+  .calc-form__error {
+    font-size: 10.5px;
   }
 }
