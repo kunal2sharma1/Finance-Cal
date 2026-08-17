@@ -12,10 +12,11 @@ let nativeCount = 0
 for (const calculator of calculators) {
   for (const field of calculator.config.fields) {
     const resolved = resolveInputMode(field)
+    const type = field.type || 'number'
     assert(isSupportedInputMode(field.inputMode), `Invalid resolved inputMode: ${calculator.config.id}.${field.name}`)
     assert(field.inputMode === resolved, `Input policy drift: ${calculator.config.id}.${field.name}`)
 
-    if (field.type === 'number') {
+    if (type === 'number') {
       assert(field.inputMode === 'numeric' || field.inputMode === 'slider', `Number field has invalid control: ${calculator.config.id}.${field.name}`)
       if (field.inputMode === 'slider') {
         sliderCount += 1
