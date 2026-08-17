@@ -166,7 +166,7 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
       {relatedCalculators.length > 0 && (
         <nav className="calc-view__related" aria-labelledby="related-calculators">
           <div><span className="calc-view__eyebrow">KEEP EXPLORING</span><h2 id="related-calculators">Related financial calculators</h2></div>
-          <div className="calc-view__related-grid">{relatedCalculators.map(({ config: related }) => <a key={related.id} href={`/calculators/${encodeURIComponent(related.id)}"`} className="calc-view__related-link"><span>{related.title}</span><small>{related.shortDescription}</small></a>)}</div>
+          <div className="calc-view__related-grid">{relatedCalculators.map(({ config: related }) => <a key={related.id} href={`/calculators/${encodeURIComponent(related.id)}`} className="calc-view__related-link"><span>{related.title}</span><small>{related.shortDescription}</small></a>)}</div>
         </nav>
       )}
     </section>
