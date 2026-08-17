@@ -39,6 +39,9 @@ jobs:
       - name: Run golden formula regression tests
         run: npm run formula:golden
 
+      - name: Run formula boundary tests
+        run: npm run formula:boundary
+
       - name: Validate SEO Growth V1
         run: npm run seo:growth:v1
 
