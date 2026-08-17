@@ -48,6 +48,9 @@ jobs:
       - name: Validate XIRR mobile UI
         run: npm run xirr-ui:check
 
+      - name: Validate result hierarchy
+        run: npm run result-hierarchy:check
+
       - name: Run golden formula regression tests
         run: npm run formula:golden
 
