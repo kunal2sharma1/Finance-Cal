@@ -2,8 +2,15 @@ export default function CalculatorCard({ config, onSelect }) {
   const href = `/calculators/${encodeURIComponent(config.id)}`
 
   function handleClick(event) {
-    event.preventDefault()
-    onSelect(config.id)
+    // Keep the React navigation path for SPA transitions, but never block
+    // the native link. If client-side navigation is unavailable or errors,
+    // the browser can still open the calculator URL normally.
+    if (event.defaultPrevented) return
+    try {
+      onSelect?.(config.id)
+    } catch {
+      // Native <a href> navigation remains the fallback.
+    }
   }
 
   return (
