@@ -14,11 +14,23 @@ for (const calculator of calculators) {
   const sourceNames = config.fields.map((field) => field.name)
   const groupedNames = result.groups.flatMap((group) => group.fields.map((field) => field.name))
   assert(groupedNames.length === sourceNames.length, `Input count changed by grouping: ${config.id}`)
-  assert(groupedNames.every((name, index) => name === sourceNames[index]), `Input order changed by grouping: ${config.id}`)
   assert(new Set(groupedNames).size === sourceNames.length, `Input duplicated or dropped during grouping: ${config.id}`)
+  assert(
+    [...groupedNames].sort().join('\u0000') === [...sourceNames].sort().join('\u0000'),
+    `Grouped inputs do not match source inputs: ${config.id}`,
+  )
+
+  const sourceIndex = new Map(sourceNames.map((name, index) => [name, index]))
   for (const group of result.groups) {
     assert(group.id && group.label, `Unnamed input group in ${config.id}`)
     assert(Array.isArray(group.fields) && group.fields.length > 0, `Empty input group in ${config.id}: ${group.id}`)
+
+    const indices = group.fields.map((field) => sourceIndex.get(field.name))
+    assert(indices.every(Number.isInteger), `Unknown input in grouped fields: ${config.id}:${group.id}`)
+    assert(
+      indices.every((value, index) => index === 0 || value > indices[index - 1]),
+      `Input order changed inside group: ${config.id}:${group.id}`,
+    )
   }
 }
 
