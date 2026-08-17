@@ -2,7 +2,7 @@ name: Verify build
 
 on:
   push:
-    branches: [main, seo-development, global-development, seo-growth-v1]
+    branches: [main, seo-development, global-development, seo-growth-v1, fincalc-batch-1-5-final-validator-2]
     paths:
       - 'package.json'
       - 'package-lock.json'
@@ -11,10 +11,11 @@ on:
       - 'index.html'
       - 'vite.config.js'
       - 'scripts/**'
+      - '.github/workflows/verify-build.yml'
   workflow_dispatch:
 
 env:
-  VERIFY_RUN: "2026-08-16T16:01:27+05:30"
+  VERIFY_RUN: "2026-08-17T18:08:00+05:30"
 
 jobs:
   build:
@@ -31,6 +32,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Validate calculator contracts
+        run: npm run calculator:contract
+
+      - name: Run golden formula regression tests
+        run: npm run formula:golden
 
       - name: Validate SEO Growth V1
         run: npm run seo:growth:v1
