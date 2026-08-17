@@ -51,6 +51,14 @@ export const CALCULATOR_MODEL_SCOPES = Object.freeze([
   'live-data',
 ])
 
+export const CALCULATOR_CERTAINTY_LEVELS = Object.freeze([
+  'exact',
+  'estimate',
+  'projection',
+  'scenario',
+  'live-data',
+])
+
 export const CALCULATOR_CLASSES = Object.freeze([
   'standard',
   'select-based',
@@ -77,4 +85,8 @@ export function isSupportedResultType(type) {
 
 export function isSupportedModelScope(scope) {
   return CALCULATOR_MODEL_SCOPES.includes(scope)
+}
+
+export function isSupportedCertaintyLevel(level) {
+  return CALCULATOR_CERTAINTY_LEVELS.includes(level)
 }
