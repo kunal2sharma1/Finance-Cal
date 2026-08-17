@@ -79,6 +79,7 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
     completionTrackedRef.current = false
     trackEvent('calculator_open', { calculatorId: config.id, category: config.category || 'Other' })
+
     setBreadcrumbSchema([
       { label: 'FinCalc', href: '/' },
       { label: config.category, href: categoryPaths[config.category] || '/financial-planning' },
@@ -139,7 +140,7 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
         </div>
         <div className="calc-view__panel calc-view__panel--inputs">
           <div className="calc-view__panel-heading"><div><span className="calc-view__panel-kicker">YOUR INPUTS</span><h2>Set your assumptions</h2></div><span className="calc-view__panel-hint">Updates instantly</span></div>
-          <CalculatorForm fields={config.fields} values={values} onChange={handleChange} />
+          <CalculatorForm calculatorId={config.id} fields={config.fields} values={values} onChange={handleChange} />
         </div>
       </div>
       <section className="calc-view__content" aria-labelledby="how-it-works">
