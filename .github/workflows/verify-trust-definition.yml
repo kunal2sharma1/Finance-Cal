@@ -7,7 +7,9 @@ on:
       - 'src/trustDefinition.js'
       - 'src/trustDefinitions.js'
       - 'src/trustMetadata.js'
+      - 'src/trustRules.js'
       - 'scripts/trust-definition-check.mjs'
+      - 'scripts/trust-provenance-check.mjs'
       - 'package.json'
       - '.github/workflows/verify-trust-definition.yml'
   workflow_dispatch:
@@ -30,3 +32,6 @@ jobs:
 
       - name: Validate TrustDefinition framework
         run: npm run trust:definition
+
+      - name: Validate trust rule provenance
+        run: npm run trust:provenance
