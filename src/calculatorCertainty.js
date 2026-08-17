@@ -1,10 +1,6 @@
-export const CALCULATOR_CERTAINTY_LEVELS = Object.freeze([
-  'exact',
-  'estimate',
-  'projection',
-  'scenario',
-  'live-data',
-])
+import { CALCULATOR_CERTAINTY_LEVELS } from './calculatorSchema.js'
+
+export { CALCULATOR_CERTAINTY_LEVELS }
 
 const CERTAINTY_BY_SCOPE = Object.freeze({
   exact: 'exact',
