@@ -1,3 +1,5 @@
+import './result-interpretation.css'
+
 function isValidNumeric(value) {
   return typeof value === 'number' && Number.isFinite(value)
 }
