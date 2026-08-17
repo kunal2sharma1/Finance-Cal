@@ -36,6 +36,9 @@ jobs:
       - name: Validate calculator contracts
         run: npm run calculator:contract
 
+      - name: Validate input grouping
+        run: npm run input-groups:check
+
       - name: Run golden formula regression tests
         run: npm run formula:golden
 
