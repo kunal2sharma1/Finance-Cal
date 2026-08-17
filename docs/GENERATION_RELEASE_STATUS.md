@@ -2,7 +2,7 @@
 
 Release branch: `fincalc-generational-release`
 
-Status: **IN PROGRESS — Phase 23 complete; Phase 24 not started**.
+Status: **IN PROGRESS — Phase 24 complete; Phase 25 not started**.
 
 ## Production baseline
 
@@ -36,7 +36,7 @@ Status: **IN PROGRESS — Phase 23 complete; Phase 24 not started**.
 - [x] Phase 21 precision policy aligned with result certainty and independently validated.
 - [x] Phase 22 input grouping system implemented and independently validated.
 - [x] Phase 23 explicit numeric/slider control policy implemented and independently validated.
-- [ ] Phase 24 contextual input-validation messaging.
+- [x] Phase 24 contextual input-validation messaging implemented, integrated into the calculator form, and independently validated.
 - [ ] Phase 25 mobile-first XIRR cash-flow redesign.
 - [ ] Phase 26 multi-viewport calculator audit.
 - [ ] Phase 27 result interpretation hierarchy.
@@ -64,3 +64,9 @@ The dedicated input-grouping gate passed for the full calculator catalogue and t
 Phase 23 passed GitHub Actions Run #341 on commit `1bc5bcb4211f675d83d7b3f4fe44fdbf53b637c1`.
 
 The explicit numeric/slider control policy was centralized, legacy slider behavior was preserved in the policy layer, UI heuristics were removed from the form component, and the complete downstream verification pipeline passed through production build and performance budget.
+
+## Phase 24 qualification
+
+Phase 24 passed GitHub Actions Run #349 on commit `e69cf68f99e7852fe0e3e066a990b2a0bfd672eb`.
+
+Contextual validation now runs through a shared validation layer, field-level messages appear after interaction, invalid fields expose accessible error state, and invalid calculator values block recalculation until corrected. The dedicated input-validation CI gate and the complete downstream verification pipeline passed through production build and performance budget.
