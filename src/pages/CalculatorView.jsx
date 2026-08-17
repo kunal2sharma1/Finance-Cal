@@ -75,7 +75,8 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
   useEffect(() => {
     let active = true
     setResults((previous) => ({ ...previous, loading: true }))
-    Promise.resolve(calculate(values))
+    Promise.resolve()
+      .then(() => calculate(values))
       .then((nextResults) => {
         if (!active) return
         setResults({ ...nextResults, loading: false })
@@ -84,8 +85,9 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
           trackEvent('calculator_complete', { calculatorId: config.id })
         }
       })
-      .catch(() => {
-        if (active) setResults({ isValid: false, loading: false, message: 'The calculation could not be completed. Please try again.' })
+      .catch((error) => {
+        console.error(`Calculator ${config.id} failed:`, error)
+        if (active) setResults({ isValid: false, loading: false, message: 'The calculation could not be completed. Please check your inputs and try again.' })
       })
     return () => { active = false }
   }, [values, calculate, config.id])
