@@ -42,6 +42,9 @@ jobs:
       - name: Validate input control policy
         run: npm run input-control:check
 
+      - name: Validate contextual input validation
+        run: npm run input-validation:check
+
       - name: Run golden formula regression tests
         run: npm run formula:golden
 
