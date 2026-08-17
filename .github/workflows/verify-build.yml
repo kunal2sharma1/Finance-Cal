@@ -57,6 +57,9 @@ jobs:
       - name: Validate structured search index
         run: npm run search-index:check
 
+      - name: Validate search intent ranking
+        run: npm run search-intent:check
+
       - name: Run golden formula regression tests
         run: npm run formula:golden
 
