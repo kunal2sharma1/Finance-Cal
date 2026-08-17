@@ -15,6 +15,7 @@
     "serp:check": "node scripts/serp-quality-check.mjs",
     "discovery:check": "node scripts/discovery-check.mjs",
     "trust:check": "node scripts/trust-check.mjs",
+    "trust:definition": "node scripts/trust-definition-check.mjs",
     "analytics:check": "node scripts/analytics-check.mjs",
     "commercial:check": "node scripts/commercial-check.mjs",
     "international:check": "node scripts/international-check.mjs",
