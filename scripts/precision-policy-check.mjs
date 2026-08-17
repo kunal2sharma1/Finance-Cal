@@ -5,13 +5,13 @@ const failures = []
 const validCertainty = new Set(['exact', 'estimate', 'projection', 'scenario', 'live-data'])
 
 for (const calculator of calculators) {
-  const { certainty } = calculator.meta || {}
-  if (!validCertainty.has(certainty)) {
-    failures.push(`Invalid certainty for ${calculator.config.id}: ${certainty}`)
+  const { resultCertainty } = calculator.meta || {}
+  if (!validCertainty.has(resultCertainty)) {
+    failures.push(`Invalid certainty for ${calculator.config.id}: ${resultCertainty}`)
     continue
   }
 
-  const policy = getPrecisionPolicy(certainty)
+  const policy = getPrecisionPolicy(resultCertainty)
   for (const key of ['currencyDecimals', 'percentDecimals', 'ratioDecimals']) {
     if (!Number.isInteger(policy[key]) || policy[key] < 0) {
       failures.push(`Invalid precision policy ${key} for ${calculator.config.id}`)
@@ -19,7 +19,7 @@ for (const calculator of calculators) {
   }
 
   for (const field of calculator.config.resultFields || []) {
-    const precision = getResultDisplayPrecision(certainty, field.unit)
+    const precision = getResultDisplayPrecision(resultCertainty, field.unit)
     if (!Number.isInteger(precision) || precision < 0) {
       failures.push(`Invalid result precision for ${calculator.config.id}.${field.name}`)
     }
@@ -36,8 +36,8 @@ const representativeExpectations = {
 for (const [id, expected] of Object.entries(representativeExpectations)) {
   const calculator = calculators.find((item) => item.config.id === id)
   if (!calculator) continue
-  if (calculator.meta.certainty !== expected) {
-    failures.push(`Unexpected certainty for ${id}: expected ${expected}, found ${calculator.meta.certainty}`)
+  if (calculator.meta.resultCertainty !== expected) {
+    failures.push(`Unexpected certainty for ${id}: expected ${expected}, found ${calculator.meta.resultCertainty}`)
   }
 }
 
