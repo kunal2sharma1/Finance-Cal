@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getInputGroups } from '../calculatorInputGroups.js'
+import { resolveInputMode } from '../inputControlPolicy.js'
 import './cashflow-editor.css'
 import './calculator-form-groups.css'
 
@@ -116,25 +117,14 @@ function CurrencySelect({ field, value, onChange }) {
   )
 }
 
-function getInputMode(field) {
-  if (field.inputMode) return field.inputMode
-  if (field.type === 'slider') return 'slider'
-  const unit = String(field.unit || '').toLowerCase()
-  const min = Number(field.min)
-  const max = Number(field.max)
-  const range = Number.isFinite(min) && Number.isFinite(max) ? Math.abs(max - min) : Infinity
-  if (unit === '%' || unit === 'rate' || /year|month/.test(unit) || range <= 200) return 'slider'
-  return 'numeric'
-}
-
 function CalculatorField({ field, values, onChange }) {
   const isTextarea = field.type === 'textarea'
   const isCashFlows = field.type === 'cashflows'
   const isSelect = field.type === 'select'
   const isCurrencySelect = field.type === 'currency-select'
-  const inputMode = getInputMode(field)
-  const canUseSlider = !isTextarea && !isCashFlows && !isSelect && !isCurrencySelect && Number.isFinite(Number(field.min)) && Number.isFinite(Number(field.max))
-  const hasSlider = canUseSlider && inputMode !== 'numeric'
+  const inputMode = resolveInputMode(field)
+  const canUseSlider = field.type === 'number' && Number.isFinite(Number(field.min)) && Number.isFinite(Number(field.max))
+  const hasSlider = canUseSlider && inputMode === 'slider'
   const numericValue = Number(values[field.name])
   const rangeValue = Number.isFinite(numericValue) ? numericValue : Number(field.defaultValue) || Number(field.min) || 0
   const percent = canUseSlider && field.max !== field.min
