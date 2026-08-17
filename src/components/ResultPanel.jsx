@@ -50,11 +50,24 @@ function formatResultValue(value, field, results, defaultCurrency, numberSystem)
   return formatCurrency(value, defaultCurrency || 'INR', numberSystem)
 }
 
-export default function ResultPanel({ resultFields, results = {}, defaultCurrency = 'INR', numberSystem = 'indian' }) {
+function formatCertaintyLabel(level) {
+  if (!level) return ''
+  return level.charAt(0).toUpperCase() + level.slice(1).replace(/-/g, ' ')
+}
+
+export default function ResultPanel({
+  resultFields,
+  results = {},
+  defaultCurrency = 'INR',
+  numberSystem = 'indian',
+  resultCertainty,
+  resultCertaintyNote,
+}) {
   const safeResultFields = Array.isArray(resultFields) ? resultFields.filter(Boolean) : []
   const primary = safeResultFields.find((field) => field.primary)
   const secondary = safeResultFields.filter((field) => !field.primary)
   const isInvalid = results.isValid === false
+  const hasCertainty = !isInvalid && !results.loading && Boolean(resultCertainty)
 
   const invested = results.totalInvested
   const returns = results.totalReturns
@@ -84,6 +97,14 @@ export default function ResultPanel({ resultFields, results = {}, defaultCurrenc
           <span className="result-panel__primary-value">
             {formatResultValue(results[primary.name], primary, results, defaultCurrency, numberSystem)}
           </span>
+        </div>
+      )}
+
+      {hasCertainty && (
+        <div className="result-panel__interpretation" aria-label={`Result certainty: ${formatCertaintyLabel(resultCertainty)}`}>
+          <span className="result-panel__interpretation-label">RESULT INTERPRETATION</span>
+          <strong>{formatCertaintyLabel(resultCertainty)}</strong>
+          {resultCertaintyNote && <p>{resultCertaintyNote}</p>}
         </div>
       )}
 
