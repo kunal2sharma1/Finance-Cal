@@ -22,6 +22,7 @@
     "formula:check": "node scripts/formula-check.mjs",
     "formula:golden": "node scripts/formula-golden-check.mjs",
     "formula:boundary": "node scripts/formula-boundary-check.mjs",
+    "formula:xirr": "node scripts/xirr-numerical-check.mjs",
     "prebuild": "node scripts/generate-global-sitemap.mjs",
     "build": "vite build",
     "performance:check": "node scripts/performance-check.mjs",
