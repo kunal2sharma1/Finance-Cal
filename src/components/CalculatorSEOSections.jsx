@@ -22,12 +22,26 @@ function buildFallbackContent(calculatorId, fields, resultFields) {
   }
 }
 
+function normaliseContent(calculatorId, config) {
+  const fallback = buildFallbackContent(
+    calculatorId,
+    Array.isArray(config?.fields) ? config.fields : [],
+    Array.isArray(config?.resultFields) ? config.resultFields : [],
+  )
+
+  const custom = calculatorSEOContent[calculatorId]
+    || phase4CalculatorSEOContent[calculatorId]
+    || seoGrowthCalculatorContent[calculatorId]
+
+  return {
+    sections: Array.isArray(custom?.sections) ? custom.sections : fallback.sections,
+    faqs: Array.isArray(custom?.faqs) ? custom.faqs : fallback.faqs,
+  }
+}
+
 export default function CalculatorSEOSections({ calculatorId, config }) {
   const content = useMemo(
-    () => calculatorSEOContent[calculatorId]
-      || phase4CalculatorSEOContent[calculatorId]
-      || seoGrowthCalculatorContent[calculatorId]
-      || buildFallbackContent(calculatorId, config?.fields || [], config?.resultFields || []),
+    () => normaliseContent(calculatorId, config),
     [calculatorId, config],
   )
   const intent = seoIntentContent[calculatorId]
@@ -70,7 +84,7 @@ export default function CalculatorSEOSections({ calculatorId, config }) {
           <div className="calc-view__intent-questions">
             <strong>Common questions this calculator helps you explore</strong>
             <ul>
-              {intent.questions.map((question) => <li key={question}>{question}</li>)}
+              {(Array.isArray(intent.questions) ? intent.questions : []).map((question) => <li key={question}>{question}</li>)}
             </ul>
           </div>
         </section>
