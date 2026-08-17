@@ -25,7 +25,9 @@ export function isValidTrustDefinition(definition) {
   if (!Array.isArray(definition.exclusions)) return false
   if (typeof definition.reviewedAt !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(definition.reviewedAt)) return false
   if (!definition.effectivePeriod || typeof definition.effectivePeriod !== 'object') return false
-  if (typeof definition.effectivePeriod.from !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(definition.effectivePeriod.from)) return false
-  if (definition.effectivePeriod.to !== null && (typeof definition.effectivePeriod.to !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(definition.effectivePeriod.to))) return false
+  for (const key of ['from', 'to']) {
+    const value = definition.effectivePeriod[key]
+    if (value !== null && (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value))) return false
+  }
   return true
 }
