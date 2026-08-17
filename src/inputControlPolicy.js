@@ -31,6 +31,7 @@ export function resolveInputMode(field) {
 export function normalizeCalculatorFields(fields = []) {
   return fields.map((field) => ({
     ...field,
+    type: field.type || 'number',
     inputMode: resolveInputMode(field),
   }))
 }
