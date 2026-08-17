@@ -12,7 +12,7 @@ const DOMAIN_SIGNALS = [
   { pattern: /debt|credit card|credit score|debt-to-income/, domain: 'debt', priority: 95 },
   { pattern: /net worth|savings rate|financial health/, domain: 'financial-health', priority: 90 },
   { pattern: /retire|retirement|nps|epf|401\(k\)|pension/, domain: 'retirement', priority: 85 },
-  { pattern: /invest|stock|sip|mutual fund|bond|portfolio|dividend/, domain: 'investing', priority: 80 },
+  { pattern: /xirr|irr|cagr|return rate|invest|stock|sip|mutual fund|bond|portfolio|dividend/, domain: 'investing', priority: 80 },
   { pattern: /salary|ctc|bonus|gratuity|job|income/, domain: 'salary', priority: 75 },
   { pattern: /tax|capital gain|capital gains/, domain: 'tax', priority: 70 },
   { pattern: /education|college|tuition|school/, domain: 'education', priority: 65 },
