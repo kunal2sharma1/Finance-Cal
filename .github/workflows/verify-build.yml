@@ -45,6 +45,9 @@ jobs:
       - name: Validate contextual input validation
         run: npm run input-validation:check
 
+      - name: Validate XIRR mobile UI
+        run: npm run xirr-ui:check
+
       - name: Run golden formula regression tests
         run: npm run formula:golden
 
