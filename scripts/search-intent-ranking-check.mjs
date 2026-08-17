@@ -4,6 +4,9 @@ import { inferSearchIntent, scoreSearchResult } from '../src/searchIntent.js'
 const cases = [
   ['compare home loan vs personal loan', 'compare', 'borrowing', 'home-and-borrowing'],
   ['can i afford a loan', 'check', 'borrowing', 'home-and-borrowing'],
+  ['can i afford a house', 'check', 'borrowing', 'home-and-borrowing'],
+  ['how much loan can i afford', 'check', 'borrowing', 'home-and-borrowing'],
+  ['should i save or repay my loan', 'plan', 'borrowing', 'home-and-borrowing'],
   ['how much should i retire', 'plan', 'retirement', 'retirement'],
   ['projected mutual fund growth', 'project', 'investing', 'wealth-building'],
   ['xirr return rate', 'measure', 'investing', 'wealth-building'],
