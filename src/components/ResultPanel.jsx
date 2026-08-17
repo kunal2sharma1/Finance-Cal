@@ -50,13 +50,6 @@ function formatResultValue(value, field, results, defaultCurrency, numberSystem)
   return formatCurrency(value, defaultCurrency || 'INR', numberSystem)
 }
 
-function buildInterpretation(primary, results) {
-  if (typeof results.interpretation === 'string' && results.interpretation.trim()) return results.interpretation
-  if (typeof results.keyInsight === 'string' && results.keyInsight.trim()) return results.keyInsight
-  if (!primary) return 'This result is an estimate based on the assumptions you entered. Test another scenario before making an important financial decision.'
-  return `This is an estimated ${primary.label.toLowerCase()} based on the assumptions you entered. Change the inputs to compare scenarios.`
-}
-
 export default function ResultPanel({ resultFields, results = {}, defaultCurrency = 'INR', numberSystem = 'indian' }) {
   const safeResultFields = Array.isArray(resultFields) ? resultFields.filter(Boolean) : []
   const primary = safeResultFields.find((field) => field.primary)
@@ -91,12 +84,6 @@ export default function ResultPanel({ resultFields, results = {}, defaultCurrenc
           <span className="result-panel__primary-value">
             {formatResultValue(results[primary.name], primary, results, defaultCurrency, numberSystem)}
           </span>
-        </div>
-      )}
-
-      {!isInvalid && !results.loading && (
-        <div className="result-panel__message" role="status">
-          {buildInterpretation(primary, results)}
         </div>
       )}
 
