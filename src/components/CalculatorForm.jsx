@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
+import { getInputGroups } from '../calculatorInputGroups.js'
 import './cashflow-editor.css'
+import './calculator-form-groups.css'
 
 const CURRENCY_API = 'https://api.frankfurter.dev/v2/currencies'
 const FALLBACK_CURRENCIES = [
@@ -125,49 +127,69 @@ function getInputMode(field) {
   return 'numeric'
 }
 
-export default function CalculatorForm({ fields, values, onChange }) {
+function CalculatorField({ field, values, onChange }) {
+  const isTextarea = field.type === 'textarea'
+  const isCashFlows = field.type === 'cashflows'
+  const isSelect = field.type === 'select'
+  const isCurrencySelect = field.type === 'currency-select'
+  const inputMode = getInputMode(field)
+  const canUseSlider = !isTextarea && !isCashFlows && !isSelect && !isCurrencySelect && Number.isFinite(Number(field.min)) && Number.isFinite(Number(field.max))
+  const hasSlider = canUseSlider && inputMode !== 'numeric'
+  const numericValue = Number(values[field.name])
+  const rangeValue = Number.isFinite(numericValue) ? numericValue : Number(field.defaultValue) || Number(field.min) || 0
+  const percent = canUseSlider && field.max !== field.min
+    ? Math.min(100, Math.max(0, ((rangeValue - field.min) / (field.max - field.min)) * 100))
+    : 0
+
+  return (
+    <div className="calc-form__row">
+      <label htmlFor={field.name} className="calc-form__label">
+        {field.label}
+        {field.unit ? <span className="calc-form__unit">{field.unit}</span> : null}
+      </label>
+      {isCashFlows ? (
+        <CashFlowEditor field={field} value={values[field.name]} onChange={onChange} />
+      ) : isCurrencySelect ? (
+        <CurrencySelect field={field} value={values[field.name]} onChange={onChange} />
+      ) : isTextarea ? (
+        <textarea id={field.name} name={field.name} className="calc-form__textarea" value={values[field.name] ?? ''} rows={field.rows || 6} placeholder={field.placeholder} onChange={(event) => onChange(field.name, event.target.value)} />
+      ) : isSelect ? (
+        <select id={field.name} name={field.name} className="calc-form__input calc-form__select" value={values[field.name] ?? field.defaultValue ?? ''} onChange={(event) => onChange(field.name, event.target.value)}>
+          {(field.options || []).map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+        </select>
+      ) : (
+        <>
+          <input id={field.name} name={field.name} type="number" inputMode="decimal" className="calc-form__input" value={values[field.name] ?? ''} min={field.min} max={field.max} step={field.step} onChange={(event) => onChange(field.name, event.target.value)} />
+          {hasSlider ? (
+            <input type="range" aria-label={`${field.label} slider`} className="calc-form__slider" style={{ '--fill': `${percent}%` }} min={field.min} max={field.max} step={field.step} value={rangeValue} onChange={(event) => onChange(field.name, event.target.value)} />
+          ) : null}
+        </>
+      )}
+      {!isCashFlows && field.help ? <small className="calc-form__help">{field.help}</small> : null}
+    </div>
+  )
+}
+
+export default function CalculatorForm({ calculatorId, fields, values, onChange }) {
+  const groups = getInputGroups(fields)
+  const showGroupHeadings = groups.length > 1
+
   return (
     <div className="calc-form">
-      {fields.map((field) => {
-        const isTextarea = field.type === 'textarea'
-        const isCashFlows = field.type === 'cashflows'
-        const isSelect = field.type === 'select'
-        const isCurrencySelect = field.type === 'currency-select'
-        const inputMode = getInputMode(field)
-        const canUseSlider = !isTextarea && !isCashFlows && !isSelect && !isCurrencySelect && Number.isFinite(Number(field.min)) && Number.isFinite(Number(field.max))
-        const hasSlider = canUseSlider && inputMode !== 'numeric'
-        const numericValue = Number(values[field.name])
-        const rangeValue = Number.isFinite(numericValue) ? numericValue : Number(field.defaultValue) || Number(field.min) || 0
-        const percent = canUseSlider && field.max !== field.min
-          ? Math.min(100, Math.max(0, ((rangeValue - field.min) / (field.max - field.min)) * 100))
-          : 0
-
+      {groups.map((group) => {
+        const groupId = `${calculatorId || 'calculator'}-input-group-${group.id}`
         return (
-          <div className="calc-form__row" key={field.name}>
-            <label htmlFor={field.name} className="calc-form__label">
-              {field.label}
-              {field.unit ? <span className="calc-form__unit">{field.unit}</span> : null}
-            </label>
-            {isCashFlows ? (
-              <CashFlowEditor field={field} value={values[field.name]} onChange={onChange} />
-            ) : isCurrencySelect ? (
-              <CurrencySelect field={field} value={values[field.name]} onChange={onChange} />
-            ) : isTextarea ? (
-              <textarea id={field.name} name={field.name} className="calc-form__textarea" value={values[field.name] ?? ''} rows={field.rows || 6} placeholder={field.placeholder} onChange={(event) => onChange(field.name, event.target.value)} />
-            ) : isSelect ? (
-              <select id={field.name} name={field.name} className="calc-form__input calc-form__select" value={values[field.name] ?? field.defaultValue ?? ''} onChange={(event) => onChange(field.name, event.target.value)}>
-                {(field.options || []).map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-              </select>
-            ) : (
-              <>
-                <input id={field.name} name={field.name} type="number" inputMode="decimal" className="calc-form__input" value={values[field.name] ?? ''} min={field.min} max={field.max} step={field.step} onChange={(event) => onChange(field.name, event.target.value)} />
-                {hasSlider ? (
-                  <input type="range" aria-label={`${field.label} slider`} className="calc-form__slider" style={{ '--fill': `${percent}%` }} min={field.min} max={field.max} step={field.step} value={rangeValue} onChange={(event) => onChange(field.name, event.target.value)} />
-                ) : null}
-              </>
-            )}
-            {!isCashFlows && field.help ? <small className="calc-form__help">{field.help}</small> : null}
-          </div>
+          <section className="calc-form__group" key={group.id} aria-labelledby={showGroupHeadings ? groupId : undefined}>
+            {showGroupHeadings ? (
+              <header className="calc-form__group-header">
+                <h3 id={groupId} className="calc-form__group-title">{group.label}</h3>
+                {group.description ? <p className="calc-form__group-description">{group.description}</p> : null}
+              </header>
+            ) : null}
+            <div className="calc-form__group-fields">
+              {group.fields.map((field) => <CalculatorField key={field.name} field={field} values={values} onChange={onChange} />)}
+            </div>
+          </section>
         )
       })}
     </div>
