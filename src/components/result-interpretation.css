@@ -1,0 +1,38 @@
+.result-panel__interpretation {
+  margin: -4px 0 20px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 12px;
+  background: rgba(255,255,255,.07);
+}
+
+.result-panel__interpretation-label {
+  display: block;
+  margin-bottom: 4px;
+  color: rgba(255,255,255,.58);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+}
+
+.result-panel__interpretation strong {
+  display: block;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.result-panel__interpretation p {
+  margin: 4px 0 0;
+  color: rgba(255,255,255,.68);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+@media (max-width: 560px) {
+  .result-panel__interpretation {
+    margin-bottom: 16px;
+    padding: 11px 12px;
+  }
+}
