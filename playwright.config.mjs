@@ -19,7 +19,7 @@ export default defineConfig({
     { name: 'mobile', use: { ...devices['iPhone 13'], viewport: { width: 390, height: 844 } } },
   ],
   webServer: {
-    command: 'npm run dev -- --host 127.0.0.1',
+    command: 'npm run dev -- --host 127.0.0.1 --port 4173',
     url: 'http://127.0.0.1:4173',
     reuseExistingServer: false,
     timeout: 120000,
