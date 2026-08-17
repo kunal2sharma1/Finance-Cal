@@ -1,4 +1,5 @@
 import { getCalculatorScope } from './calculatorScope.js'
+import { getResultCertainty } from './calculatorCertainty.js'
 
 const DOMAIN_MAP = [
   ['invest', 'investing'],
@@ -114,6 +115,7 @@ export function getCalculatorMeta(config) {
   const intent = inferIntent(config)
   const modelType = inferModelType(config)
   const { modelScope, note: modelingScopeNote } = getCalculatorScope(config, modelType)
+  const { level: resultCertainty, note: resultCertaintyNote } = getResultCertainty(modelScope)
 
   return {
     domain,
@@ -121,6 +123,8 @@ export function getCalculatorMeta(config) {
     modelType,
     modelScope,
     modelingScopeNote,
+    resultCertainty,
+    resultCertaintyNote,
     calculatorClass: inferCalculatorClass(config),
     riskLevel: inferRisk(config, modelType),
     primaryJourney: inferJourney(domain),
