@@ -8,16 +8,16 @@ const SIGNALS = [
 ]
 
 const DOMAIN_SIGNALS = [
-  { pattern: /invest|stock|sip|mutual fund|bond|portfolio|dividend/, domain: 'investing' },
-  { pattern: /save|saving|fd|fixed deposit|rd|ppf/, domain: 'saving' },
-  { pattern: /loan|mortgage|emi|borrow|home loan/, domain: 'borrowing' },
-  { pattern: /debt|credit card|credit score|debt-to-income/, domain: 'debt' },
-  { pattern: /salary|ctc|bonus|gratuity|job|income/, domain: 'salary' },
-  { pattern: /retire|retirement|nps|epf|401\(k\)|pension/, domain: 'retirement' },
-  { pattern: /tax|capital gain|capital gains/, domain: 'tax' },
-  { pattern: /education|college|tuition|school/, domain: 'education' },
-  { pattern: /insurance|life cover|health cover/, domain: 'insurance' },
-  { pattern: /net worth|savings rate|financial health/, domain: 'financial-health' },
+  { pattern: /loan|mortgage|emi|borrow|home loan|housing/, domain: 'borrowing', priority: 100 },
+  { pattern: /debt|credit card|credit score|debt-to-income/, domain: 'debt', priority: 95 },
+  { pattern: /net worth|savings rate|financial health/, domain: 'financial-health', priority: 90 },
+  { pattern: /retire|retirement|nps|epf|401\(k\)|pension/, domain: 'retirement', priority: 85 },
+  { pattern: /invest|stock|sip|mutual fund|bond|portfolio|dividend/, domain: 'investing', priority: 80 },
+  { pattern: /salary|ctc|bonus|gratuity|job|income/, domain: 'salary', priority: 75 },
+  { pattern: /tax|capital gain|capital gains/, domain: 'tax', priority: 70 },
+  { pattern: /education|college|tuition|school/, domain: 'education', priority: 65 },
+  { pattern: /insurance|life cover|health cover/, domain: 'insurance', priority: 60 },
+  { pattern: /save|saving|fd|fixed deposit|rd|ppf/, domain: 'saving', priority: 40 },
 ]
 
 const JOURNEY_BY_DOMAIN = {
@@ -38,7 +38,8 @@ export function inferSearchIntent(query) {
   if (!text) return { intent: 'calculate', domain: null, journey: null }
 
   const intentMatch = SIGNALS.find(({ pattern }) => pattern.test(text))
-  const domainMatch = DOMAIN_SIGNALS.find(({ pattern }) => pattern.test(text))
+  const domainMatches = DOMAIN_SIGNALS.filter(({ pattern }) => pattern.test(text))
+  const domainMatch = domainMatches.sort((a, b) => b.priority - a.priority)[0]
   const domain = domainMatch?.domain || null
 
   return {
