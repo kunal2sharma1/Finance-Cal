@@ -3,7 +3,7 @@ import { guides } from './guides.js'
 
 const normalize = (value) => String(value || '').trim().toLowerCase()
 
-const buildCalculatorEntry = ({ config }) => ({
+const buildCalculatorEntry = ({ config, meta }) => ({
   type: 'calculator',
   id: config.id,
   title: config.title,
@@ -11,6 +11,9 @@ const buildCalculatorEntry = ({ config }) => ({
   category: config.category,
   keywords: Array.isArray(config.keywords) ? [...config.keywords] : [],
   countries: Array.isArray(config.countries) ? [...config.countries] : [],
+  domain: meta?.domain || null,
+  intent: meta?.intent || 'calculate',
+  primaryJourney: meta?.primaryJourney || 'financial-planning',
   href: `/calculators/${encodeURIComponent(config.id)}`,
   searchText: normalize([
     config.title,
@@ -26,6 +29,9 @@ const buildGuideEntry = (guide) => ({
   title: guide.title,
   description: guide.metaDescription || guide.intro,
   topic: guide.topic,
+  domain: null,
+  intent: 'calculate',
+  primaryJourney: null,
   href: `/guides/${guide.slug}`,
   searchText: normalize([
     guide.title,
