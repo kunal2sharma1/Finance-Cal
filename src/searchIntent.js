@@ -2,8 +2,8 @@ const SIGNALS = [
   { pattern: /compare|vs\b|versus|comparison|better than/, intent: 'compare' },
   { pattern: /can i afford|afford|eligible|eligibility|qualify|can i/, intent: 'check' },
   { pattern: /should i.*(?:save|invest|repay|pay)|plan|planning|goal|target|how much should|how much do i need|save for|retire|retirement/, intent: 'plan' },
-  { pattern: /future|projection|projected|growth|value later|corpus|return/, intent: 'project' },
-  { pattern: /rate|ratio|percentage|cagr|xirr|irr|interest|yield/, intent: 'measure' },
+  { pattern: /future|projection|projected|growth|value later|corpus/, intent: 'project' },
+  { pattern: /rate|ratio|percentage|cagr|xirr|irr|interest|yield|return rate/, intent: 'measure' },
   { pattern: /calculate|calculator|compute|how much|what is|emi|payment/, intent: 'calculate' },
 ]
 
