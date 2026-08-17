@@ -18,15 +18,15 @@ const cases = [
   {
     calculatorId: 'real-return',
     name: 'Real return 8% nominal and 5% inflation',
-    inputs: { nominalReturnRate: 8, inflationRate: 5 },
-    expected: { realReturnRate: 2.857142857142869 },
+    inputs: { nominalReturn: 8, inflationRate: 5 },
+    expected: { realReturn: 2.857142857142869 },
     tolerance: 0.000001,
   },
   {
     calculatorId: 'savings-rate',
     name: 'Savings rate 20000 of 100000',
-    inputs: { savingsAmount: 20000, incomeAmount: 100000 },
-    expected: { savingsRate: 20 },
+    inputs: { monthlyIncome: 100000, monthlySavings: 20000 },
+    expected: { savingsRate: 20, monthlySpending: 80000, annualSavings: 240000 },
     tolerance: 0.000001,
   },
 ]
