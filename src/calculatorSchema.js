@@ -6,6 +6,12 @@ export const SUPPORTED_FIELD_TYPES = Object.freeze([
   'currency-select',
 ])
 
+export const SUPPORTED_INPUT_MODES = Object.freeze([
+  'numeric',
+  'slider',
+  'native',
+])
+
 export const SUPPORTED_RESULT_TYPES = Object.freeze([
   'date',
   'dynamicCurrency',
@@ -77,6 +83,10 @@ export const CALCULATOR_RISK_LEVELS = Object.freeze([
 
 export function isSupportedFieldType(type) {
   return SUPPORTED_FIELD_TYPES.includes(type || 'number')
+}
+
+export function isSupportedInputMode(mode) {
+  return SUPPORTED_INPUT_MODES.includes(mode)
 }
 
 export function isSupportedResultType(type) {
