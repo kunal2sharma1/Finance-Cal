@@ -81,6 +81,9 @@ jobs:
       - name: Validate result certainty
         run: npm run result-certainty:check
 
+      - name: Validate precision policy
+        run: npm run precision:check
+
       - name: Validate analytics
         run: npm run analytics:check
 
