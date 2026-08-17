@@ -18,7 +18,12 @@ for (const calculator of calculators) {
       })
       page.on('pageerror', (error) => pageErrors.push(error.message))
 
-      const response = await page.goto(`/calculators/${encodeURIComponent(id)}`, { waitUntil: 'networkidle' })
+      // Do not wait for networkidle here. Some calculators intentionally perform
+      // live-data requests, and an external request can remain open long enough
+      // to make a healthy page fail the viewport audit. The audit itself should
+      // validate document readiness plus the rendered calculator UI, not the
+      // completion of external network activity.
+      const response = await page.goto(`/calculators/${encodeURIComponent(id)}`, { waitUntil: 'domcontentloaded' })
       expect(response, `${id} did not return a response`).not.toBeNull()
       expect(response.status(), `${id} returned an HTTP error`).toBeLessThan(400)
 
