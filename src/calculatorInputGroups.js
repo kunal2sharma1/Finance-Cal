@@ -77,12 +77,18 @@ export function validateInputGroups(fields = []) {
   const groups = getInputGroups(fields)
   const groupedNames = groups.flatMap((group) => group.fields.map((field) => field.name))
   const sourceNames = fields.map((field) => field.name)
+  const sourceIndex = new Map(sourceNames.map((name, index) => [name, index]))
+  const membershipMatches =
+    groupedNames.length === sourceNames.length &&
+    new Set(groupedNames).size === sourceNames.length &&
+    [...groupedNames].sort().join('\u0000') === [...sourceNames].sort().join('\u0000')
+  const orderPreservedWithinGroups = groups.every((group) => {
+    const indices = group.fields.map((field) => sourceIndex.get(field.name))
+    return indices.every(Number.isInteger) && indices.every((value, index) => index === 0 || value > indices[index - 1])
+  })
+
   return {
-    valid:
-      groups.length > 0 &&
-      groupedNames.length === sourceNames.length &&
-      new Set(groupedNames).size === sourceNames.length &&
-      groupedNames.every((name, index) => name === sourceNames[index]),
+    valid: groups.length > 0 && membershipMatches && orderPreservedWithinGroups,
     groups,
   }
 }
