@@ -1,4 +1,5 @@
 import { calculators } from '../src/calculatorCatalog.js'
+import { isSupportedInputMode } from '../src/calculatorSchema.js'
 
 const SUPPORTED_FIELD_TYPES = new Set([
   'textarea',
@@ -52,6 +53,16 @@ function validateCalculator(entry, index) {
         fail(errors, `fields[${fieldIndex}] unsupported type: ${type}`)
       }
 
+      if (!isSupportedInputMode(field.inputMode)) {
+        fail(errors, `fields[${fieldIndex}] invalid inputMode: ${field.inputMode}`)
+      }
+      if (type === 'number' && field.inputMode === 'native') {
+        fail(errors, `fields[${fieldIndex}] number field cannot use native inputMode`)
+      }
+      if (type !== 'number' && field.inputMode !== 'native') {
+        fail(errors, `fields[${fieldIndex}] non-number field must use native inputMode`)
+      }
+
       if (type === 'select') {
         if (!Array.isArray(field.options) || field.options.length === 0) {
           fail(errors, `fields[${fieldIndex}] select requires options`)
@@ -79,6 +90,9 @@ function validateCalculator(entry, index) {
         if (field.max !== undefined && !assertFiniteNumber(Number(field.max))) fail(errors, `fields[${fieldIndex}] invalid max`)
         if (field.step !== undefined && (!assertFiniteNumber(Number(field.step)) || Number(field.step) <= 0)) fail(errors, `fields[${fieldIndex}] invalid step`)
         if (field.min !== undefined && field.max !== undefined && Number(field.min) > Number(field.max)) fail(errors, `fields[${fieldIndex}] min greater than max`)
+        if (field.inputMode === 'slider' && (field.min === undefined || field.max === undefined)) {
+          fail(errors, `fields[${fieldIndex}] slider requires min and max`)
+        }
       }
     })
   }
