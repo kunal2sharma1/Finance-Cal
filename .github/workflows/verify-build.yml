@@ -54,6 +54,9 @@ jobs:
       - name: Validate result card cleanup
         run: npm run result-card:check
 
+      - name: Validate structured search index
+        run: npm run search-index:check
+
       - name: Run golden formula regression tests
         run: npm run formula:golden
 
