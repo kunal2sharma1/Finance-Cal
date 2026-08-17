@@ -1,17 +1,18 @@
 import { calculators as coreCalculators } from './calculators/registry.js'
 import { internationalCalculators } from './internationalCalculators.js'
 import { phase3Calculators } from './phase3Calculators.js'
+import { withCalculatorMeta } from './calculatorMeta.js'
 
 /**
  * Single source of truth for calculator discovery across the app.
- * Keep registration details inside the calculator registries; this module
- * provides read-only lookup helpers so pages do not rebuild catalog arrays.
+ * Registration remains explicit, while portfolio metadata is derived in one
+ * place so every calculator has the same internal shape.
  */
 export const calculators = Object.freeze([
   ...coreCalculators,
   ...internationalCalculators,
   ...phase3Calculators,
-])
+].map(withCalculatorMeta))
 
 const calculatorById = new Map(calculators.map((calculator) => [calculator.config.id, calculator]))
 

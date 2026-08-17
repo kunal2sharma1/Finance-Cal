@@ -3,6 +3,7 @@ export const config = {
   title: 'Bond Return Calculator',
   shortDescription: 'Estimate bond value, coupon income, capital gain or loss and total return from simple bond assumptions.',
   category: 'Investing & Markets',
+  modelingNote: 'This is a simplified holding-period estimate. It does not model yield-to-maturity, accrued interest, coupon reinvestment, fees or taxes.',
   fields: [
     { name: 'faceValue', label: 'Face value', unit: '₹', defaultValue: 100000, min: 0, max: 100000000, step: 1000 },
     { name: 'purchasePrice', label: 'Purchase price', unit: '₹', defaultValue: 98000, min: 0, max: 100000000, step: 1000 },

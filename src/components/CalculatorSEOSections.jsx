@@ -5,8 +5,8 @@ import { seoGrowthCalculatorContent } from '../seoGrowthCalculatorContent.js'
 import { seoIntentContent } from '../seoIntentContent.js'
 
 function buildFallbackContent(calculatorId, fields, resultFields) {
-  const inputLabels = fields.map((field) => field.label).filter(Boolean).slice(0, 5).join(', ')
-  const resultLabels = resultFields.map((field) => field.label).filter(Boolean).slice(0, 5).join(', ')
+  const inputLabels = fields.map((field) => field?.label).filter(Boolean).slice(0, 5).join(', ')
+  const resultLabels = resultFields.map((field) => field?.label).filter(Boolean).slice(0, 5).join(', ')
 
   return {
     sections: [
@@ -22,6 +22,11 @@ function buildFallbackContent(calculatorId, fields, resultFields) {
   }
 }
 
+function normalisePairs(value) {
+  if (!Array.isArray(value)) return []
+  return value.filter((item) => Array.isArray(item) && typeof item[0] === 'string' && typeof item[1] === 'string')
+}
+
 function normaliseContent(calculatorId, config) {
   const fallback = buildFallbackContent(
     calculatorId,
@@ -34,8 +39,8 @@ function normaliseContent(calculatorId, config) {
     || seoGrowthCalculatorContent[calculatorId]
 
   return {
-    sections: Array.isArray(custom?.sections) ? custom.sections : fallback.sections,
-    faqs: Array.isArray(custom?.faqs) ? custom.faqs : fallback.faqs,
+    sections: normalisePairs(custom?.sections).length ? normalisePairs(custom.sections) : fallback.sections,
+    faqs: normalisePairs(custom?.faqs).length ? normalisePairs(custom.faqs) : fallback.faqs,
   }
 }
 
@@ -45,6 +50,8 @@ export default function CalculatorSEOSections({ calculatorId, config }) {
     [calculatorId, config],
   )
   const intent = seoIntentContent[calculatorId]
+  const intentQuestions = Array.isArray(intent?.questions) ? intent.questions.filter(Boolean) : []
+  const guideLinks = normalisePairs(intent?.guideLinks)
 
   useEffect(() => {
     const schemaId = `fincalc-faq-${calculatorId}`
@@ -81,12 +88,14 @@ export default function CalculatorSEOSections({ calculatorId, config }) {
             <h3 id="search-intent">{intent.intentLabel}</h3>
             <p>{intent.bestFor}</p>
           </div>
-          <div className="calc-view__intent-questions">
-            <strong>Common questions this calculator helps you explore</strong>
-            <ul>
-              {(Array.isArray(intent.questions) ? intent.questions : []).map((question) => <li key={question}>{question}</li>)}
-            </ul>
-          </div>
+          {intentQuestions.length > 0 && (
+            <div className="calc-view__intent-questions">
+              <strong>Common questions this calculator helps you explore</strong>
+              <ul>
+                {intentQuestions.map((question) => <li key={question}>{question}</li>)}
+              </ul>
+            </div>
+          )}
         </section>
       )}
 
@@ -99,11 +108,11 @@ export default function CalculatorSEOSections({ calculatorId, config }) {
         ))}
       </div>
 
-      {intent?.guideLinks?.length > 0 && (
+      {guideLinks.length > 0 && (
         <nav className="calc-view__intent-guides" aria-label="Related financial guides">
           <span className="calc-view__eyebrow">READ NEXT</span>
           <div>
-            {intent.guideLinks.map(([label, href]) => (
+            {guideLinks.map(([label, href]) => (
               <a key={href} href={href}>{label} →</a>
             ))}
           </div>

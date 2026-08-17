@@ -39,16 +39,8 @@
   max-width: 100%;
 }
 
-.calc-form__cashflow-direction {
-  cursor: pointer;
-  appearance: auto;
-}
-
-.calc-form__cashflow-amount-wrap {
-  position: relative;
-  min-width: 0;
-}
-
+.calc-form__cashflow-direction { cursor: pointer; appearance: auto; }
+.calc-form__cashflow-amount-wrap { position: relative; min-width: 0; }
 .calc-form__cashflow-sign {
   position: absolute;
   left: 10px;
@@ -59,10 +51,7 @@
   font-weight: 700;
   pointer-events: none;
 }
-
-.calc-form__cashflow-amount {
-  padding-left: 26px !important;
-}
+.calc-form__cashflow-amount { padding-left: 26px !important; }
 
 .calc-form__cashflow-remove,
 .calc-form__cashflow-add {
@@ -86,18 +75,12 @@
   font-size: 18px;
   line-height: 1;
 }
-
 .calc-form__cashflow-remove:hover:not(:disabled) {
   border-color: rgba(37, 84, 232, 0.35);
   color: var(--color-primary);
   background: rgba(37, 84, 232, 0.05);
 }
-
-.calc-form__cashflow-remove:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
+.calc-form__cashflow-remove:disabled { opacity: 0.4; cursor: not-allowed; }
 .calc-form__cashflow-add {
   align-self: flex-start;
   padding: 9px 13px;
@@ -106,7 +89,6 @@
   font-size: 12px;
   background: rgba(37, 84, 232, 0.04);
 }
-
 .calc-form__cashflow-add:hover {
   border-color: rgba(37, 84, 232, 0.35);
   background: rgba(37, 84, 232, 0.08);
@@ -115,27 +97,42 @@
 @media (max-width: 780px) {
   .calc-form__cashflow-head,
   .calc-form__cashflow-row {
-    grid-template-columns: minmax(95px, 0.9fr) minmax(100px, 1.1fr) minmax(65px, 0.8fr) 34px;
+    grid-template-columns: minmax(88px, 0.9fr) minmax(100px, 1.1fr) minmax(70px, 0.8fr) 34px;
     gap: 7px;
   }
+  .calc-form__cashflow-row { padding: 8px; }
 }
 
 @media (max-width: 560px) {
-  .calc-form__cashflow-head {
-    display: none;
-  }
-
+  .calc-form__cashflow-head { display: none; }
   .calc-form__cashflow-row {
+    display: grid;
     grid-template-columns: minmax(0, 1fr) 40px;
-    gap: 8px;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(14,27,51,.04);
   }
-
-  .calc-form__cashflow-date,
-  .calc-form__cashflow-direction {
+  .calc-form__cashflow-row::before {
+    content: 'Cash flow';
     grid-column: 1 / -1;
+    color: var(--color-muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
   }
-
-  .calc-form__cashflow-amount-wrap {
-    grid-column: 1;
+  .calc-form__cashflow-date,
+  .calc-form__cashflow-direction,
+  .calc-form__cashflow-amount-wrap { grid-column: 1 / -1; }
+  .calc-form__cashflow-remove {
+    grid-column: 2;
+    grid-row: 4;
+    align-self: end;
+    width: 40px;
+    height: 40px;
   }
+  .calc-form__cashflow-amount-wrap { grid-row: 3; }
+  .calc-form__cashflow-direction { grid-row: 2; }
+  .calc-form__cashflow-date { grid-row: 1; }
 }

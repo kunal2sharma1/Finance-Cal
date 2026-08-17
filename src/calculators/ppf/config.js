@@ -3,6 +3,7 @@ export const config = {
   title: 'PPF Calculator',
   shortDescription: 'Estimate how your yearly PPF deposits could grow over the PPF term.',
   category: 'Savings',
+  modelingNote: 'This version uses a simplified annual-contribution illustration. PPF interest is actually linked to monthly lowest-balance rules and official scheme terms.',
   fields: [
     { name: 'annualInvestment', label: 'How much will you put into PPF each year?', unit: '₹', defaultValue: 150000, min: 500, max: 150000, step: 500 },
     { name: 'annualInterestRate', label: 'PPF interest rate', unit: '%', defaultValue: 7.1, min: 4, max: 12, step: 0.1 },

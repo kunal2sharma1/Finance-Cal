@@ -66,6 +66,8 @@ export const config = {
   title: 'Income Tax Calculator',
   shortDescription: 'Compare your estimated tax under the Old and New Regimes and see which may cost less.',
   category: 'Tax',
+  taxYear: RULES.taxYearLabel,
+  modelingNote: 'HRA is illustrated using an assumed basic-salary share of gross salary. Actual HRA exemption depends on salary components and applicable rules, so treat this as an estimate rather than a filing calculation.',
   fields: [
     { name: 'annualGrossSalary', label: 'What is your yearly gross salary?', unit: '₹', defaultValue: 1200000, min: 0, max: 100000000, step: 10000 },
     { name: 'otherIncomeAnnual', label: 'Do you have income from interest, rent, or other sources? (Enter yearly amount)', unit: '₹', defaultValue: 0, min: 0, max: 10000000, step: 5000 },

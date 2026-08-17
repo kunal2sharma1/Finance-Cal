@@ -24,6 +24,7 @@ export default function CalculatorTrust({ config, explanation }) {
         <section className="calc-trust__item">
           <h3>Methodology</h3>
           <p>{inferMethodology(config)}</p>
+          {config.modelingNote ? <p className="calc-trust__note"><strong>Model scope:</strong> {config.modelingNote}</p> : null}
         </section>
 
         <section className="calc-trust__item">
