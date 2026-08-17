@@ -78,27 +78,40 @@ function CashFlowEditor({ field, value, onChange, onBlur, errorId, error }) {
   }
 
   return (
-    <div className="calc-form__cashflows">
-      <div className="calc-form__cashflow-head">
+    <div className="calc-form__cashflows" aria-label="XIRR cash flow entries">
+      <div className="calc-form__cashflow-head" aria-hidden="true">
         <span>Date</span>
-        <span>What happened?</span>
+        <span>Transaction</span>
         <span>Amount</span>
-        <span aria-hidden="true" />
+        <span />
       </div>
-      {rows.map((row, index) => (
-        <div className="calc-form__cashflow-row" key={`${index}-${row.date}`}>
-          <input type="date" className="calc-form__input calc-form__cashflow-date" value={row.date || ''} aria-label={`Cash flow ${index + 1} date`} onChange={(event) => setRow(index, 'date', event.target.value)} onBlur={onBlur} aria-invalid={Boolean(error)} aria-describedby={error ? errorId : undefined} />
-          <select className="calc-form__input calc-form__cashflow-direction" value={row.direction || 'invested'} aria-label={`Cash flow ${index + 1} type`} onChange={(event) => setRow(index, 'direction', event.target.value)} onBlur={onBlur} aria-invalid={Boolean(error)} aria-describedby={error ? errorId : undefined}>
-            <option value="invested">I invested money</option>
-            <option value="received">I received money</option>
-          </select>
-          <div className="calc-form__cashflow-amount-wrap">
-            <span className="calc-form__cashflow-sign">₹</span>
-            <input type="number" inputMode="decimal" className="calc-form__input calc-form__cashflow-amount" value={row.amount ?? ''} aria-label={`Cash flow ${index + 1} amount`} placeholder="e.g. 100000" min="0" step="1" onChange={(event) => setRow(index, 'amount', event.target.value)} onBlur={onBlur} aria-invalid={Boolean(error)} aria-describedby={error ? errorId : undefined} />
+      {rows.map((row, index) => {
+        const rowLabel = `Cash flow ${index + 1}`
+        return (
+          <div className="calc-form__cashflow-row" key={`${index}-${row.date}`}>
+            <div className="calc-form__cashflow-row-title">{rowLabel}</div>
+            <label className="calc-form__cashflow-field">
+              <span>Date</span>
+              <input type="date" className="calc-form__input calc-form__cashflow-date" value={row.date || ''} aria-label={`${rowLabel} date`} onChange={(event) => setRow(index, 'date', event.target.value)} onBlur={onBlur} aria-invalid={Boolean(error)} aria-describedby={error ? errorId : undefined} />
+            </label>
+            <label className="calc-form__cashflow-field">
+              <span>What happened?</span>
+              <select className="calc-form__input calc-form__cashflow-direction" value={row.direction || 'invested'} aria-label={`${rowLabel} transaction type`} onChange={(event) => setRow(index, 'direction', event.target.value)} onBlur={onBlur} aria-invalid={Boolean(error)} aria-describedby={error ? errorId : undefined}>
+                <option value="invested">I invested money</option>
+                <option value="received">I received money</option>
+              </select>
+            </label>
+            <label className="calc-form__cashflow-field">
+              <span>Amount</span>
+              <div className="calc-form__cashflow-amount-wrap">
+                <span className="calc-form__cashflow-sign" aria-hidden="true">₹</span>
+                <input type="number" inputMode="decimal" className="calc-form__input calc-form__cashflow-amount" value={row.amount ?? ''} aria-label={`${rowLabel} amount`} placeholder="e.g. 100000" min="0" step="1" onChange={(event) => setRow(index, 'amount', event.target.value)} onBlur={onBlur} aria-invalid={Boolean(error)} aria-describedby={error ? errorId : undefined} />
+              </div>
+            </label>
+            <button type="button" className="calc-form__cashflow-remove" onClick={() => removeRow(index)} disabled={rows.length === 1} aria-label={`Remove ${rowLabel}`}>Remove</button>
           </div>
-          <button type="button" className="calc-form__cashflow-remove" onClick={() => removeRow(index)} disabled={rows.length === 1} aria-label={`Remove cash flow ${index + 1}`}>×</button>
-        </div>
-      ))}
+        )
+      })}
       <button type="button" className="calc-form__cashflow-add" onClick={addRow}>+ Add another cash flow</button>
       {field.help ? <small className="calc-form__help">{field.help}</small> : null}
       <FieldError id={errorId} message={error} />
@@ -142,7 +155,6 @@ function CalculatorField({ field, values, onChange, onBlur, error }) {
     : 0
   const errorId = `${field.name}-input-error`
   const describedBy = error ? errorId : undefined
-
   const blur = () => onBlur(field.name)
 
   return (
