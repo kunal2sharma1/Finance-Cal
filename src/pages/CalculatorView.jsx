@@ -71,7 +71,7 @@ function getSupportingGuides(calculatorId) {
 }
 
 export default function CalculatorView({ calculator, onBack, country, numberSystem }) {
-  const { config, calculate, explanation } = calculator
+  const { config, calculate, explanation, meta = {} } = calculator
   const [values, setValues] = useState(() => buildDefaultValues(config.fields))
   const [results, setResults] = useState({})
   const [touched, setTouched] = useState({})
@@ -157,7 +157,14 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
       <div className="calc-view__grid">
         <div className="calc-view__panel calc-view__panel--results">
           <div className="calc-view__panel-heading calc-view__panel-heading--light"><div><span className="calc-view__panel-kicker">ESTIMATED OUTCOME</span><h2>See what the numbers mean</h2></div></div>
-          <ResultPanel resultFields={config.resultFields} results={results} defaultCurrency={displayCurrency} numberSystem={numberSystem} />
+          <ResultPanel
+            resultFields={config.resultFields}
+            results={results}
+            defaultCurrency={displayCurrency}
+            numberSystem={numberSystem}
+            resultCertainty={meta.resultCertainty}
+            resultCertaintyNote={meta.resultCertaintyNote}
+          />
         </div>
         <div className="calc-view__panel calc-view__panel--inputs">
           <div className="calc-view__panel-heading"><div><span className="calc-view__panel-kicker">YOUR INPUTS</span><h2>Set your assumptions</h2></div><span className="calc-view__panel-hint">Updates instantly</span></div>
