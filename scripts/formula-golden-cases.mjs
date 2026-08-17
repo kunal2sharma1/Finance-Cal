@@ -84,7 +84,7 @@ export const formulaGoldenCases = [
       creditCardDebt: 0,
       otherLiabilities: 0,
     },
-    expected: { netWorth: 2600000, totalAssets: 3600000, totalLiabilities: 1000000, investableAssets: 1800000 },
+    expected: { netWorth: 2600000, totalAssets: 3600000, totalLiabilities: 1000000, investableAssets: 2100000 },
     tolerance: 1,
   },
   {
