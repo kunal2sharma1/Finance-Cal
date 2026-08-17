@@ -19,6 +19,7 @@
     "trust:provenance": "node scripts/trust-provenance-check.mjs",
     "model-scope:check": "node scripts/model-scope-check.mjs",
     "result-certainty:check": "node scripts/result-certainty-check.mjs",
+    "result-hierarchy:check": "node scripts/result-hierarchy-check.mjs",
     "precision:check": "node scripts/precision-policy-check.mjs",
     "analytics:check": "node scripts/analytics-check.mjs",
     "commercial:check": "node scripts/commercial-check.mjs",
