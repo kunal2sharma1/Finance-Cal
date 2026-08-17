@@ -45,6 +45,9 @@ jobs:
       - name: Run XIRR numerical solver tests
         run: npm run formula:xirr
 
+      - name: Run live-data resilience tests
+        run: npm run live-data:check
+
       - name: Validate SEO Growth V1
         run: npm run seo:growth:v1
 
