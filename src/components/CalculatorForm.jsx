@@ -117,6 +117,11 @@ function CurrencySelect({ field, value, onChange }) {
 function getInputMode(field) {
   if (field.inputMode) return field.inputMode
   if (field.type === 'slider') return 'slider'
+  const unit = String(field.unit || '').toLowerCase()
+  const min = Number(field.min)
+  const max = Number(field.max)
+  const range = Number.isFinite(min) && Number.isFinite(max) ? Math.abs(max - min) : Infinity
+  if (unit === '%' || unit === 'rate' || /year|month/.test(unit) || range <= 200) return 'slider'
   return 'numeric'
 }
 
