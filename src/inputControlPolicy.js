@@ -1,7 +1,8 @@
 export const INPUT_CONTROL_MODES = Object.freeze(['numeric', 'slider', 'native'])
 
 function legacySliderPolicy(field) {
-  if (!field || field.type !== 'number') return 'native'
+  const type = field?.type || 'number'
+  if (type !== 'number') return 'native'
 
   const unit = String(field.unit || '').toLowerCase()
   const min = Number(field.min)
@@ -16,7 +17,8 @@ function legacySliderPolicy(field) {
 
 export function resolveInputMode(field) {
   if (!field) return 'native'
-  if (field.type !== 'number') return 'native'
+  const type = field.type || 'number'
+  if (type !== 'number') return 'native'
 
   const explicit = field.inputMode
   if (explicit !== undefined) {
