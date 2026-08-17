@@ -75,6 +75,9 @@ jobs:
       - name: Validate trust
         run: npm run trust:check
 
+      - name: Validate modeling scope
+        run: npm run model-scope:check
+
       - name: Validate analytics
         run: npm run analytics:check
 
