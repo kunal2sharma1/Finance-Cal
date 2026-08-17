@@ -42,6 +42,9 @@ jobs:
       - name: Run formula boundary tests
         run: npm run formula:boundary
 
+      - name: Run XIRR numerical solver tests
+        run: npm run formula:xirr
+
       - name: Validate SEO Growth V1
         run: npm run seo:growth:v1
 
