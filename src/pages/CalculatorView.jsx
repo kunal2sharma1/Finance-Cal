@@ -6,7 +6,7 @@ import CalculatorSEOSections from '../components/CalculatorSEOSections.jsx'
 import CalculatorTrust from '../components/CalculatorTrust.jsx'
 import CommercialDisclosure from '../components/CommercialDisclosure.jsx'
 import CommercialPlacement from '../components/CommercialPlacement.jsx'
-import { calculators, getCalculatorsByCategory } from '../calculatorCatalog.js'
+import { calculators } from '../calculatorCatalog.js'
 import { guides } from '../guides.js'
 import { getCalculatorCurrency } from '../calculatorLocale.js'
 import { setBreadcrumbSchema } from '../seo.js'
@@ -26,18 +26,40 @@ function buildDefaultValues(fields) {
   return values
 }
 
-function getRelatedCalculators(currentConfig) {
-  const categoryMatches = getCalculatorsByCategory(currentConfig.category)
-  const sameCountry = calculators.filter((item) => {
-    if (item.config.id === currentConfig.id) return false
-    const currentCountries = Array.isArray(currentConfig.countries) ? currentConfig.countries : []
-    if (currentCountries.length === 0) return true
-    return (item.config.countries || []).some((code) => currentCountries.includes(code))
+function scoreRelatedCalculator(current, candidate) {
+  if (current.config.id === candidate.config.id) return -Infinity
+  const currentMeta = current.meta || {}
+  const candidateMeta = candidate.meta || {}
+  let score = 0
+
+  if (currentMeta.primaryJourney && currentMeta.primaryJourney === candidateMeta.primaryJourney) score += 70
+  if (currentMeta.domain && currentMeta.domain === candidateMeta.domain) score += 30
+  if (currentMeta.intent && currentMeta.intent === candidateMeta.intent) score += 20
+  if (currentMeta.modelType && currentMeta.modelType === candidateMeta.modelType) score += 5
+  if (current.config.category && current.config.category === candidate.config.category) score += 10
+
+  const currentCountries = Array.isArray(current.config.countries) ? current.config.countries : []
+  const candidateCountries = Array.isArray(candidate.config.countries) ? candidate.config.countries : []
+  if (currentCountries.length === 0 || candidateCountries.length === 0) score += 4
+  else if (candidateCountries.some((code) => currentCountries.includes(code))) score += 20
+
+  const currentText = `${current.config.title} ${current.config.shortDescription}`.toLowerCase()
+  const candidateText = `${candidate.config.title} ${candidate.config.shortDescription}`.toLowerCase()
+  const importantTerms = ['sip', 'retirement', 'loan', 'emi', 'debt', 'salary', 'tax', 'investment', 'return', 'savings', 'mortgage', 'education']
+  importantTerms.forEach((term) => {
+    if (currentText.includes(term) && candidateText.includes(term)) score += 4
   })
-  const fallback = calculators.filter((item) => item.config.id !== currentConfig.id)
-  return [...categoryMatches, ...sameCountry, ...fallback]
-    .filter((item, index, items) => items.findIndex((candidate) => candidate.config.id === item.config.id) === index)
+
+  return score
+}
+
+function getRelatedCalculators(currentCalculator) {
+  return calculators
+    .map((candidate) => ({ candidate, score: scoreRelatedCalculator(currentCalculator, candidate) }))
+    .filter(({ score }) => Number.isFinite(score) && score > 0)
+    .sort((a, b) => b.score - a.score || a.candidate.config.title.localeCompare(b.candidate.config.title))
     .slice(0, 6)
+    .map(({ candidate }) => candidate)
 }
 
 function getSupportingGuides(calculatorId) {
@@ -92,7 +114,7 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
     return () => { active = false }
   }, [values, calculate, config.id])
 
-  const relatedCalculators = useMemo(() => getRelatedCalculators(config), [config])
+  const relatedCalculators = useMemo(() => getRelatedCalculators(calculator), [calculator])
   const supportingGuides = useMemo(() => getSupportingGuides(config.id), [config.id])
   const displayCurrency = getCalculatorCurrency(config, country)
 
