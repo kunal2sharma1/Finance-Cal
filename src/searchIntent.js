@@ -53,11 +53,22 @@ export function scoreSearchResult(entry, queryMeta) {
   let score = 0
   const title = String(entry.title || '').toLowerCase()
   const text = String(entry.searchText || '')
+  const terms = Array.isArray(queryMeta.terms) && queryMeta.terms.length ? queryMeta.terms : [queryMeta.term]
+  let bestLexicalScore = 0
 
-  if (title === String(queryMeta.term || '')) score += 160
-  else if (title.startsWith(String(queryMeta.term || ''))) score += 120
-  else if (title.includes(String(queryMeta.term || ''))) score += 100
-  else if (text.includes(String(queryMeta.term || ''))) score += 60
+  for (const rawTerm of terms) {
+    const term = String(rawTerm || '').trim().toLowerCase()
+    if (!term) continue
+
+    if (title === term) bestLexicalScore = Math.max(bestLexicalScore, 160)
+    else if (title.startsWith(term)) bestLexicalScore = Math.max(bestLexicalScore, 120)
+    else if (title.includes(term)) bestLexicalScore = Math.max(bestLexicalScore, 100)
+    else if (text.includes(term)) bestLexicalScore = Math.max(bestLexicalScore, 60)
+  }
+
+  score += bestLexicalScore
+
+  if (queryMeta.corrected) score -= 2
 
   if (entry.type === 'calculator') {
     if (queryMeta.intent && entry.intent === queryMeta.intent) score += 30
