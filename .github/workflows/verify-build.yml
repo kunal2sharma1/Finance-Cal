@@ -2,7 +2,7 @@ name: Verify build
 
 on:
   push:
-    branches: [main, seo-development, global-development, seo-growth-v1, fincalc-batch-1-5-final-validator-2, fincalc-generational-release]
+    branches: [main, seo-development, global-development, seo-growth-v1, fincalc-batch-1-5-final-validator-2]
     paths:
       - 'package.json'
       - 'package-lock.json'
