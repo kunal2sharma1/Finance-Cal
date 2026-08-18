@@ -1,0 +1,65 @@
+name: Release branch watchdog
+
+on:
+  push:
+    branches: [fincalc-generational-release]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: release-watchdog
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout release branch
+        uses: actions/checkout@v4
+        with:
+          ref: fincalc-generational-release
+          fetch-depth: 0
+
+      - name: Remediate pending dependencies
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ ! -f .security-remediation-pending ]; then
+            echo "No pending security remediation."
+            exit 0
+          fi
+
+          echo "Refreshing package-lock.json from the pinned dependency manifest."
+          npm install --package-lock-only --ignore-scripts --include=dev --no-audit
+          npm ci --ignore-scripts --include=dev --no-audit
+          npm audit --audit-level=high
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f .security-remediation-pending
+          rm -f .github/workflows/one-time-vite-security-remediation.yml
+          git add -A package.json package-lock.json .security-remediation-pending .github/workflows/one-time-vite-security-remediation.yml
+          git commit -m "chore: finalize patched dependency lockfile"
+          git push origin HEAD:fincalc-generational-release
+
+      - name: Dispatch Verify for current release HEAD
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          head_sha="$(gh api "repos/${REPO}/branches/fincalc-generational-release" --jq '.commit.sha')"
+          runs_json="$(gh api "repos/${REPO}/actions/workflows/verify-build.yml/runs?branch=fincalc-generational-release&per_page=30")"
+          active_count="$(jq --arg sha "$head_sha" '[.workflow_runs[] | select(.head_sha == $sha and (.status == "queued" or .status == "in_progress"))] | length' <<<"$runs_json")"
+          completed_count="$(jq --arg sha "$head_sha" '[.workflow_runs[] | select(.head_sha == $sha and .status == "completed")] | length' <<<"$runs_json")"
+          if [ "$active_count" -gt 0 ] || [ "$completed_count" -gt 0 ]; then
+            echo "Verify already exists for $head_sha."
+            exit 0
+          fi
+          echo "Dispatching Verify for exact release HEAD $head_sha."
+          gh workflow run verify-build.yml --repo "$REPO" --ref fincalc-generational-release
