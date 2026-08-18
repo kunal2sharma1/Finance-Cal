@@ -10,7 +10,7 @@ for (const calculator of calculators) {
   const content = seoIntentContent[id]
   if (!content) continue
 
-  const seo = buildCalculatorSEO(calculator.config)
+  const seo = buildCalculatorSEO(calculator.config, calculator.meta)
   const intent = seo.searchIntent
 
   assert(intent, `Search-intent SEO metadata missing from buildCalculatorSEO: ${id}`)
@@ -28,7 +28,7 @@ for (const id of priority) {
   assert(Boolean(calculator), `Priority calculator missing from catalog: ${id}`)
   assert(Boolean(seoIntentContent[id]), `Priority calculator missing search-intent content: ${id}`)
   if (calculator && seoIntentContent[id]) {
-    const seo = buildCalculatorSEO(calculator.config)
+    const seo = buildCalculatorSEO(calculator.config, calculator.meta)
     assert(seo.searchIntent?.primaryIntent === calculator.meta?.intent, `Priority intent not connected to SEO: ${id}`)
   }
 }
