@@ -105,8 +105,11 @@ jobs:
       - name: Validate country SEO
         run: npm run country-seo:check
 
-      - name: Validate search intent SEO
+      - name: Validate search intent SEO content
         run: npm run seo-intent:check
+
+      - name: Validate search intent SEO integration
+        run: npm run search-intent:seo:check
 
       - name: Validate technical SEO
         run: npm run technical-seo:check
