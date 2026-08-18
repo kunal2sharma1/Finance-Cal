@@ -10,34 +10,57 @@ permissions:
 
 jobs:
   remediate:
-    if: ${{ hashFiles('.security-remediation-pending') != '' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Check remediation marker
+        id: marker
+        shell: bash
+        run: |
+          if [ -f .security-remediation-pending ]; then
+            echo "pending=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "pending=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Set up Node
+        if: steps.marker.outputs.pending == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
 
-      - name: Upgrade Vite, Rollup and esbuild to patched versions
-        run: npm install --save-dev vite@6.4.3 rollup@4.59.0 esbuild@0.28.1
+      - name: Regenerate canonical lockfile
+        if: steps.marker.outputs.pending == 'true'
+        run: npm install --package-lock-only --ignore-scripts --include=dev --no-audit
+
+      - name: Verify clean install
+        if: steps.marker.outputs.pending == 'true'
+        run: npm ci --ignore-scripts --include=dev --no-audit
 
       - name: Verify high-severity audit findings are gone
+        if: steps.marker.outputs.pending == 'true'
         run: npm audit --audit-level=high
 
       - name: Commit dependency remediation and remove one-time workflow
+        if: steps.marker.outputs.pending == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          rm .security-remediation-pending
-          rm .github/workflows/one-time-vite-security-remediation.yml
-          git add package.json package-lock.json .security-remediation-pending .github/workflows/one-time-vite-security-remediation.yml
+          rm -f .security-remediation-pending
+          rm -f .github/workflows/one-time-vite-security-remediation.yml
+          git add -A package.json package-lock.json .security-remediation-pending .github/workflows/one-time-vite-security-remediation.yml
           git commit -m "chore: remediate Rollup and esbuild security vulnerabilities"
           git push
+
+      - name: Report no remediation required
+        if: steps.marker.outputs.pending != 'true'
+        run: echo "No pending security remediation marker; nothing to do."
