@@ -25,6 +25,7 @@
     "search-intent:check": "node scripts/search-intent-ranking-check.mjs",
     "search-recovery:check": "node scripts/search-recovery-check.mjs",
     "search-zero-results:check": "node scripts/search-zero-result-recovery-check.mjs",
+    "search-intent-detection:check": "node scripts/search-intent-detection-check.mjs",
     "precision:check": "node scripts/precision-policy-check.mjs",
     "analytics:check": "node scripts/analytics-check.mjs",
     "commercial:check": "node scripts/commercial-check.mjs",
@@ -49,7 +50,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.1",
-    "vite": "^6.0.0"
+    "vite": "^6.0.0",
+    "@vitejs/plugin-react": "^4.3.1"
   }
 }
