@@ -1,5 +1,11 @@
 import assert from 'node:assert/strict'
+import { inferSearchIntent } from '../src/searchIntent.js'
 import { searchSite } from '../src/searchCatalog.js'
+
+const homeBuyingIntent = inferSearchIntent('how should i handle my home buying decision')
+assert.equal(homeBuyingIntent.intent, 'plan', 'home-buying decision should be treated as a planning query')
+assert.equal(homeBuyingIntent.domain, 'borrowing', 'home-buying decision should map to borrowing')
+assert.equal(homeBuyingIntent.journey, 'home-and-borrowing', 'home-buying decision should map to the borrowing journey')
 
 const recovery = searchSite('how should i handle my home buying decision', { types: ['calculator'] })
 assert.ok(recovery.length > 0, 'recognized journey queries should recover recommendations when exact search is empty')
