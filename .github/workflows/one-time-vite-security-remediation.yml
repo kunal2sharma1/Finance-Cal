@@ -1,0 +1,42 @@
+name: One-time Vite security remediation
+
+on:
+  push:
+    branches: [fincalc-generational-release]
+
+permissions:
+  contents: write
+
+jobs:
+  remediate:
+    if: ${{ hashFiles('.security-remediation-pending') != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Upgrade Vite to patched 6.4.3
+        run: npm install --save-dev vite@6.4.3
+
+      - name: Verify high-severity audit findings are gone
+        run: npm audit --audit-level=high
+
+      - name: Commit dependency remediation and remove one-time workflow
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm .security-remediation-pending
+          rm .github/workflows/one-time-vite-security-remediation.yml
+          git add package.json package-lock.json .security-remediation-pending .github/workflows/one-time-vite-security-remediation.yml
+          git commit -m "chore: remediate Vite security vulnerability"
+          git push
