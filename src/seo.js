@@ -1,6 +1,7 @@
 import { CANONICAL_SITE_URL, getCanonicalUrl } from './siteConfig.js'
 import { getCalculatorSEO } from './calculatorSeo.js'
 import { getInternationalSEO } from './internationalSeo.js'
+import { getIndexability, getRobotsContent } from './indexabilityPolicy.js'
 
 const SITE_NAME = 'FinCalc'
 
@@ -25,20 +26,27 @@ function upsertLink(rel, href) {
   let element = document.head.querySelector(`link[rel="${rel}"]`)
   if (!element) {
     element = document.createElement('link')
-    element.setAttribute('rel', rel)
+    linkCleanup(rel, element)
     document.head.appendChild(element)
   }
   element.setAttribute('href', href)
 }
 
-export function setSiteSEO({ title, description, pathname, calculator, noindex = false }) {
+function linkCleanup(rel, element) {
+  element.setAttribute('rel', rel)
+}
+
+export function setSiteSEO({ title, description, pathname, calculator, noindex = false, routeType, routeExists = true }) {
   const pageTitle = title || `${SITE_NAME} — Simple Financial Calculators`
   const pageDescription = description || 'Free, practical financial calculators for investing, loans, salary, savings, retirement and everyday money decisions.'
   const canonical = getRuntimeCanonicalUrl(pathname || window.location.pathname)
+  const policy = noindex
+    ? { index: false, follow: true, reason: 'explicit-page-noindex' }
+    : getIndexability({ routeType: routeType || 'unknown', exists: routeExists })
 
   document.title = pageTitle
   upsertMeta('name', 'description', pageDescription)
-  upsertMeta('name', 'robots', noindex ? 'noindex, follow' : 'index, follow')
+  upsertMeta('name', 'robots', getRobotsContent(policy))
   upsertMeta('property', 'og:title', pageTitle)
   upsertMeta('property', 'og:description', pageDescription)
   upsertMeta('property', 'og:type', 'website')
