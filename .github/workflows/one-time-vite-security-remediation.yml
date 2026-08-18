@@ -24,7 +24,7 @@ jobs:
           node-version: 24
           cache: npm
 
-      - name: Upgrade Vite and Rollup to patched versions
+      - name: Upgrade Vite, Rollup and esbuild to patched versions
         run: npm install --save-dev vite@6.4.3 rollup@4.59.0 esbuild@0.28.1
 
       - name: Verify high-severity audit findings are gone
