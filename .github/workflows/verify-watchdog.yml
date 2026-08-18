@@ -4,12 +4,11 @@ on:
   schedule:
     # Scheduled workflows execute from the repository default branch.
     # The watchdog targets the release branch explicitly below.
-    # Five minutes is the fastest practical GitHub Actions cron cadence.
     - cron: '*/5 * * * *'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   actions: write
 
 concurrency:
@@ -17,78 +16,35 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  ensure-verify:
+  ensure-release-gate:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
-      - name: Checkout release branch
-        uses: actions/checkout@v4
-        with:
-          ref: fincalc-generational-release
-          fetch-depth: 0
-
-      - name: Remediate pending release dependencies
-        id: remediate
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -euo pipefail
-
-          if [ ! -f .security-remediation-pending ]; then
-            echo "security_remediation=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          echo "Security remediation pending; refreshing the canonical lockfile."
-          npm install --package-lock-only --ignore-scripts --include=dev --no-audit
-          npm ci --ignore-scripts --include=dev --no-audit
-          npm audit --audit-level=high
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          rm -f .security-remediation-pending
-          rm -f .github/workflows/one-time-vite-security-remediation.yml
-          git add -A package.json package-lock.json .security-remediation-pending .github/workflows/one-time-vite-security-remediation.yml
-
-          if git diff --cached --quiet; then
-            echo "security_remediation=false" >> "$GITHUB_OUTPUT"
-            echo "No dependency changes were required after audit verification."
-            exit 0
-          fi
-
-          git commit -m "chore: finalize patched dependency lockfile"
-          git push origin HEAD:fincalc-generational-release
-
-          echo "Security remediation committed and pushed."
-          echo "The push will trigger the release-branch Verify workflow; no duplicate dispatch is needed."
-          exit 0
-
-      - name: Verify release branch
+      - name: Dispatch release-branch gate when needed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           BRANCH: fincalc-generational-release
+          RELEASE_WORKFLOW: release-watchdog.yml
           VERIFY_WORKFLOW: verify-build.yml
         run: |
           set -euo pipefail
 
           head_sha="$(gh api "repos/${REPO}/branches/${BRANCH}" --jq '.commit.sha')"
-          runs_json="$(gh api "repos/${REPO}/actions/workflows/${VERIFY_WORKFLOW}/runs?branch=${BRANCH}&per_page=20")"
+          if gh api -s "repos/${REPO}/contents/.security-remediation-pending?ref=${BRANCH}" >/dev/null 2>&1; then
+            echo "Security remediation pending for ${head_sha}; dispatching release gate."
+            gh workflow run "${RELEASE_WORKFLOW}" --repo "${REPO}" --ref "${BRANCH}"
+            exit 0
+          fi
 
+          runs_json="$(gh api "repos/${REPO}/actions/workflows/${VERIFY_WORKFLOW}/runs?branch=${BRANCH}&per_page=30")"
           active_count="$(jq --arg sha "$head_sha" '[.workflow_runs[] | select(.head_sha == $sha and (.status == "queued" or .status == "in_progress"))] | length' <<<"$runs_json")"
-          if [ "$active_count" -gt 0 ]; then
-            echo "Verify already running for $head_sha."
-            exit 0
-          fi
-
           completed_count="$(jq --arg sha "$head_sha" '[.workflow_runs[] | select(.head_sha == $sha and .status == "completed")] | length' <<<"$runs_json")"
-          if [ "$completed_count" -gt 0 ]; then
-            conclusion="$(jq -r --arg sha "$head_sha" '[.workflow_runs[] | select(.head_sha == $sha and .status == "completed")] | sort_by(.updated_at) | last | .conclusion' <<<"$runs_json")"
-            echo "Verify already completed for $head_sha: $conclusion."
+
+          if [ "$active_count" -gt 0 ] || [ "$completed_count" -gt 0 ]; then
+            echo "Release HEAD $head_sha already has an active or completed Verify run."
             exit 0
           fi
 
-          echo "No completed Verify run exists for $head_sha; dispatching Verify build."
-          gh workflow run "$VERIFY_WORKFLOW" --repo "$REPO" --ref "$BRANCH"
-          echo "Verify build dispatched for $head_sha."
+          echo "No Verify run exists for release HEAD $head_sha; dispatching release gate."
+          gh workflow run "${RELEASE_WORKFLOW}" --repo "${REPO}" --ref "${BRANCH}"
