@@ -81,6 +81,9 @@ jobs:
       - name: Validate first decision journeys
         run: npm run decision-journey:quality
 
+      - name: Validate next calculator flow
+        run: npm run next-calculator:check
+
       - name: Run golden formula regression tests
         run: npm run formula:golden
 
