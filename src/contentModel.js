@@ -22,7 +22,7 @@ function canonicalCalculator(calculator) {
   return Object.freeze({
     type: CONTENT_TYPES.calculator,
     id: config.id,
-    slug: config.id,
+    slug: `calculator:${config.id}`,
     title: normalizeText(config.title),
     summary: normalizeText(config.shortDescription),
     metaTitle: normalizeText(seo.title),
@@ -38,7 +38,7 @@ function canonicalGuide(guide) {
   return Object.freeze({
     type: CONTENT_TYPES.guide,
     id: `guide:${guide.slug}`,
-    slug: normalizeText(guide.slug),
+    slug: `guide:${guide.slug}`,
     title: normalizeText(guide.title),
     summary: normalizeText(guide.intro),
     metaTitle: normalizeText(guide.metaTitle),
