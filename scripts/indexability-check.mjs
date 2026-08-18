@@ -4,6 +4,7 @@ const policy = fs.readFileSync('src/indexabilityPolicy.js', 'utf8')
 const seo = fs.readFileSync('src/seo.js', 'utf8')
 const app = fs.readFileSync('src/App.jsx', 'utf8')
 const specialApp = fs.readFileSync('src/AppSeo.jsx', 'utf8')
+const sitemap = fs.readFileSync('scripts/generate-global-sitemap.mjs', 'utf8')
 const robots = fs.readFileSync('public/robots.txt', 'utf8')
 
 const requiredIndexableRoutes = ['home', 'calculator', 'guide', 'guides', 'country', 'countries', 'hub', 'info', 'journey']
@@ -33,6 +34,10 @@ if (!app.includes("routeType: 'not-found', routeExists: false")) {
 
 if (!app.includes("routeExists: false")) throw new Error('Unresolved app routes lack an explicit noindex signal')
 if (!specialApp.includes("routeExists: false")) throw new Error('Unresolved special routes lack an explicit noindex signal')
+if (!sitemap.includes("for (const journey of decisionJourneys) urls.add(`/journeys/${journey.slug}`)")) {
+  throw new Error('Indexable decision journeys are missing from the sitemap generator')
+}
+if (!sitemap.includes("urls.add('/guides')")) throw new Error('Guides index is missing from the sitemap generator')
 if (!robots.includes('Allow: /')) throw new Error('robots.txt must not globally block the public site')
 if (!robots.includes('Sitemap:')) throw new Error('robots.txt must advertise the sitemap')
 
