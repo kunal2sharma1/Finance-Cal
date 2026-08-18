@@ -23,61 +23,61 @@ FinCalc should help users move from:
 
 ### Wave 0 — Release preparation
 
-- [ ] 1. Freeze and record current production baseline.
-- [ ] 2. Include PR #10 UI cleanup: compact breadcrumb/back row and remove crowded result-card sentence.
-- [ ] 3. Define release version, commit identity, deployment identity, and build timestamp.
+- [x] 1. Freeze and record current production baseline.
+- [x] 2. Include PR #10 UI cleanup: compact breadcrumb/back row and remove crowded result-card sentence.
+- [x] 3. Define release version, commit identity, deployment identity, and build timestamp.
 
 ### Wave 1 — Calculator engine hardening
 
-- [ ] 4. Formalize `CalculatorDefinition` schema.
-- [ ] 5. Formalize field schema and supported input types.
-- [ ] 6. Formalize result-field schema and presentation types.
-- [ ] 7. Formalize calculator classes.
-- [ ] 8. Complete calculator portfolio metadata.
-- [ ] 9. Remove scattered hardcoded calculator-country exceptions.
+- [x] 4. Formalize `CalculatorDefinition` schema.
+- [x] 5. Formalize field schema and supported input types.
+- [x] 6. Formalize result-field schema and presentation types.
+- [x] 7. Formalize calculator classes.
+- [x] 8. Complete calculator portfolio metadata.
+- [x] 9. Remove scattered hardcoded calculator-country exceptions.
 
 ### Wave 2 — Financial correctness
 
-- [ ] 10. Golden-test framework.
-- [ ] 11. Golden tests for core calculators.
-- [ ] 12. High-risk formula regression suites.
-- [ ] 13. Boundary/invalid/stress testing.
-- [ ] 14. Numerical-solver testing, especially XIRR.
-- [ ] 15. Live-data failure/caching testing.
+- [x] 10. Golden-test framework.
+- [x] 11. Golden tests for core calculators.
+- [x] 12. High-risk formula regression suites.
+- [x] 13. Boundary/invalid/stress testing.
+- [x] 14. Numerical-solver testing, especially XIRR.
+- [x] 15. Live-data failure/caching testing.
 
 ### Wave 3 — Trust and financial governance
 
-- [ ] 16. Formal `TrustDefinition` framework.
-- [ ] 17. Rule-level source provenance.
-- [ ] 18. Explicit calculator methodology metadata.
-- [ ] 19. Model-scope cleanup for simplified calculators.
-- [ ] 20. Result certainty classification: exact, estimate, projection, scenario, live-data.
-- [ ] 21. Precision policy aligned with model certainty.
+- [x] 16. Formal `TrustDefinition` framework.
+- [x] 17. Rule-level source provenance.
+- [x] 18. Explicit calculator methodology metadata.
+- [x] 19. Model-scope cleanup for simplified calculators.
+- [x] 20. Result certainty classification: exact, estimate, projection, scenario, live-data.
+- [x] 21. Precision policy aligned with model certainty.
 
 ### Wave 4 — Calculator UX and mobile
 
-- [ ] 22. Input grouping system.
-- [ ] 23. Explicit numeric/slider control policy.
-- [ ] 24. Contextual input-validation messaging.
-- [ ] 25. Mobile-first XIRR cash-flow redesign.
-- [ ] 26. Multi-viewport calculator audit.
-- [ ] 27. Result interpretation hierarchy.
-- [ ] 28. Final result-card cleanup integration.
+- [x] 22. Input grouping system.
+- [x] 23. Explicit numeric/slider control policy.
+- [x] 24. Contextual input-validation messaging.
+- [x] 25. Mobile-first XIRR cash-flow redesign.
+- [x] 26. Multi-viewport calculator audit.
+- [x] 27. Result interpretation hierarchy.
+- [x] 28. Final result-card cleanup integration.
 
 ### Wave 5 — Search and discovery
 
-- [ ] 29. One unified search engine for homepage and global search.
-- [ ] 30. Structured search index.
-- [ ] 31. Intent/journey-aware ranking.
-- [ ] 32. Synonyms and typo recovery.
-- [ ] 33. Zero-result recovery.
-- [ ] 34. Search-intent detection.
+- [x] 29. One unified search engine for homepage and global search.
+- [x] 30. Structured search index.
+- [x] 31. Intent/journey-aware ranking.
+- [x] 32. Synonyms and typo recovery.
+- [x] 33. Zero-result recovery.
+- [x] 34. Search-intent detection.
 
 ### Wave 6 — Content and decision architecture
 
-- [ ] 35. Canonical content model.
-- [ ] 36. Explicit content relationships.
-- [ ] 37. Reduce duplicated explanation/SEO/FAQ content.
+- [x] 35. Canonical content model.
+- [x] 36. Explicit content relationships.
+- [x] 37. Reduce duplicated explanation/SEO/FAQ content.
 - [ ] 38. First-class decision-journey framework.
 - [ ] 39. First decision journeys: wealth, retirement, home buying, debt, job comparison.
 - [ ] 40. “What should I calculate next?” system.
