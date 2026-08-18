@@ -11,8 +11,12 @@ on:
       - 'vite.config.js'
       - 'playwright.config.mjs'
       - 'scripts/viewport-audit/**'
+      - 'scripts/publish-ci-status.mjs'
       - '.github/workflows/viewport-audit.yml'
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   viewport-audit:
@@ -38,3 +42,13 @@ jobs:
 
       - name: Run multi-viewport calculator audit
         run: npx --no-install playwright test
+
+      - name: Publish CI status
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STATUS_FILE: ci-status/viewport.json
+          STATUS_BRANCH: ci-status
+          WORKFLOW_NAME: Multi-viewport calculator audit
+          JOB_STATUS: ${{ job.status }}
+        run: node scripts/publish-ci-status.mjs
