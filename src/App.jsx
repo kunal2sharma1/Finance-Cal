@@ -77,30 +77,45 @@ export default function App() {
   }, [route, selectedCalculator, selectedGuide, selectedCountry])
 
   useEffect(() => {
-    if (route.type === 'not-found') return
+    if (route.type === 'not-found') {
+      setSiteSEO({ title: 'Page not found | FinCalc', description: 'The requested FinCalc page could not be found.', pathname: window.location.pathname, routeType: 'not-found', routeExists: false })
+      return
+    }
     if (selectedCalculator) {
       const seo = buildCalculatorSEO(selectedCalculator.config)
-      setSiteSEO({ ...seo, pathname: `/calculators/${encodeURIComponent(selectedCalculator.config.id)}`, calculator: true })
+      setSiteSEO({ ...seo, pathname: `/calculators/${encodeURIComponent(selectedCalculator.config.id)}`, calculator: true, routeType: 'calculator' })
+      return
+    }
+    if (route.type === 'calculator') {
+      setSiteSEO({ title: 'Calculator not found | FinCalc', description: 'The requested FinCalc calculator could not be found.', pathname: window.location.pathname, routeType: 'calculator', routeExists: false })
       return
     }
     if (selectedGuide) {
-      setSiteSEO({ title: selectedGuide.metaTitle, description: selectedGuide.metaDescription, pathname: `/guides/${selectedGuide.slug}` })
+      setSiteSEO({ title: selectedGuide.metaTitle, description: selectedGuide.metaDescription, pathname: `/guides/${selectedGuide.slug}`, routeType: 'guide' })
+      return
+    }
+    if (route.type === 'guide') {
+      setSiteSEO({ title: 'Guide not found | FinCalc', description: 'The requested FinCalc guide could not be found.', pathname: window.location.pathname, routeType: 'guide', routeExists: false })
       return
     }
     if (route.type === 'guides') {
-      setSiteSEO({ title: 'Financial Guides | Practical Money Explanations | FinCalc', description: 'Plain-English financial guides covering investing, loans, salary, budgeting, retirement and major money decisions.', pathname: '/guides' })
+      setSiteSEO({ title: 'Financial Guides | Practical Money Explanations | FinCalc', description: 'Plain-English financial guides covering investing, loans, salary, budgeting, retirement and major money decisions.', pathname: '/guides', routeType: 'guides' })
       return
     }
     if (route.type === 'countries') {
-      setSiteSEO({ title: 'Financial Calculators by Country | FinCalc', description: 'Explore FinCalc by country, with local currency formatting and country-specific financial tools where available.', pathname: '/countries' })
+      setSiteSEO({ title: 'Financial Calculators by Country | FinCalc', description: 'Explore FinCalc by country, with local currency formatting and country-specific financial tools where available.', pathname: '/countries', routeType: 'countries' })
       return
     }
     if (selectedCountry) {
-      setSiteSEO({ title: `${selectedCountry.title} | FinCalc`, description: selectedCountry.description, pathname: `/countries/${selectedCountry.slug}` })
+      setSiteSEO({ title: `${selectedCountry.title} | FinCalc`, description: selectedCountry.description, pathname: `/countries/${selectedCountry.slug}`, routeType: 'country' })
+      return
+    }
+    if (route.type === 'country') {
+      setSiteSEO({ title: 'Country page not found | FinCalc', description: 'The requested FinCalc country page could not be found.', pathname: window.location.pathname, routeType: 'country', routeExists: false })
       return
     }
     if (selectedHub) {
-      setSiteSEO({ title: selectedHub.metaTitle, description: selectedHub.metaDescription, pathname: `/${selectedHub.slug}` })
+      setSiteSEO({ title: selectedHub.metaTitle, description: selectedHub.metaDescription, pathname: `/${selectedHub.slug}`, routeType: 'hub' })
       return
     }
     if (route.type === 'info') {
@@ -111,10 +126,10 @@ export default function App() {
         contact: ['Contact FinCalc | Feedback & Calculator Issues', 'Contact FinCalc about calculator errors, confusing results, broken links, accessibility issues or product feedback.'],
       }
       const [title, description] = infoSEO[route.slug]
-      setSiteSEO({ title, description, pathname: `/${route.slug}` })
+      setSiteSEO({ title, description, pathname: `/${route.slug}`, routeType: 'info' })
       return
     }
-    setSiteSEO({})
+    setSiteSEO({ routeType: 'home' })
   }, [route, selectedCalculator, selectedGuide, selectedHub, selectedCountry])
 
   function openCalculator(id) {
