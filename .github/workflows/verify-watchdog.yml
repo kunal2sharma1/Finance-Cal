@@ -15,16 +15,33 @@ jobs:
   ensure-verify:
     runs-on: ubuntu-latest
     steps:
-      - name: Ensure release branch is verified
+      - name: Ensure release branch is secure and verified
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           BRANCH: fincalc-generational-release
           VERIFY_WORKFLOW: verify-build.yml
+          SECURITY_WORKFLOW: one-time-vite-security-remediation.yml
         run: |
           set -euo pipefail
 
           head_sha="$(gh api "repos/${REPO}/branches/${BRANCH}" --jq '.commit.sha')"
+
+          # Security remediation is a prerequisite for a clean release branch.
+          # If the marker exists, dispatch the remediation workflow once and let
+          # that workflow update the lockfile, verify the audit, and remove itself.
+          if gh api -s "repos/${REPO}/contents/.security-remediation-pending?ref=${BRANCH}" >/dev/null 2>&1; then
+            active_security="$(gh run list --repo "${REPO}" --workflow "${SECURITY_WORKFLOW}" --branch "${BRANCH}" --limit 10 --json status,headSha --jq --arg sha "${head_sha}" '[.[] | select(.headSha == $sha and (.status == "queued" or .status == "in_progress"))] | length')"
+            if [ "${active_security}" -eq 0 ]; then
+              echo "Security remediation pending for ${head_sha}; dispatching remediation workflow."
+              gh workflow run "${SECURITY_WORKFLOW}" --repo "${REPO}" --ref "${BRANCH}"
+              echo "Security remediation dispatched for ${head_sha}."
+            else
+              echo "Security remediation already running for ${head_sha}."
+            fi
+            exit 0
+          fi
+
           runs_json="$(gh api "repos/${REPO}/actions/workflows/${VERIFY_WORKFLOW}/runs?branch=${BRANCH}&per_page=20")"
 
           active_count="$(jq --arg sha "${head_sha}" '[.workflow_runs[] | select(.head_sha == $sha and (.status == "queued" or .status == "in_progress"))] | length' <<<"${runs_json}")"
