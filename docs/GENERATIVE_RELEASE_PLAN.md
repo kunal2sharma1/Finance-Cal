@@ -78,14 +78,14 @@ FinCalc should help users move from:
 - [x] 35. Canonical content model.
 - [x] 36. Explicit content relationships.
 - [x] 37. Reduce duplicated explanation/SEO/FAQ content.
-- [ ] 38. First-class decision-journey framework.
-- [ ] 39. First decision journeys: wealth, retirement, home buying, debt, job comparison.
-- [ ] 40. “What should I calculate next?” system.
+- [x] 38. First-class decision-journey framework.
+- [x] 39. First decision journeys: wealth, retirement, home buying, debt, job comparison.
+- [x] 40. “What should I calculate next?” system.
 
 ### Wave 7 — SEO and international architecture
 
-- [ ] 41. Central canonical site URL.
-- [ ] 42. Explicit indexability policy.
+- [x] 41. Central canonical site URL.
+- [x] 42. Explicit indexability policy.
 - [ ] 43. Production-like SEO crawl test.
 - [ ] 44. Search-intent metadata connected to SEO.
 - [ ] 45. Separate UI country, currency, number system, locale, and calculation jurisdiction.
