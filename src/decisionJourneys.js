@@ -81,18 +81,20 @@ const journeyDefinitions = [
 
 function resolveStep([calculatorId, explanation]) {
   const calculator = getCalculatorById(calculatorId)
-  if (!calculator) return null
+  if (!calculator) throw new Error(`Unknown journey calculator: ${calculatorId}`)
   return Object.freeze({ calculatorId, explanation, calculator: calculator.config })
 }
 
 function resolveGuide(id) {
-  return getContentById(id) || getContentBySlug(id) || null
+  const guide = getContentById(id) || getContentBySlug(id)
+  if (!guide) throw new Error(`Unknown journey guide: ${id}`)
+  return guide
 }
 
 export const decisionJourneys = Object.freeze(journeyDefinitions.map((journey) => Object.freeze({
   ...journey,
-  steps: Object.freeze(journey.steps.map(resolveStep).filter(Boolean)),
-  guides: Object.freeze(journey.guideIds.map(resolveGuide).filter(Boolean)),
+  steps: Object.freeze(journey.steps.map(resolveStep)),
+  guides: Object.freeze(journey.guideIds.map(resolveGuide)),
 })))
 
 const journeyBySlug = new Map(decisionJourneys.map((journey) => [journey.slug, journey]))
@@ -116,4 +118,29 @@ export function getJourneyRelationships(journey) {
     const calculator = getContentById(calculatorId)
     return calculator?.relationships?.filter(({ type }) => type === RELATIONSHIP_TYPES.calculatorExplainedByGuide) || []
   })
+}
+
+export function getNextCalculatorRecommendations(calculatorId) {
+  const recommendations = []
+  const seen = new Set()
+
+  for (const journey of decisionJourneys) {
+    const index = journey.steps.findIndex(({ calculatorId: id }) => id === calculatorId)
+    if (index < 0 || index === journey.steps.length - 1) continue
+
+    const next = journey.steps[index + 1]
+    if (seen.has(next.calculatorId)) continue
+    seen.add(next.calculatorId)
+    recommendations.push({
+      calculatorId: next.calculatorId,
+      calculator: next.calculator,
+      explanation: next.explanation,
+      journeyId: journey.id,
+      journeySlug: journey.slug,
+      journeyTitle: journey.title,
+      position: index + 2,
+    })
+  }
+
+  return recommendations.slice(0, 3)
 }
