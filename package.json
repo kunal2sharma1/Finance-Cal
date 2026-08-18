@@ -27,6 +27,7 @@
     "search-zero-results:check": "node scripts/search-zero-result-recovery-check.mjs",
     "search-intent-detection:check": "node scripts/search-intent-detection-check.mjs",
     "content-model:check": "node scripts/content-model-check.mjs",
+    "decision-journey:check": "node scripts/decision-journey-check.mjs",
     "precision:check": "node scripts/precision-policy-check.mjs",
     "analytics:check": "node scripts/analytics-check.mjs",
     "commercial:check": "node scripts/commercial-check.mjs",
