@@ -3,8 +3,8 @@ import { calculators } from '../src/calculatorCatalog.js'
 import { guides } from '../src/guides.js'
 import { topicHubs } from '../src/topicHubs.js'
 import { countryPages } from '../src/countryPages.js'
+import { getCanonicalUrl } from '../src/siteConfig.js'
 
-const BASE_URL = 'https://finance-cal.kunal2sharma1.workers.dev'
 const urls = new Set(['/'])
 
 for (const slug of Object.keys(topicHubs)) urls.add(`/${slug}`)
@@ -17,7 +17,7 @@ urls.add('/countries')
 const xml = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-  ...[...urls].map((path) => `  <url><loc>${BASE_URL}${path}</loc></url>`),
+  ...[...urls].map((path) => `  <url><loc>${getCanonicalUrl(path)}</loc></url>`),
   '</urlset>',
   '',
 ].join('\n')
