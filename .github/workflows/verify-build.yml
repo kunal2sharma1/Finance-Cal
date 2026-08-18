@@ -153,6 +153,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Production-like SEO crawl
+        run: npm run seo:crawl
+
       - name: Validate performance budget
         run: npm run performance:check
 
