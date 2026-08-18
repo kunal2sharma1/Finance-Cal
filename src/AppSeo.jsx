@@ -21,6 +21,20 @@ function getCanonicalGuide(slug) {
   return getContentBySlug(`guide:${slug}`) || canonicalGuideContent.find((guide) => guide.slug === `guide:${slug}`) || null
 }
 
+function toGuideViewModel(guide) {
+  if (!guide) return null
+  return {
+    slug: guide.slug.replace(/^guide:/, ''),
+    topic: guide.topic,
+    title: guide.title,
+    metaTitle: guide.metaTitle,
+    metaDescription: guide.metaDescription,
+    intro: guide.summary,
+    sections: guide.body.map(({ heading, text }) => [heading, text]),
+    calculatorLinks: guide.links.map(({ title, href }) => [title, href]),
+  }
+}
+
 export default function AppSeo() {
   const [route, setRoute] = useState(getSpecialRoute)
 
@@ -43,7 +57,7 @@ export default function AppSeo() {
   if (route.type === 'app') return <App />
 
   const hub = route.type === 'hub' ? topicHubs[route.slug] : null
-  const guide = route.type === 'guide' ? getCanonicalGuide(route.slug) : null
+  const guide = route.type === 'guide' ? toGuideViewModel(getCanonicalGuide(route.slug)) : null
 
   return (
     <div className="app-shell">
