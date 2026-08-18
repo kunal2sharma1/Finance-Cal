@@ -1,5 +1,5 @@
 import { calculatorSearchIndex, guideSearchIndex } from './searchIndex.js'
-import { inferSearchIntent, scoreSearchResult } from './searchIntent.js'
+import { detectSearchIntent, scoreSearchResult } from './searchIntent.js'
 import { buildSearchVocabulary, getSearchTerms, recoverQuery } from './searchRecovery.js'
 
 const normalize = (value) => String(value || '').trim().toLowerCase()
@@ -70,6 +70,18 @@ function buildZeroResultRecovery(queryMeta, { countryCode, types }) {
     .slice(0, 6)
 }
 
+export function detectSearch(query) {
+  const term = normalize(query)
+  if (!term) return detectSearchIntent('')
+
+  const recovered = recoverQuery(term, SEARCH_VOCABULARY)
+  return {
+    ...detectSearchIntent(recovered.query || term),
+    corrected: recovered.corrected,
+    corrections: recovered.corrections,
+  }
+}
+
 export function searchSite(query, { countryCode, types = ['calculator', 'guide'] } = {}) {
   const term = normalize(query)
   if (!term) return []
@@ -79,10 +91,11 @@ export function searchSite(query, { countryCode, types = ['calculator', 'guide']
   const terms = getSearchTerms(term, SEARCH_VOCABULARY)
   const allowedTypes = new Set(types)
   const queryMeta = {
-    ...inferSearchIntent(recoveryBase),
+    ...detectSearchIntent(recoveryBase),
     term,
     terms,
     corrected: recovered.corrected,
+    corrections: recovered.corrections,
   }
   const results = []
 
