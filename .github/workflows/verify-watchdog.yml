@@ -12,9 +12,14 @@ permissions:
   contents: write
   actions: write
 
+concurrency:
+  group: verify-watchdog
+  cancel-in-progress: false
+
 jobs:
   ensure-verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout release branch
         uses: actions/checkout@v4
@@ -35,8 +40,8 @@ jobs:
           fi
 
           echo "Security remediation pending; refreshing the canonical lockfile."
-          npm install --package-lock-only --ignore-scripts
-          npm ci --ignore-scripts
+          npm install --package-lock-only --ignore-scripts --include=dev --no-audit
+          npm ci --ignore-scripts --include=dev --no-audit
           npm audit --audit-level=high
 
           git config user.name "github-actions[bot]"
@@ -44,7 +49,7 @@ jobs:
 
           rm -f .security-remediation-pending
           rm -f .github/workflows/one-time-vite-security-remediation.yml
-          git add package.json package-lock.json .security-remediation-pending .github/workflows/one-time-vite-security-remediation.yml
+          git add -A package.json package-lock.json .security-remediation-pending .github/workflows/one-time-vite-security-remediation.yml
 
           if git diff --cached --quiet; then
             echo "security_remediation=false" >> "$GITHUB_OUTPUT"
