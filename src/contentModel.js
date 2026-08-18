@@ -7,12 +7,22 @@ export const CONTENT_TYPES = Object.freeze({
   guide: 'guide',
 })
 
+export const RELATIONSHIP_TYPES = Object.freeze({
+  guideExplainsCalculator: 'explains',
+  calculatorExplainedByGuide: 'explained-by',
+})
+
 function cloneList(value) {
   return Array.isArray(value) ? [...value] : []
 }
 
 function normalizeText(value) {
   return String(value || '').trim()
+}
+
+function calculatorIdFromHref(href) {
+  const match = normalizeText(href).match(/^\/calculators\/([a-z0-9-]+)$/)
+  return match ? match[1] : null
 }
 
 function canonicalCalculator(calculator) {
@@ -30,6 +40,7 @@ function canonicalCalculator(calculator) {
     topic: normalizeText(config.category),
     body: [],
     links: [],
+    relationships: [],
     keywords: cloneList(config.keywords),
   })
 }
@@ -52,12 +63,55 @@ function canonicalGuide(guide) {
       title: normalizeText(title),
       href: normalizeText(href),
     })),
+    relationships: [],
     keywords: [],
   })
 }
 
-export const canonicalCalculatorContent = Object.freeze(calculators.map(canonicalCalculator))
-export const canonicalGuideContent = Object.freeze(guides.map(canonicalGuide))
+const baseCalculatorContent = calculators.map(canonicalCalculator)
+const baseGuideContent = guides.map(canonicalGuide)
+const calculatorById = new Map(baseCalculatorContent.map((item) => [item.id, item]))
+const guideById = new Map(baseGuideContent.map((item) => [item.id, item]))
+
+const guideRelationships = baseGuideContent.flatMap((guide) => guide.links.flatMap((link) => {
+  const calculatorId = calculatorIdFromHref(link.href)
+  if (!calculatorId) return []
+
+  const calculator = calculatorById.get(calculatorId)
+  if (!calculator) return []
+
+  return [{
+    sourceId: guide.id,
+    targetId: calculator.id,
+    type: RELATIONSHIP_TYPES.guideExplainsCalculator,
+    label: link.title,
+  }]
+}))
+
+const calculatorRelationships = guideRelationships.map((relationship) => ({
+  sourceId: relationship.targetId,
+  targetId: relationship.sourceId,
+  type: RELATIONSHIP_TYPES.calculatorExplainedByGuide,
+  label: relationship.label,
+}))
+
+const relationshipsBySource = new Map()
+for (const relationship of [...guideRelationships, ...calculatorRelationships]) {
+  const list = relationshipsBySource.get(relationship.sourceId) || []
+  list.push(Object.freeze(relationship))
+  relationshipsBySource.set(relationship.sourceId, list)
+}
+
+export const canonicalCalculatorContent = Object.freeze(baseCalculatorContent.map((item) => Object.freeze({
+  ...item,
+  relationships: Object.freeze(relationshipsBySource.get(item.id) || []),
+})))
+
+export const canonicalGuideContent = Object.freeze(baseGuideContent.map((item) => Object.freeze({
+  ...item,
+  relationships: Object.freeze(relationshipsBySource.get(item.id) || []),
+})))
+
 export const canonicalContent = Object.freeze([
   ...canonicalCalculatorContent,
   ...canonicalGuideContent,
@@ -76,4 +130,12 @@ export function getContentBySlug(slug) {
 
 export function getContentByType(type) {
   return canonicalContent.filter((item) => item.type === type)
+}
+
+export function getContentRelationships(contentId) {
+  return canonicalContent.find((item) => item.id === contentId)?.relationships || []
+}
+
+export function getContentRelationshipGraph() {
+  return [...guideRelationships, ...calculatorRelationships].map((relationship) => ({ ...relationship }))
 }
