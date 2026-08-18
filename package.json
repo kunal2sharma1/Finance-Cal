@@ -30,6 +30,7 @@
     "decision-journey:check": "node scripts/decision-journey-check.mjs",
     "decision-journey:quality": "node scripts/decision-journey-quality-check.mjs",
     "next-calculator:check": "node scripts/next-calculator-check.mjs",
+    "indexability:check": "node scripts/indexability-check.mjs",
     "precision:check": "node scripts/precision-policy-check.mjs",
     "analytics:check": "node scripts/analytics-check.mjs",
     "commercial:check": "node scripts/commercial-check.mjs",
