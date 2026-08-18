@@ -60,6 +60,9 @@ jobs:
       - name: Validate search intent ranking
         run: npm run search-intent:check
 
+      - name: Validate search synonym and typo recovery
+        run: npm run search-recovery:check
+
       - name: Run golden formula regression tests
         run: npm run formula:golden
 
