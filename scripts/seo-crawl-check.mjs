@@ -42,6 +42,35 @@ async function waitForServer(url, timeoutMs = 15000) {
   throw new Error(`Preview server did not become ready within ${timeoutMs}ms: ${url}`)
 }
 
+async function stopProcessTree(child) {
+  if (!child.pid) return
+
+  if (process.platform !== 'win32') {
+    try { process.kill(-child.pid, 'SIGTERM') } catch {}
+    await Promise.race([
+      onceExit(child),
+      sleep(2000),
+    ])
+    if (!child.killed) {
+      try { process.kill(-child.pid, 'SIGKILL') } catch {}
+    }
+  } else {
+    try { child.kill('SIGTERM') } catch {}
+    await Promise.race([
+      onceExit(child),
+      sleep(2000),
+    ])
+    if (!child.killed) {
+      try { child.kill('SIGKILL') } catch {}
+    }
+  }
+}
+
+function onceExit(child) {
+  if (child.exitCode !== null || child.signalCode) return Promise.resolve()
+  return new Promise((resolve) => child.once('exit', resolve))
+}
+
 const robots = await readFile('public/robots.txt', 'utf8')
 const sitemap = await readFile('public/sitemap.xml', 'utf8')
 const locs = extractLocs(sitemap)
@@ -79,6 +108,7 @@ for (const url of locs) {
 const child = spawn('npm', ['run', 'preview', '--', '--host', '127.0.0.1', '--port', '4173'], {
   stdio: ['ignore', 'pipe', 'pipe'],
   windowsHide: true,
+  detached: process.platform !== 'win32',
 })
 
 try {
@@ -101,9 +131,7 @@ try {
   assert(robotsResponse.status === 200, `Preview robots.txt is not reachable: ${robotsResponse.status}`)
   assert((robotsResponse.headers.get('content-type') || '').includes('text/plain'), 'Preview robots.txt must return text content.')
 } finally {
-  child.kill('SIGTERM')
-  await sleep(100)
-  if (!child.killed) child.kill('SIGKILL')
+  await stopProcessTree(child)
 }
 
 if (failures.length) {
