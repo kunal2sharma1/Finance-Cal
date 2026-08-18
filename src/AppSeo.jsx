@@ -51,13 +51,16 @@ export default function AppSeo() {
   useEffect(() => {
     if (route.type === 'hub') {
       const hub = topicHubs[route.slug]
-      if (hub) setSiteSEO({ title: hub.metaTitle, description: hub.metaDescription, pathname: `/${route.slug}` })
+      if (hub) setSiteSEO({ title: hub.metaTitle, description: hub.metaDescription, pathname: `/${route.slug}`, routeType: 'hub' })
+      else setSiteSEO({ title: 'Page not found | FinCalc', description: 'The requested FinCalc page could not be found.', pathname: window.location.pathname, routeType: 'not-found', routeExists: false })
     } else if (route.type === 'guide') {
       const guide = getCanonicalGuide(route.slug)
-      if (guide) setSiteSEO({ title: guide.metaTitle, description: guide.metaDescription, pathname: `/guides/${guide.slug.replace(/^guide:/, '')}` })
+      if (guide) setSiteSEO({ title: guide.metaTitle, description: guide.metaDescription, pathname: `/guides/${guide.slug.replace(/^guide:/, '')}`, routeType: 'guide' })
+      else setSiteSEO({ title: 'Guide not found | FinCalc', description: 'The requested FinCalc guide could not be found.', pathname: window.location.pathname, routeType: 'guide', routeExists: false })
     } else if (route.type === 'journey') {
       const journey = getDecisionJourney(route.slug)
-      if (journey) setSiteSEO({ title: `${journey.title} | FinCalc`, description: journey.summary, pathname: `/journeys/${journey.slug}` })
+      if (journey) setSiteSEO({ title: `${journey.title} | FinCalc`, description: journey.summary, pathname: `/journeys/${journey.slug}`, routeType: 'journey' })
+      else setSiteSEO({ title: 'Journey not found | FinCalc', description: 'The requested FinCalc journey could not be found.', pathname: window.location.pathname, routeType: 'journey', routeExists: false })
     }
   }, [route])
 
