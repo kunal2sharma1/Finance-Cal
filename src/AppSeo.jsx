@@ -5,7 +5,7 @@ import GuideView from './pages/GuideView.jsx'
 import CountrySelector from './components/CountrySelector.jsx'
 import { calculators } from './calculators/registry.js'
 import { topicHubs } from './topicHubs.js'
-import { getGuide } from './guides.js'
+import { canonicalGuideContent, getContentBySlug } from './contentModel.js'
 import { setSiteSEO } from './seo.js'
 
 function getSpecialRoute() {
@@ -15,6 +15,10 @@ function getSpecialRoute() {
   const guide = path.match(/^\/guides\/([^/]+)$/)
   if (guide) return { type: 'guide', slug: decodeURIComponent(guide[1]) }
   return { type: 'app' }
+}
+
+function getCanonicalGuide(slug) {
+  return getContentBySlug(`guide:${slug}`) || canonicalGuideContent.find((guide) => guide.slug === `guide:${slug}`) || null
 }
 
 export default function AppSeo() {
@@ -31,15 +35,15 @@ export default function AppSeo() {
       const hub = topicHubs[route.slug]
       if (hub) setSiteSEO({ title: hub.metaTitle, description: hub.metaDescription, pathname: `/${route.slug}` })
     } else if (route.type === 'guide') {
-      const guide = getGuide(route.slug)
-      if (guide) setSiteSEO({ title: guide.metaTitle, description: guide.metaDescription, pathname: `/guides/${guide.slug}` })
+      const guide = getCanonicalGuide(route.slug)
+      if (guide) setSiteSEO({ title: guide.metaTitle, description: guide.metaDescription, pathname: `/guides/${guide.slug.replace(/^guide:/, '')}` })
     }
   }, [route])
 
   if (route.type === 'app') return <App />
 
   const hub = route.type === 'hub' ? topicHubs[route.slug] : null
-  const guide = route.type === 'guide' ? getGuide(route.slug) : null
+  const guide = route.type === 'guide' ? getCanonicalGuide(route.slug) : null
 
   return (
     <div className="app-shell">
