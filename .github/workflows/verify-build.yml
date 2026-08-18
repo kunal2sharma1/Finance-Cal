@@ -117,6 +117,9 @@ jobs:
       - name: Validate SEO configuration
         run: npm run seo:check
 
+      - name: Validate canonical site URL
+        run: npm run canonical-url:check
+
       - name: Validate discovery
         run: npm run discovery:check
 
