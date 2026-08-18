@@ -3,10 +3,8 @@ import { CANONICAL_SITE_URL, getCanonicalUrl } from '../src/siteConfig.js'
 
 const errors = []
 const sourceFiles = [
-  'src/siteConfig.js',
   'src/seo.js',
   'scripts/generate-global-sitemap.mjs',
-  'scripts/canonical-url-check.mjs',
 ]
 
 if (!/^https:\/\/[^/]+$/.test(CANONICAL_SITE_URL)) {
@@ -24,7 +22,7 @@ for (const pathname of ['/', '/calculators/sip', '/guides/how-sip-works']) {
   }
 }
 
-for (const path of sourceFiles.slice(1)) {
+for (const path of sourceFiles) {
   const content = await readFile(path, 'utf8')
   if (content.includes('window.location.origin')) {
     errors.push(`${path} derives canonical URLs from the runtime origin.`)
