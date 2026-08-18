@@ -8,7 +8,7 @@ const SIGNALS = [
 ]
 
 const DOMAIN_SIGNALS = [
-  { pattern: /loan|mortgage|emi|borrow|home loan|housing|house|property/, domain: 'borrowing', priority: 100 },
+  { pattern: /loan|mortgage|emi|borrow|home loan|housing|house|property|home buying|buying a home|buy a home|home purchase|house buying|buying a house/, domain: 'borrowing', priority: 100 },
   { pattern: /debt|credit card|credit score|debt-to-income/, domain: 'debt', priority: 95 },
   { pattern: /net worth|savings rate|financial health/, domain: 'financial-health', priority: 90 },
   { pattern: /retire|retirement|nps|epf|401\(k\)|pension/, domain: 'retirement', priority: 85 },
