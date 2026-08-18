@@ -44,6 +44,7 @@
     "formula:boundary": "node scripts/formula-boundary-check.mjs",
     "formula:xirr": "node scripts/xirr-numerical-check.mjs",
     "live-data:check": "node scripts/live-data-check.mjs",
+    "canonical-url:check": "node scripts/canonical-url-check.mjs",
     "prebuild": "node scripts/generate-global-sitemap.mjs",
     "build": "vite build",
     "performance:check": "node scripts/performance-check.mjs",
