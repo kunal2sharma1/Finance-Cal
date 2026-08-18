@@ -1,6 +1,8 @@
 name: Verify watchdog
 
 on:
+  push:
+    branches: [main]
   schedule:
     # Scheduled workflows execute from the repository default branch.
     # The watchdog targets the release branch explicitly below.
