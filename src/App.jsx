@@ -82,7 +82,7 @@ export default function App() {
       return
     }
     if (selectedCalculator) {
-      const seo = buildCalculatorSEO(selectedCalculator.config)
+      const seo = buildCalculatorSEO(selectedCalculator.config, selectedCalculator.meta)
       setSiteSEO({ ...seo, pathname: `/calculators/${encodeURIComponent(selectedCalculator.config.id)}`, calculator: true, routeType: 'calculator' })
       return
     }
