@@ -41,7 +41,7 @@ function guideSearchResult(entry, terms, queryMeta, recovery = false) {
 }
 
 function buildZeroResultRecovery(queryMeta, { countryCode, types }) {
-  if (!queryMeta.intent && !queryMeta.domain && !queryMeta.journey) return []
+  if (!queryMeta.domain && !queryMeta.journey) return []
 
   const candidates = []
   const allowedTypes = new Set(types)
