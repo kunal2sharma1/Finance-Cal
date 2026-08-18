@@ -63,6 +63,9 @@ jobs:
       - name: Validate search synonym and typo recovery
         run: npm run search-recovery:check
 
+      - name: Validate zero-result recovery
+        run: npm run search-zero-results:check
+
       - name: Run golden formula regression tests
         run: npm run formula:golden
 
