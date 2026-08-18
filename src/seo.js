@@ -37,16 +37,16 @@ function linkCleanup(rel, element) {
   element.setAttribute('rel', rel)
 }
 
-function normaliseSearchIntent(config, intent) {
-  if (!config || !intent) return null
+function normaliseSearchIntent(config, meta, intent) {
+  if (!config || !meta || !intent) return null
 
   return {
     intentLabel: intent.intentLabel,
     bestFor: intent.bestFor,
     questions: Array.isArray(intent.questions) ? intent.questions.filter(Boolean) : [],
-    domain: config.meta?.domain || null,
-    primaryIntent: config.meta?.intent || null,
-    primaryJourney: config.meta?.primaryJourney || null,
+    domain: meta.domain || null,
+    primaryIntent: meta.intent || null,
+    primaryJourney: meta.primaryJourney || null,
   }
 }
 
@@ -139,13 +139,13 @@ export function setBreadcrumbSchema(items) {
   })
 }
 
-export function buildCalculatorSEO(config) {
+export function buildCalculatorSEO(config, meta = null) {
   const custom = getCalculatorSEO(config.id) || getInternationalSEO(config.id)
   const base = custom || {
     title: `${config.title} | ${SITE_NAME}`,
     description: `${config.shortDescription} Free, instant calculation with clear results and plain-English guidance.`,
   }
-  const searchIntent = normaliseSearchIntent(config, seoIntentContent[config.id])
+  const searchIntent = normaliseSearchIntent(config, meta, seoIntentContent[config.id])
 
   return searchIntent ? { ...base, searchIntent } : base
 }
