@@ -1,6 +1,6 @@
 import { calculators } from './calculatorCatalog.js'
 import { guides } from './guides.js'
-import { calculatorSeo } from './calculatorSeo.js'
+import { getCalculatorSEO } from './calculatorSeo.js'
 
 export const CONTENT_TYPES = Object.freeze({
   calculator: 'calculator',
@@ -17,7 +17,7 @@ function normalizeText(value) {
 
 function canonicalCalculator(calculator) {
   const config = calculator.config
-  const seo = calculatorSeo[config.id] || {}
+  const seo = getCalculatorSEO(config.id) || {}
 
   return Object.freeze({
     type: CONTENT_TYPES.calculator,
