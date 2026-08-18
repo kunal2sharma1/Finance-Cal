@@ -71,7 +71,6 @@ function canonicalGuide(guide) {
 const baseCalculatorContent = calculators.map(canonicalCalculator)
 const baseGuideContent = guides.map(canonicalGuide)
 const calculatorById = new Map(baseCalculatorContent.map((item) => [item.id, item]))
-const guideById = new Map(baseGuideContent.map((item) => [item.id, item]))
 
 const guideRelationships = baseGuideContent.flatMap((guide) => guide.links.flatMap((link) => {
   const calculatorId = calculatorIdFromHref(link.href)
