@@ -2,11 +2,11 @@
 
 Release branch: `fincalc-generational-release`
 
-Status: **IN PROGRESS — Phase 38 implementation started; verification pending.**
+Status: **IN PROGRESS — Phase 42 complete; Phase 43 next.**
 
 Last reconciled: `2026-08-18`
-Current implementation commit: `1ddb3d1a6da2fdae4128d6be27e7b13316b0071e`
-Last verified release commit: `3134ed585f953721ed048f970fcb65ec89d8aaee` (Verify #428 passed).
+Current implementation commit: `2bf1ccead863630c0e4656a422d80b727753ba87`
+Last verified release commit: `2bf1ccead863630c0e4656a422d80b727753ba87` (Verify #464 passed).
 
 ## Source of truth
 
@@ -50,10 +50,16 @@ The authoritative 88-phase roadmap is `docs/GENERATIVE_RELEASE_PLAN.md`. This st
 - [x] Phase 35 canonical content model implemented and validated.
 - [x] Phase 36 explicit content relationships implemented and validated.
 - [x] Phase 37 duplicated guide/content sourcing reduced by routing guide rendering through the canonical content model.
-- [ ] Phase 38 first-class decision-journey framework — implementation started; verification pending.
-- [ ] Phase 39 first decision journeys: wealth, retirement, home buying, debt, job comparison.
-- [ ] Phase 40 “What should I calculate next?” system.
-- [ ] Phases 41–47 SEO/international architecture.
+- [x] Phase 38 first-class decision-journey framework implemented and verified.
+- [x] Phase 39 first decision journeys implemented and verified.
+- [x] Phase 40 “What should I calculate next?” system implemented and verified.
+- [x] Phase 41 central canonical site URL implemented and verified.
+- [x] Phase 42 explicit indexability policy implemented and verified.
+- [ ] Phase 43 production-like SEO crawl test.
+- [ ] Phase 44 search-intent metadata connected to SEO.
+- [ ] Phase 45 separate UI country, currency, number system, locale, and calculation jurisdiction.
+- [ ] Phase 46 explicit jurisdiction architecture.
+- [ ] Phase 47 country quality/readiness gates.
 - [ ] Phases 48–56 analytics/runtime/engineering quality.
 - [ ] Phases 57–60 commercial architecture.
 - [ ] Phases 61–66 product integration.
@@ -64,21 +70,21 @@ The authoritative 88-phase roadmap is `docs/GENERATIVE_RELEASE_PLAN.md`. This st
 - [ ] Phase 87 immediate production verification.
 - [ ] Phase 88 post-deployment monitoring and release sign-off.
 
-## Phase 38 implementation started
+## Phase 38–42 implementation and verification
 
-- Added `src/decisionJourneys.js` as the first-class journey domain model with stable journey IDs/slugs, decision questions, ordered calculator steps, explanations and guide relationships.
-- Added `src/pages/DecisionJourney.jsx` and dedicated responsive styling for journey presentation.
-- Added `/journeys/:slug` routing and route-level SEO integration to `AppSeo.jsx`.
-- Added `scripts/decision-journey-check.mjs` and registered `decision-journey:check` in `package.json`.
-- The implementation includes seed journey definitions for the five domains reserved by Phase 39; Phase 39 remains a separate completion gate for dedicated journey quality/integration.
+- Phase 38 added the first-class decision-journey domain model, routing, responsive presentation, SEO integration, and validation.
+- Phase 39 completed the first five decision journeys with dedicated quality validation.
+- Phase 40 added the actionable next-calculator flow and its validation gate.
+- Phase 41 centralized the production canonical URL and aligned runtime SEO and sitemap generation, with a dedicated canonical-URL validation gate.
+- Phase 42 introduced an explicit indexability policy, noindex handling for unresolved routes, sitemap alignment for indexable journeys, and the `indexability:check` verification gate.
 
 ## Verification status
 
-The new Phase 38 commits have not yet produced a reported Verify run. Therefore no Phase 38 test pass is claimed yet. Production remains untouched.
+Verify #464 passed for commit `2bf1ccead863630c0e4656a422d80b727753ba87`, including the dedicated `Validate indexability policy` step, all existing calculator/formula/trust/SEO/international/analytics gates, production build, and performance budget. Phase 42 is therefore closed. The viewport audit remains independently green on its latest run, while Phase 42 itself did not change calculator UI/layout behavior and did not require a new viewport run. Production remains untouched.
 
 ## Security remediation
 
-Vite was pinned to patched `6.4.3`. The temporary dependency-repair workflow was removed after remediation. The historical failed repair workflow runs are not release failures; the last recorded Verify pipeline was green on #428.
+Vite is pinned to patched `6.4.3`. The temporary dependency-repair workflow was removed after remediation. Historical failed repair workflow runs are not release failures; current verification is tracked against the exact implementation commit.
 
 ## Release objective
 
