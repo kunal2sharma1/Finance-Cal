@@ -4,7 +4,8 @@ on:
   schedule:
     # Scheduled workflows execute from the repository default branch.
     # The watchdog targets the release branch explicitly below.
-    - cron: '*/10 * * * *'
+    # Five minutes is the fastest practical GitHub Actions cron cadence.
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 permissions:
