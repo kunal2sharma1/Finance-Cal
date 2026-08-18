@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react'
 import App from './App.jsx'
 import TopicHub from './pages/TopicHub.jsx'
 import GuideView from './pages/GuideView.jsx'
+import DecisionJourney from './pages/DecisionJourney.jsx'
 import CountrySelector from './components/CountrySelector.jsx'
 import { calculators } from './calculators/registry.js'
 import { topicHubs } from './topicHubs.js'
 import { canonicalGuideContent, getContentBySlug } from './contentModel.js'
+import { getDecisionJourney } from './decisionJourneys.js'
 import { setSiteSEO } from './seo.js'
 
 function getSpecialRoute() {
@@ -14,6 +16,8 @@ function getSpecialRoute() {
   if (hub) return { type: 'hub', slug: hub[1] }
   const guide = path.match(/^\/guides\/([^/]+)$/)
   if (guide) return { type: 'guide', slug: decodeURIComponent(guide[1]) }
+  const journey = path.match(/^\/journeys\/([^/]+)$/)
+  if (journey) return { type: 'journey', slug: decodeURIComponent(journey[1]) }
   return { type: 'app' }
 }
 
@@ -51,6 +55,9 @@ export default function AppSeo() {
     } else if (route.type === 'guide') {
       const guide = getCanonicalGuide(route.slug)
       if (guide) setSiteSEO({ title: guide.metaTitle, description: guide.metaDescription, pathname: `/guides/${guide.slug.replace(/^guide:/, '')}` })
+    } else if (route.type === 'journey') {
+      const journey = getDecisionJourney(route.slug)
+      if (journey) setSiteSEO({ title: `${journey.title} | FinCalc`, description: journey.summary, pathname: `/journeys/${journey.slug}` })
     }
   }, [route])
 
@@ -58,6 +65,7 @@ export default function AppSeo() {
 
   const hub = route.type === 'hub' ? topicHubs[route.slug] : null
   const guide = route.type === 'guide' ? toGuideViewModel(getCanonicalGuide(route.slug)) : null
+  const journey = route.type === 'journey' ? getDecisionJourney(route.slug) : null
 
   return (
     <div className="app-shell">
@@ -73,6 +81,8 @@ export default function AppSeo() {
           <TopicHub slug={route.slug} calculators={calculators} onSelect={(id) => { window.location.href = `/calculators/${encodeURIComponent(id)}` }} />
         ) : guide ? (
           <GuideView guide={guide} />
+        ) : journey ? (
+          <DecisionJourney journey={journey} />
         ) : null}
       </main>
       <footer className="site-footer">
