@@ -1,12 +1,13 @@
+import { CANONICAL_SITE_URL, getCanonicalUrl } from './siteConfig.js'
 import { getCalculatorSEO } from './calculatorSeo.js'
 import { getInternationalSEO } from './internationalSeo.js'
 
 const SITE_NAME = 'FinCalc'
 
-function getCanonicalUrl(pathname) {
-  const base = window.location.origin.replace(/\/$/, '')
-  const cleanPath = pathname || '/'
-  return `${base}${cleanPath}`
+function getRuntimeCanonicalUrl(pathname) {
+  // Canonical URLs must remain tied to the production identity, never the
+  // current preview/worker origin.
+  return getCanonicalUrl(pathname || '/')
 }
 
 function upsertMeta(attribute, value, content) {
@@ -33,7 +34,7 @@ function upsertLink(rel, href) {
 export function setSiteSEO({ title, description, pathname, calculator, noindex = false }) {
   const pageTitle = title || `${SITE_NAME} — Simple Financial Calculators`
   const pageDescription = description || 'Free, practical financial calculators for investing, loans, salary, savings, retirement and everyday money decisions.'
-  const canonical = getCanonicalUrl(pathname || window.location.pathname)
+  const canonical = getRuntimeCanonicalUrl(pathname || window.location.pathname)
 
   document.title = pageTitle
   upsertMeta('name', 'description', pageDescription)
@@ -95,7 +96,7 @@ export function setBreadcrumbSchema(items) {
       '@type': 'ListItem',
       position: index + 1,
       name: item.label,
-      ...(item.href ? { item: getCanonicalUrl(item.href) } : {}),
+      ...(item.href ? { item: getRuntimeCanonicalUrl(item.href) } : {}),
     })),
   })
 }
@@ -109,3 +110,5 @@ export function buildCalculatorSEO(config) {
     description: `${config.shortDescription} Free, instant calculation with clear results and plain-English guidance.`,
   }
 }
+
+export { CANONICAL_SITE_URL }
