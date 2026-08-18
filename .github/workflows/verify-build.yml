@@ -66,6 +66,9 @@ jobs:
       - name: Validate zero-result recovery
         run: npm run search-zero-results:check
 
+      - name: Validate search intent detection
+        run: npm run search-intent-detection:check
+
       - name: Run golden formula regression tests
         run: npm run formula:golden
 
