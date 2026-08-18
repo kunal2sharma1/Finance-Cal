@@ -1,0 +1,45 @@
+name: Verify watchdog
+
+on:
+  schedule:
+    # Scheduled workflows execute from the repository default branch.
+    # The watchdog targets the release branch explicitly below.
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  ensure-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure release branch is verified
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          BRANCH: fincalc-generational-release
+          VERIFY_WORKFLOW: verify-build.yml
+        run: |
+          set -euo pipefail
+
+          head_sha="$(gh api "repos/${REPO}/branches/${BRANCH}" --jq '.commit.sha')"
+          runs_json="$(gh api "repos/${REPO}/actions/workflows/${VERIFY_WORKFLOW}/runs?branch=${BRANCH}&per_page=20")"
+
+          active_count="$(jq --arg sha "${head_sha}" '[.workflow_runs[] | select(.head_sha == $sha and (.status == "queued" or .status == "in_progress"))] | length' <<<"${runs_json}")"
+          if [ "${active_count}" -gt 0 ]; then
+            echo "Verify already running for ${head_sha}."
+            exit 0
+          fi
+
+          completed_count="$(jq --arg sha "${head_sha}" '[.workflow_runs[] | select(.head_sha == $sha and .status == "completed")] | length' <<<"${runs_json}")"
+          if [ "${completed_count}" -gt 0 ]; then
+            conclusion="$(jq -r --arg sha "${head_sha}" '[.workflow_runs[] | select(.head_sha == $sha and .status == "completed")] | sort_by(.updated_at) | last | .conclusion' <<<"${runs_json}")"
+            echo "Verify already completed for ${head_sha}: ${conclusion}."
+            exit 0
+          fi
+
+          echo "No completed Verify run exists for ${head_sha}; dispatching Verify build."
+          gh workflow run "${VERIFY_WORKFLOW}" --repo "${REPO}" --ref "${BRANCH}"
+          echo "Verify build dispatched for ${head_sha}."
