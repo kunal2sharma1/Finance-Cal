@@ -75,6 +75,12 @@ jobs:
       - name: Validate canonical content model
         run: npm run content-model:check
 
+      - name: Validate decision journey framework
+        run: npm run decision-journey:check
+
+      - name: Validate first decision journeys
+        run: npm run decision-journey:quality
+
       - name: Run golden formula regression tests
         run: npm run formula:golden
 
