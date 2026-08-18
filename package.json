@@ -10,6 +10,7 @@
     "seo:growth:v1": "node scripts/seo-growth-v1-check.mjs",
     "country-seo:check": "node scripts/country-seo-check.mjs",
     "seo-intent:check": "node scripts/seo-intent-check.mjs",
+    "search-intent:seo:check": "node scripts/search-intent-seo-check.mjs",
     "technical-seo:check": "node scripts/technical-seo-check.mjs",
     "internal-links:check": "node scripts/internal-link-check.mjs",
     "serp:check": "node scripts/serp-quality-check.mjs",
