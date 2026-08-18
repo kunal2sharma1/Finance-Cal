@@ -6,8 +6,10 @@ import CalculatorSEOSections from '../components/CalculatorSEOSections.jsx'
 import CalculatorTrust from '../components/CalculatorTrust.jsx'
 import CommercialDisclosure from '../components/CommercialDisclosure.jsx'
 import CommercialPlacement from '../components/CommercialPlacement.jsx'
+import NextCalculatorSection from '../components/NextCalculatorSection.jsx'
 import { calculators } from '../calculatorCatalog.js'
 import { guides } from '../guides.js'
+import { getNextCalculatorRecommendations } from '../decisionJourneys.js'
 import { getCalculatorCurrency } from '../calculatorLocale.js'
 import { validateInputValues } from '../inputValidation.js'
 import { setBreadcrumbSchema } from '../seo.js'
@@ -133,6 +135,7 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
 
   const relatedCalculators = useMemo(() => getRelatedCalculators(calculator), [calculator])
   const supportingGuides = useMemo(() => getSupportingGuides(config.id), [config.id])
+  const nextCalculatorRecommendations = useMemo(() => getNextCalculatorRecommendations(config.id), [config.id])
   const displayCurrency = getCalculatorCurrency(config, country)
 
   function handleChange(name, rawValue) {
@@ -171,6 +174,7 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
           <CalculatorForm calculatorId={config.id} fields={config.fields} values={values} errors={inputErrors} touched={touched} onChange={handleChange} onBlur={handleBlur} />
         </div>
       </div>
+      <NextCalculatorSection currentCalculatorId={config.id} recommendations={nextCalculatorRecommendations} />
       <section className="calc-view__content" aria-labelledby="how-it-works">
         <span className="calc-view__eyebrow">PLAIN-ENGLISH GUIDE</span>
         <h2 id="how-it-works">How the {config.title.toLowerCase()} works</h2>
