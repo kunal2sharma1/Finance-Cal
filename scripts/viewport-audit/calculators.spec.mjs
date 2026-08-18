@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { calculators } from '../../src/calculatorCatalog.js'
+import { getNextCalculatorRecommendations } from '../../src/decisionJourneys.js'
 
 const VIEWPORT_LABELS = new Set(['desktop', 'tablet', 'mobile'])
 
@@ -29,6 +30,15 @@ for (const calculator of calculators) {
 
       await expect(page.locator('h1')).toContainText(title)
       await expect(page.locator('.calc-view__grid')).toBeVisible()
+
+      const nextRecommendations = getNextCalculatorRecommendations(id)
+      const nextSection = page.locator('#what-next')
+      if (nextRecommendations.length > 0) {
+        await expect(nextSection, `${id} should expose the next-calculator decision section`).toBeVisible()
+        await expect(page.locator('.next-calculator__link')).toHaveCount(nextRecommendations.length)
+      } else {
+        await expect(nextSection, `${id} should not expose an empty next-calculator section`).toHaveCount(0)
+      }
 
       await page.waitForTimeout(250)
 
