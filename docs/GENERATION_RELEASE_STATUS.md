@@ -2,11 +2,11 @@
 
 Release branch: `fincalc-generational-release`
 
-Status: **IN PROGRESS — Phase 37 complete; Phase 38 next.**
+Status: **IN PROGRESS — Phase 38 implementation started; verification pending.**
 
 Last reconciled: `2026-08-18`
-Current verified release commit: `3134ed585f953721ed048f970fcb65ec89d8aaee`
-Latest verified Verify run: **#428 — passed**.
+Current implementation commit: `1ddb3d1a6da2fdae4128d6be27e7b13316b0071e`
+Last verified release commit: `3134ed585f953721ed048f970fcb65ec89d8aaee` (Verify #428 passed).
 
 ## Source of truth
 
@@ -50,7 +50,7 @@ The authoritative 88-phase roadmap is `docs/GENERATIVE_RELEASE_PLAN.md`. This st
 - [x] Phase 35 canonical content model implemented and validated.
 - [x] Phase 36 explicit content relationships implemented and validated.
 - [x] Phase 37 duplicated guide/content sourcing reduced by routing guide rendering through the canonical content model.
-- [ ] Phase 38 first-class decision-journey framework.
+- [ ] Phase 38 first-class decision-journey framework — implementation started; verification pending.
 - [ ] Phase 39 first decision journeys: wealth, retirement, home buying, debt, job comparison.
 - [ ] Phase 40 “What should I calculate next?” system.
 - [ ] Phases 41–47 SEO/international architecture.
@@ -64,17 +64,21 @@ The authoritative 88-phase roadmap is `docs/GENERATIVE_RELEASE_PLAN.md`. This st
 - [ ] Phase 87 immediate production verification.
 - [ ] Phase 88 post-deployment monitoring and release sign-off.
 
-## Recent qualification
+## Phase 38 implementation started
 
-Phase 37 commit `3134ed585f953721ed048f970fcb65ec89d8aaee` passed Verify build **#428**. The CI status bridge records the run as passed for the release branch.
+- Added `src/decisionJourneys.js` as the first-class journey domain model with stable journey IDs/slugs, decision questions, ordered calculator steps, explanations and guide relationships.
+- Added `src/pages/DecisionJourney.jsx` and dedicated responsive styling for journey presentation.
+- Added `/journeys/:slug` routing and route-level SEO integration to `AppSeo.jsx`.
+- Added `scripts/decision-journey-check.mjs` and registered `decision-journey:check` in `package.json`.
+- The implementation includes seed journey definitions for the five domains reserved by Phase 39; Phase 39 remains a separate completion gate for dedicated journey quality/integration.
 
-The Phase 36 relationship validation requires valid source/target IDs, valid relationship types, no self-references or duplicates, valid guide-to-calculator links, and matching reverse relationships.
+## Verification status
 
-The Phase 37 integration routes guide content through the canonical content model while adapting it to the existing `GuideView` interface, preserving the public guide URL shape.
+The new Phase 38 commits have not yet produced a reported Verify run. Therefore no Phase 38 test pass is claimed yet. Production remains untouched.
 
 ## Security remediation
 
-Vite was pinned to patched `6.4.3`. The temporary dependency-repair workflow was removed after remediation. The historical failed repair workflow runs are not release failures; the current Verify pipeline is green.
+Vite was pinned to patched `6.4.3`. The temporary dependency-repair workflow was removed after remediation. The historical failed repair workflow runs are not release failures; the last recorded Verify pipeline was green on #428.
 
 ## Release objective
 
