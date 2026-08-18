@@ -60,8 +60,9 @@ jobs:
           git commit -m "chore: finalize patched dependency lockfile"
           git push origin HEAD:fincalc-generational-release
 
-          echo "security_remediation=true" >> "$GITHUB_OUTPUT"
           echo "Security remediation committed and pushed."
+          echo "The push will trigger the release-branch Verify workflow; no duplicate dispatch is needed."
+          exit 0
 
       - name: Verify release branch
         env:
