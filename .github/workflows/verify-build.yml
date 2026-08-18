@@ -84,6 +84,9 @@ jobs:
       - name: Validate next calculator flow
         run: npm run next-calculator:check
 
+      - name: Validate indexability policy
+        run: npm run indexability:check
+
       - name: Run golden formula regression tests
         run: npm run formula:golden
 
