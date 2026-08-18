@@ -69,6 +69,9 @@ jobs:
       - name: Validate search intent detection
         run: npm run search-intent-detection:check
 
+      - name: Validate canonical content model
+        run: npm run content-model:check
+
       - name: Run golden formula regression tests
         run: npm run formula:golden
 
