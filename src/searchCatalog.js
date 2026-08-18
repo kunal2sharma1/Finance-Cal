@@ -13,8 +13,8 @@ function matchesTerms(entry, terms) {
   return terms.some((term) => entry.searchText.includes(term))
 }
 
-function calculatorSearchResult(entry, terms, queryMeta) {
-  if (!matchesTerms(entry, terms)) return null
+function calculatorSearchResult(entry, terms, queryMeta, recovery = false) {
+  if (!recovery && !matchesTerms(entry, terms)) return null
   return {
     type: entry.type,
     id: entry.id,
@@ -23,11 +23,12 @@ function calculatorSearchResult(entry, terms, queryMeta) {
     category: entry.category,
     href: entry.href,
     score: scoreSearchResult(entry, queryMeta),
+    ...(recovery ? { recovery: 'zero-result' } : {}),
   }
 }
 
-function guideSearchResult(entry, terms, queryMeta) {
-  if (!matchesTerms(entry, terms)) return null
+function guideSearchResult(entry, terms, queryMeta, recovery = false) {
+  if (!recovery && !matchesTerms(entry, terms)) return null
   return {
     type: entry.type,
     slug: entry.slug,
@@ -35,7 +36,38 @@ function guideSearchResult(entry, terms, queryMeta) {
     description: entry.description,
     href: entry.href,
     score: scoreSearchResult(entry, queryMeta),
+    ...(recovery ? { recovery: 'zero-result' } : {}),
   }
+}
+
+function buildZeroResultRecovery(queryMeta, { countryCode, types }) {
+  if (!queryMeta.intent && !queryMeta.domain && !queryMeta.journey) return []
+
+  const candidates = []
+  const allowedTypes = new Set(types)
+
+  if (allowedTypes.has('calculator')) {
+    for (const entry of calculatorSearchIndex) {
+      if (!matchesCountry(entry, countryCode)) continue
+      const score = scoreSearchResult(entry, { ...queryMeta, term: '' })
+      if (score <= 0) continue
+      const result = calculatorSearchResult(entry, [], queryMeta, true)
+      candidates.push({ ...result, score })
+    }
+  }
+
+  if (allowedTypes.has('guide')) {
+    for (const entry of guideSearchIndex) {
+      const score = scoreSearchResult(entry, { ...queryMeta, term: '' })
+      if (score <= 0) continue
+      const result = guideSearchResult(entry, [], queryMeta, true)
+      candidates.push({ ...result, score })
+    }
+  }
+
+  return candidates
+    .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
+    .slice(0, 6)
 }
 
 export function searchSite(query, { countryCode, types = ['calculator', 'guide'] } = {}) {
@@ -69,7 +101,11 @@ export function searchSite(query, { countryCode, types = ['calculator', 'guide']
     }
   }
 
-  return results
-    .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
-    .slice(0, 12)
+  if (results.length > 0) {
+    return results
+      .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
+      .slice(0, 12)
+  }
+
+  return buildZeroResultRecovery(queryMeta, { countryCode, types })
 }
