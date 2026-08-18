@@ -23,8 +23,8 @@ jobs:
           node-version: 24
           cache: npm
 
-      - name: Upgrade Vite to patched 6.4.3
-        run: npm install --save-dev vite@6.4.3
+      - name: Upgrade Vite and Rollup to patched versions
+        run: npm install --save-dev vite@6.4.3 rollup@4.59.0
 
       - name: Verify high-severity audit findings are gone
         run: npm audit --audit-level=high
@@ -38,5 +38,5 @@ jobs:
           rm .security-remediation-pending
           rm .github/workflows/one-time-vite-security-remediation.yml
           git add package.json package-lock.json .security-remediation-pending .github/workflows/one-time-vite-security-remediation.yml
-          git commit -m "chore: remediate Vite security vulnerability"
+          git commit -m "chore: remediate Rollup security vulnerability"
           git push
