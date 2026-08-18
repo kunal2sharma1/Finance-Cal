@@ -1,10 +1,10 @@
 const SIGNALS = [
-  { pattern: /compare|vs\b|versus|comparison|better than/, intent: 'compare' },
-  { pattern: /home buying|buying a home|buy a home|home purchase|house buying|buying a house|should i.*(?:save|invest|repay|pay)|plan|planning|goal|target|how much should|how much do i need|save for|retire|retirement/, intent: 'plan' },
-  { pattern: /can i afford|afford|eligible|eligibility|qualify|can i/, intent: 'check' },
-  { pattern: /future|projection|projected|growth|value later|corpus/, intent: 'project' },
-  { pattern: /rate|ratio|percentage|cagr|xirr|irr|interest|yield|return rate/, intent: 'measure' },
-  { pattern: /calculate|calculator|compute|how much|what is|emi|payment/, intent: 'calculate' },
+  { intent: 'compare', pattern: /compare|vs\b|versus|comparison|better than/ },
+  { intent: 'plan', pattern: /home buying|buying a home|buy a home|home purchase|house buying|buying a house|should i.*(?:save|invest|repay|pay)|plan|planning|goal|target|how much should|how much do i need|save for|retire|retirement/ },
+  { intent: 'check', pattern: /can i afford|afford|eligible|eligibility|qualify|can i/ },
+  { intent: 'project', pattern: /future|projection|projected|growth|value later|corpus/ },
+  { intent: 'measure', pattern: /rate|ratio|percentage|cagr|xirr|irr|interest|yield|return rate/ },
+  { intent: 'calculate', pattern: /calculate|calculator|compute|how much|what is|emi|payment/ },
 ]
 
 const DOMAIN_SIGNALS = [
@@ -33,20 +33,76 @@ const JOURNEY_BY_DOMAIN = {
   'financial-health': 'financial-health',
 }
 
-export function inferSearchIntent(query) {
-  const text = String(query || '').trim().toLowerCase()
-  if (!text) return { intent: 'calculate', domain: null, journey: null }
+const INTENT_PRIORITY = new Map([
+  ['compare', 100],
+  ['plan', 90],
+  ['check', 80],
+  ['project', 70],
+  ['measure', 60],
+  ['calculate', 50],
+])
 
-  const intentMatch = SIGNALS.find(({ pattern }) => pattern.test(text))
-  const domainMatches = DOMAIN_SIGNALS.filter(({ pattern }) => pattern.test(text))
-  const domainMatch = domainMatches.sort((a, b) => b.priority - a.priority)[0]
-  const domain = domainMatch?.domain || null
+function normalizeQuery(value) {
+  return String(value || '').trim().toLowerCase().replace(/\s+/g, ' ')
+}
+
+export function detectSearchIntent(query) {
+  const text = normalizeQuery(query)
+  if (!text) {
+    return {
+      intent: 'calculate',
+      domain: null,
+      journey: null,
+      confidence: 0,
+      evidence: [],
+      matchedIntents: [],
+      matchedDomains: [],
+      recognized: false,
+    }
+  }
+
+  const matchedIntents = SIGNALS
+    .filter(({ pattern }) => pattern.test(text))
+    .map(({ intent }) => intent)
+
+  const intent = matchedIntents
+    .slice()
+    .sort((a, b) => INTENT_PRIORITY.get(b) - INTENT_PRIORITY.get(a))[0] || 'calculate'
+
+  const domainMatches = DOMAIN_SIGNALS
+    .filter(({ pattern }) => pattern.test(text))
+    .sort((a, b) => b.priority - a.priority)
+
+  const domain = domainMatches[0]?.domain || null
+  const journey = domain ? JOURNEY_BY_DOMAIN[domain] || 'financial-planning' : null
+
+  const evidence = [
+    ...matchedIntents.map((value) => ({ type: 'intent', value })),
+    ...domainMatches.map(({ domain: value, priority }) => ({ type: 'domain', value, priority })),
+  ]
+
+  const topIntentMatch = matchedIntents.length > 0
+  const domainMatch = Boolean(domain)
+  const confidence = Math.min(
+    1,
+    (topIntentMatch ? 0.55 : 0) + (domainMatch ? 0.35 : 0) + (evidence.length >= 2 ? 0.10 : 0),
+  )
 
   return {
-    intent: intentMatch?.intent || 'calculate',
+    intent,
     domain,
-    journey: domain ? JOURNEY_BY_DOMAIN[domain] || 'financial-planning' : null,
+    journey,
+    confidence,
+    evidence,
+    matchedIntents,
+    matchedDomains: domainMatches.map(({ domain: value, priority }) => ({ value, priority })),
+    recognized: topIntentMatch || domainMatch,
   }
+}
+
+export function inferSearchIntent(query) {
+  const { intent, domain, journey } = detectSearchIntent(query)
+  return { intent, domain, journey }
 }
 
 export function scoreSearchResult(entry, queryMeta) {
