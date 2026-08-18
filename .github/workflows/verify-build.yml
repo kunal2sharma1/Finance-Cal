@@ -17,6 +17,9 @@ on:
 env:
   VERIFY_RUN: "2026-08-17T18:12:00+05:30"
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -137,3 +140,13 @@ jobs:
 
       - name: Validate performance budget
         run: npm run performance:check
+
+      - name: Publish CI status
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STATUS_FILE: ci-status/verify.json
+          STATUS_BRANCH: ci-status
+          WORKFLOW_NAME: Verify build
+          JOB_STATUS: ${{ job.status }}
+        run: node scripts/publish-ci-status.mjs
