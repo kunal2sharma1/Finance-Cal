@@ -23,6 +23,7 @@
     "result-card:check": "node scripts/result-card-cleanup-check.mjs",
     "search-index:check": "node scripts/search-index-check.mjs",
     "search-intent:check": "node scripts/search-intent-ranking-check.mjs",
+    "search-recovery:check": "node scripts/search-recovery-check.mjs",
     "precision:check": "node scripts/precision-policy-check.mjs",
     "analytics:check": "node scripts/analytics-check.mjs",
     "commercial:check": "node scripts/commercial-check.mjs",
