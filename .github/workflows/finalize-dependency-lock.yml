@@ -14,7 +14,6 @@ concurrency:
 
 jobs:
   finalize:
-    if: ${{ hashFiles('.security-remediation-pending') != '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -24,22 +23,37 @@ jobs:
           ref: fincalc-generational-release
           fetch-depth: 0
 
+      - name: Check remediation marker
+        id: marker
+        shell: bash
+        run: |
+          if [ -f .security-remediation-pending ]; then
+            echo "pending=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "pending=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Set up Node
+        if: steps.marker.outputs.pending == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
 
       - name: Regenerate lockfile
+        if: steps.marker.outputs.pending == 'true'
         run: npm install --package-lock-only --ignore-scripts --include=dev --no-audit
 
       - name: Verify clean install
+        if: steps.marker.outputs.pending == 'true'
         run: npm ci --ignore-scripts --include=dev --no-audit
 
       - name: Verify high-severity audit
+        if: steps.marker.outputs.pending == 'true'
         run: npm audit --audit-level=high
 
       - name: Commit finalized dependencies and remove temporary workflow
+        if: steps.marker.outputs.pending == 'true'
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
