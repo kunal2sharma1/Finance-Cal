@@ -28,3 +28,7 @@ Every phase must reach exact-SHA GREEN verification before being considered comp
 ## Verification state
 
 PX-01 inventory work is complete, but PX-01 remains IN_PROGRESS until the Product Experience workflow is verified GREEN for the exact final candidate SHA.
+
+## Context synchronization
+
+The durable `PROJECT_CONTEXT` foundation was established through the dedicated context-synchronization work and merged to `main` as PR #12 at merge SHA `c03975f579647ad4e36fef4997fd0b949f08f4af`. Product Experience was subsequently synchronized with the canonical context baseline without replacing its workstream roadmap.
