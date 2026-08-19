@@ -2,7 +2,7 @@ name: Verify build
 
 on:
   push:
-    branches: [main, seo-development, global-development, seo-growth-v1, fincalc-batch-1-5-final-validator-2]
+    branches: [main, seo-development, global-development, seo-growth-v1, fincalc-batch-1-5-final-validator-2, fincalc-generational-release]
     paths:
       - 'package.json'
       - 'package-lock.json'
@@ -11,7 +11,6 @@ on:
       - 'index.html'
       - 'vite.config.js'
       - 'scripts/**'
-      - '.github/workflows/verify-build.yml'
   workflow_dispatch:
 
 env:
