@@ -40,6 +40,9 @@ export function saveCountry(code) {
   const country = getCountry(code)
   if (typeof window !== 'undefined') {
     window.localStorage.setItem(COUNTRY_STORAGE_KEY, country.code)
+    if (country.code === 'IN' && !window.localStorage.getItem('fincalc-number-system')) {
+      window.localStorage.setItem('fincalc-number-system', 'indian')
+    }
     window.dispatchEvent(new CustomEvent('fincalc-country-change', { detail: country.code }))
   }
   return country.code
