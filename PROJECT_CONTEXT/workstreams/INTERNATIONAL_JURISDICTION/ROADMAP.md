@@ -24,7 +24,9 @@ Acceptance: each concept has explicit ownership; formatting cannot silently chan
 
 Implementation: country records now own country identity only; locale, currency, number-system vocabulary/state, and money formatting have dedicated presentation modules; calculator presentation and result formatting consume those modules; existing country fallback compatibility is preserved; no jurisdiction registry was introduced.
 
-Verification state: IJ-02 implementation is committed, but the exact final SHA has not yet been verified GREEN. Do not begin IJ-03 until exact-SHA verification passes.
+Verification candidate: `f8d683f04639a1bda4aebb3cba713b0bcaed50d2` after the final code/test corrections. The established international workflow includes the IJ-02 contract check before international, SEO, formula, and build regression checks.
+
+Verification state: IJ-02 implementation is committed, but the exact final branch SHA has not yet been verified GREEN. Do not begin IJ-03 until exact-SHA verification passes.
 
 ## IJ-03 — Calculation jurisdiction architecture
 Depends on: IJ-02
@@ -50,7 +52,7 @@ Acceptance: unsupported combinations are not indexed; sitemap and canonical poli
 ## IJ-06 — Search-intent metadata to SEO
 Depends on: IJ-05
 
-Goal: connect existing search-intent metadata to SEO without duplicating content/search models.
+Goal: connect existing search-intent metadata to SEO without duplicating search/content models.
 
 Acceptance: metadata is deterministic, canonical, and covered by verification.
 
