@@ -1,5 +1,7 @@
 import { getCountryCurrency } from './currency.js'
 import { getCountryLocale } from './locale.js'
+import { getNumberFormatLocale, getInitialNumberSystem, saveNumberSystem } from './numberSystem.js'
+import { formatMoney } from './moneyFormat.js'
 
 export const DEFAULT_COUNTRY = 'IN'
 export const COUNTRY_STORAGE_KEY = 'fincalc-country'
@@ -43,6 +45,5 @@ export function saveCountry(code) {
   return country.code
 }
 
-// Compatibility accessors. Ownership remains in the dedicated presentation modules.
-export { getCountryCurrency } from './currency.js'
-export { getCountryLocale } from './locale.js'
+// Compatibility accessors. Ownership remains in dedicated presentation modules.
+export { getCountryCurrency, getCountryLocale, getNumberFormatLocale, getInitialNumberSystem, saveNumberSystem, formatMoney }
