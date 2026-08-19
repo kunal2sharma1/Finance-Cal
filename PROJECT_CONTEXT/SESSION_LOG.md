@@ -4,8 +4,9 @@
 
 - Branch: `workstream-international-jurisdiction`
 - Starting SHA: `9bc07f8531ee4d89af3d4bc09d36de5060258c83`
+- Phase delivery SHA: `09fbb92d7d905f8e864c658753b2a9b00a97d299`
 - Phase: IJ-01
-- Status: COMPLETE by implementation/documentation acceptance; repository verification is **not GREEN** because no workflow run exists for the final SHA and local npm verification was blocked by unavailable GitHub DNS/network access.
+- Status: COMPLETE by implementation/documentation acceptance; repository verification is **not GREEN** because no workflow run exists for the phase delivery SHA and local npm verification was blocked by unavailable GitHub DNS/network access.
 
 ### Repository inspection
 
@@ -28,7 +29,7 @@ Added `PROJECT_CONTEXT/workstreams/INTERNATIONAL_JURISDICTION/DOMAIN_INVENTORY.m
 ### Verification
 
 - Starting branch/head inspected before work: `workstream-international-jurisdiction` at `9bc07f8531ee4d89af3d4bc09d36de5060258c83`.
-- GitHub workflow lookup for the actual final SHA reported no associated workflow runs.
+- GitHub workflow lookup for phase delivery SHA `09fbb92d7d905f8e864c658753b2a9b00a97d299`: no associated workflow runs returned.
 - Local clone/test attempt: RED/HARD ENVIRONMENT BLOCKER — `git clone` could not resolve `github.com`; therefore `npm ci`, `npm run international:check`, formula regression, SEO checks, and `npm run build` could not be executed locally.
 - No historical or old-SHA GREEN result was used to claim final-SHA verification.
 
@@ -36,14 +37,8 @@ Added `PROJECT_CONTEXT/workstreams/INTERNATIONAL_JURISDICTION/DOMAIN_INVENTORY.m
 
 - Missing requested context files at the starting SHA: documented as repository-state discrepancy and restored the minimum handoff/current-state/session records without inventing prior history.
 - Final-SHA CI verification unavailable: explicitly recorded as not GREEN; no claim of successful final-SHA CI.
-- Earlier documentation mistakenly recorded an intermediate commit (`50ea154f23c7cd21937a66ce67d1938f6b553166`) as the final SHA. That was corrected after inspecting the live branch: the actual HEAD at that point was `09fbb92d7d905f8e864c658753b2a9b00a97d299`.
-- A subsequent log-correction commit then became the branch HEAD. The repository now records that correction commit itself as the final SHA below.
-
-### Current final state
-
-- Actual final branch: `workstream-international-jurisdiction`
-- Actual final SHA: `REPLACED_BY_NEXT_COMMIT_SHA`
-- The final SHA above is the commit created by this log correction; it supersedes the previously recorded intermediate SHA.
+- Earlier documentation mistakenly recorded an intermediate commit (`50ea154f23c7cd21937a66ce67d1938f6b553166`) as the final SHA. This was corrected after inspecting the live branch; the phase-delivery commit was `09fbb92d7d905f8e864c658753b2a9b00a97d299`.
+- Subsequent commits `4d82d84078233dee1eadf504f3fa872341cf73dc` and `75e29b8568743802a42978e83bc1342f39d832db` are documentation-only corrections to the session log; they did not change the IJ-01 implementation.
 
 ### Next phase
 
