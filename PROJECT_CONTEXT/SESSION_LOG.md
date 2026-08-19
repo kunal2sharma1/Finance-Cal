@@ -4,9 +4,8 @@
 
 - Branch: `workstream-international-jurisdiction`
 - Starting SHA: `9bc07f8531ee4d89af3d4bc09d36de5060258c83`
-- Final SHA: `50ea154f23c7cd21937a66ce67d1938f6b553166`
 - Phase: IJ-01
-- Status: COMPLETE by implementation/documentation acceptance; repository verification status is **not GREEN** because no workflow run exists for the final SHA and local npm verification was blocked by unavailable GitHub DNS/network access.
+- Status: COMPLETE by implementation/documentation acceptance; repository verification is **not GREEN** because no workflow run exists for the final SHA and local npm verification was blocked by unavailable GitHub DNS/network access.
 
 ### Repository inspection
 
@@ -20,23 +19,29 @@ Current implementation inspection covered country/presentation handling, interna
 2. Canonical identifiers and ownership boundaries defined.
 3. No duplicate jurisdiction model introduced.
 4. No calculator mathematical outputs changed.
-5. Roadmap and current state updated.
+5. Roadmap and project context updated.
 
 ### Implementation
 
-Added `PROJECT_CONTEXT/workstreams/INTERNATIONAL_JURISDICTION/DOMAIN_INVENTORY.md` as the IJ-01 separation contract. Added the missing handoff/current-state/session context files needed to record the phase delivery. Marked IJ-01 complete and IJ-02 next in the roadmap.
+Added `PROJECT_CONTEXT/workstreams/INTERNATIONAL_JURISDICTION/DOMAIN_INVENTORY.md` as the IJ-01 separation contract. Added the missing `AI_HANDOFF.md`, `CURRENT_STATE.md`, and `SESSION_LOG.md` context files needed to record the phase delivery. Marked IJ-01 complete and IJ-02 next in the roadmap.
 
 ### Verification
 
-- Branch/head inspected before work: `9bc07f8531ee4d89af3d4bc09d36de5060258c83`.
-- GitHub workflow lookup for final SHA `50ea154f23c7cd21937a66ce67d1938f6b553166`: no associated PR workflow runs returned.
+- Starting branch/head inspected before work: `workstream-international-jurisdiction` at `9bc07f8531ee4d89af3d4bc09d36de5060258c83`.
+- GitHub workflow lookup for the actual final SHA reported no associated workflow runs.
 - Local clone/test attempt: RED/HARD ENVIRONMENT BLOCKER — `git clone` could not resolve `github.com`; therefore `npm ci`, `npm run international:check`, formula regression, SEO checks, and `npm run build` could not be executed locally.
 - No historical or old-SHA GREEN result was used to claim final-SHA verification.
 
 ### RED issues and disposition
 
-- Missing requested context files: documented as repository-state discrepancy and restored the phase handoff/current-state/session records without inventing prior history.
+- Missing requested context files at the starting SHA: documented as repository-state discrepancy and restored the minimum handoff/current-state/session records without inventing prior history.
 - Final-SHA CI verification unavailable: explicitly recorded as not GREEN; no claim of successful final-SHA CI.
+- Earlier documentation mistakenly recorded an intermediate commit (`50ea154f23c7cd21937a66ce67d1938f6b553166`) as the final SHA. That was corrected after inspecting the live branch: the actual current HEAD is `09fbb92d7d905f8e864c658753b2a9b00a97d299`.
+
+### Current final state
+
+- Actual final branch: `workstream-international-jurisdiction`
+- Actual final SHA after the correction commit: recorded by GitHub when this file is updated.
 
 ### Next phase
 
