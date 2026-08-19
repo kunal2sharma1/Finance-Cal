@@ -3,11 +3,13 @@
 ## International & Jurisdiction
 
 - Branch: `workstream-international-jurisdiction`
-- IJ-01 status: **IMPLEMENTED BUT UNVERIFIED**
-- Current completed phase: **none release-qualified** for this workstream
-- Next executable phase: **IJ-02 — Country/locale/currency/number separation**, blocked until IJ-01 is GREEN
+- IJ-01 status: **VERIFIED / GREEN**
+- IJ-01 verification: manual GitHub Actions **Verify build #488 — GREEN** for candidate `6b39020a85cf24626e560a2ed9c0a6c8432c5583`
+- Current phase: **IJ-02 — Country/locale/currency/number separation**
+- IJ-02 status: **IMPLEMENTED BUT UNVERIFIED**
+- Next phase: **IJ-03 — Calculation jurisdiction architecture**, blocked until IJ-02 is GREEN
 - IJ-01 starting SHA: `9bc07f8531ee4d89af3d4bc09d36de5060258c83`
-- Current audit head before verification changes: `531dc69e4150b0ebce664fb41de159a035c11a66`
+- IJ-02 starting SHA: `6b39020a85cf24626e560a2ed9c0a6c8432c5583`
 
 ### Canonical IJ vocabulary
 
@@ -21,14 +23,12 @@
 
 Presentation metadata must not select or silently change calculation jurisdiction. Unsupported calculation jurisdictions must be explicit; they must never silently fall back to another jurisdiction.
 
-### IJ-01 audit finding
+### IJ-02 implementation state
 
-The domain inventory and separation contract are present and the implementation diff from the IJ-01 starting SHA contains only project-context/verification-infrastructure changes; no calculator formula/config/explanation implementation or international calculator registry change was found.
+Country records in `src/country.js` now own country identity only. Locale, currency, number-system state/vocabulary, and money formatting are owned by dedicated presentation modules. Calculator currency and result formatting consume those modules rather than reading presentation metadata from the country object.
 
-The existing application still stores some presentation metadata together in `src/country.js` and uses calculator `countries` arrays as localized calculator mappings. The inventory correctly identifies the country fallback behavior as a UI compatibility fallback rather than a jurisdiction fallback, and identifies `config.countries` as an overloaded mapping to be separated in later phases.
+Existing country selection fallback behavior remains unchanged for compatibility. No calculator formula/config/explanation implementation and no international calculator registry were changed.
 
 ### Verification state
 
-A focused `scripts/ij01-domain-contract-check.mjs` was added. The existing international workflow was updated to run on `workstream-international-jurisdiction` and to execute the IJ-01 contract check before international, SEO, formula, and build checks.
-
-The exact current branch SHA has not yet produced an observable GREEN workflow result through the available GitHub tooling. Local repository execution remains blocked because the environment cannot resolve `github.com`. Therefore IJ-01 remains IMPLEMENTED BUT UNVERIFIED.
+The IJ-02 contract check is included in `.github/workflows/verify-international.yml` before international, SEO, formula, and build regression checks. Local execution is blocked because the environment cannot resolve `github.com`. The exact IJ-02 candidate must receive GREEN through the established manual GitHub Actions workflow before IJ-02 is marked complete and IJ-03 is unlocked.
