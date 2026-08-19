@@ -15,10 +15,16 @@
 
 Product Experience and International & Jurisdiction are the first two streams being actively developed in parallel. Platform Quality and Commercial & Analytics are prepared but not yet active.
 
+## Current Product Experience phase
+
+PX-01 inventory is documented on `workstream-product-experience`. No UI redesign or PX-02 work has started.
+
+The inventory identifies existing calculator/search/content/journey infrastructure plus integration gaps around journey discovery, canonical journey identifiers and route/data-layer consistency.
+
 ## Rules
 
 Every phase must reach exact-SHA GREEN verification before being considered complete. RED enters the repair loop. Main is never force-updated.
 
-## Context synchronization
+## Verification state
 
-This context foundation is being established on a dedicated synchronization branch before being propagated to the canonical baseline and active workstream branches.
+PX-01 inventory work is complete, but PX-01 remains IN_PROGRESS until the Product Experience workflow is verified GREEN for the exact final candidate SHA.
