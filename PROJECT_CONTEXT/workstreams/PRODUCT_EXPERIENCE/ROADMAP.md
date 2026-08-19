@@ -3,11 +3,13 @@
 Branch: `workstream-product-experience`
 
 ## PX-01 — Product inventory and decision architecture
-Status: NOT_STARTED
+Status: IN_PROGRESS — inventory complete; exact-SHA CI verification pending
 
 Goal: map existing homepage, search, calculators, guides, journeys, result flows, and navigation before changing UX.
 
 Acceptance: documented current flows; no duplicate architecture proposed; critical user journeys identified; baseline browser/CI checks GREEN.
+
+Execution record: `PROJECT_CONTEXT/workstreams/PRODUCT_EXPERIENCE/PX-01-INVENTORY.md` documents the actual repository inventory. No product UI redesign was performed. PX-01 is not marked COMPLETE until the Product Experience workflow is GREEN for the exact final SHA.
 
 ## PX-02 — Decision-oriented entry experience
 Depends on: PX-01
