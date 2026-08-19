@@ -2,6 +2,7 @@
   "name": "fincalc-dashboard",
   "private": true,
   "version": "0.1.0",
+  "description": "Finance calculator application",
   "type": "module",
   "scripts": {
     "dev": "vite",
