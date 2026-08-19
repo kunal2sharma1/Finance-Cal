@@ -41,4 +41,4 @@ jobs:
         run: npm run formula:check
 
       - name: Build
-        run: vite build
+        run: npm run build
