@@ -8,6 +8,7 @@ on:
     paths:
       - 'src/**'
       - 'scripts/**'
+      - 'PROJECT_CONTEXT/**'
       - '.github/workflows/verify-international.yml'
   workflow_dispatch:
 
@@ -40,4 +41,4 @@ jobs:
         run: npm run formula:check
 
       - name: Build
-        run: npm run build
+        run: vite build
