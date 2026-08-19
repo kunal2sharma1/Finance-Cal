@@ -2,21 +2,17 @@
 
 ## Scope
 
-This milestone packages the completed FinCalc platform foundation from the generational-release program for a controlled production merge.
+Phases 1–43 of the 88-phase roadmap, delivered as the first independently deployable production milestone.
 
-Completed scope: Phases 1–43.
-
-## Verified release candidate
+## Candidate
 
 - Branch: `fincalc-generational-release`
-- Verified commit: `fd8a0eeff146bf2cc2db923c68f3aece356f7893`
+- Verified implementation commit: `fd8a0eeff146bf2cc2db923c68f3aece356f7893`
 - Verify workflow: #485
-- Verification result: GREEN
+- Result: GREEN
 
-The verification covered calculator contracts, formula/regression gates, trust governance, search and decision-journey checks, international checks, production build, production-like SEO crawl, and performance budget.
+The branch now contains the milestone roadmap/status reconciliation commits. A final merge-candidate Verify run must validate the current branch HEAD before merge.
 
 ## Next milestone
 
-After this milestone is merged to `main` and production is verified, new work should branch from the resulting `main` commit rather than continuing the long-lived generational-release branch.
-
-Planned next milestone: Phases 44–47 (SEO/international architecture).
+After production verification, branch from the resulting `main` for Phases 44–47 (SEO/international architecture).
