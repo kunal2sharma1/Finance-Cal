@@ -15,11 +15,11 @@
 
 - IJ-02 starting SHA: `6b39020a85cf24626e560a2ed9c0a6c8432c5583`
 - Actual branch HEAD matched that SHA before implementation.
-- IJ-02 acceptance: each of country, locale, currency, and number system has explicit presentation ownership; formatting cannot silently change calculation jurisdiction; existing calculator behavior remains intact.
+- IJ-02 acceptance: country, locale, currency, and number-system presentation concepts have explicit ownership; formatting cannot silently change calculation jurisdiction; existing calculator behavior remains intact.
 
 ### IJ-02 implementation
 
-- Country records in `src/country.js` now contain country identity only (`code`, `name`, `flag`).
+- `src/country.js` now owns country identity only (`code`, `name`, `flag`) while preserving the existing country-selection fallback behavior and compatibility exports.
 - Added `src/locale.js` for country-to-locale ownership.
 - Added `src/currency.js` for country-to-currency ownership.
 - Added `src/numberSystem.js` for number-system vocabulary, storage, defaults, and number-format locale resolution.
@@ -28,17 +28,27 @@
 - Updated `src/components/CountrySelector.jsx` to obtain currency and number-system behavior from dedicated presentation modules.
 - Updated `src/components/ResultPanel.jsx` to consume the canonical number-system formatter instead of maintaining a duplicate locale mapping.
 - Updated `src/useNumberSystem.js` to use the number-system module with an explicit country-driven presentation default.
-- Preserved the existing `getCountry()` fallback behavior and did not create a jurisdiction registry.
-- Added `scripts/ij02-country-locale-currency-number-check.mjs` for deterministic IJ-02 contract validation.
-- Extended the existing international workflow to run the IJ-02 contract check before international, SEO, formula, and build checks.
+- Preserved the existing country fallback semantics; country code selection does not create or select a calculation jurisdiction.
+- No calculator formula/config/explanation implementation and no international calculator registry were changed.
+- No new jurisdiction registry was introduced.
+
+### IJ-02 verification contract
+
+- Added `scripts/ij02-country-locale-currency-number-check.mjs`.
+- The check verifies country/locale/currency/number-system ownership, preserved country fallback behavior, absence of presentation metadata from country records, canonical formatting-module usage, and absence of calculator implementation/registry changes from the IJ-02 starting SHA.
+- `.github/workflows/verify-international.yml` runs the IJ-01 contract check, IJ-02 contract check, international calculator validation, SEO validation, formula regression, and production build.
 
 ### Scope audit
 
-GitHub compare from IJ-02 starting SHA shows only presentation/workflow/test files changed. No `src/calculators/*/{formula,config,explanation}.js` files and no `src/internationalCalculators.js` changes were introduced.
+GitHub compare from IJ-02 starting SHA `6b39020a85cf24626e560a2ed9c0a6c8432c5583` to the implementation candidate contained only the international workflow, IJ-02 contract test, country/presentation modules/components, and no calculator formula/config/explanation files or `src/internationalCalculators.js`.
+
+### Branch-safety incident and repair
+
+A small number of newly-created IJ-02 files were initially written without an explicit branch argument and landed on `main`. This was detected during the diff audit. The `main` content was restored exactly to the pre-IJ-02 `c03975f579647ad4e36fef4997fd0b949f08f4af` tree through a normal fast-forward cleanup commit; no force-update was used. No IJ-02 content remains on `main`.
 
 ### Verification status
 
-Required workflow checks are configured as:
+Required checks for IJ-02 are:
 
 - `node scripts/ij01-domain-contract-check.mjs`
 - `node scripts/ij02-country-locale-currency-number-check.mjs`
@@ -47,14 +57,10 @@ Required workflow checks are configured as:
 - `npm run formula:check`
 - `npm run build`
 
-Local execution was attempted and is blocked by the execution environment's inability to resolve `github.com`. GitHub tooling available in this session does not expose a branch workflow-dispatch operation, so an exact IJ-02 Actions result cannot be observed from this session.
+Local execution was attempted but the execution environment cannot resolve `github.com`. The available GitHub tooling can inspect repository contents and commit status but does not expose a workflow-dispatch operation in this session.
 
-Therefore IJ-02 is **IMPLEMENTED BUT UNVERIFIED**. It must not be marked GREEN until the workflow is manually run for the exact final SHA and all checks pass.
-
-### Branch-safety correction
-
-During implementation, several new-file writes were initially sent without an explicit branch and landed on `main`. This was detected immediately. `main` was restored to its pre-IJ-02 `c03975f579647ad4e36fef4997fd0b949f08f4af` tree via a normal fast-forward cleanup commit; no force-update was used. The IJ-02 implementation remains on `workstream-international-jurisdiction` only.
+Therefore IJ-02 is **IMPLEMENTED BUT UNVERIFIED**. The latest code candidate before these context-record commits was `f8d683f04639a1bda4aebb3cba713b0bcaed50d2`; the branch HEAD after the context-record commits is the exact SHA to verify manually.
 
 ### Next phase
 
-IJ-03 must not start automatically. IJ-02 remains the active phase until exact-SHA GREEN verification is obtained.
+IJ-03 must not start automatically. IJ-02 remains the active phase until the exact final branch SHA is verified GREEN.
