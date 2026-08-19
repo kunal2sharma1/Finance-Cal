@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import { getInitialNumberSystem } from './country.js'
+import { getInitialCountry } from './country.js'
+import { getInitialNumberSystem } from './numberSystem.js'
 
 export function useNumberSystem() {
-  const [numberSystem, setNumberSystem] = useState(getInitialNumberSystem)
+  const [numberSystem, setNumberSystem] = useState(() => getInitialNumberSystem(getInitialCountry()))
 
   useEffect(() => {
     function handleChange(event) {
