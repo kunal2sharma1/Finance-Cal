@@ -1,0 +1,102 @@
+name: Verify Product Experience
+
+on:
+  push:
+    branches: [workstream-product-experience]
+    paths:
+      - 'PROJECT_CONTEXT/**'
+      - 'src/**'
+      - 'public/**'
+      - 'scripts/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'index.html'
+      - 'vite.config.js'
+      - '.github/workflows/verify-product-experience.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'PROJECT_CONTEXT/**'
+      - 'src/**'
+      - 'public/**'
+      - 'scripts/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'index.html'
+      - 'vite.config.js'
+      - '.github/workflows/verify-product-experience.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  product-experience:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Product QA
+        run: node scripts/product-qa-check.mjs
+
+      - name: Discovery validation
+        run: npm run discovery:check
+
+      - name: Search index validation
+        run: npm run search-index:check
+
+      - name: Search intent validation
+        run: npm run search-intent:check
+
+      - name: Search recovery validation
+        run: npm run search-recovery:check
+
+      - name: Zero-result recovery validation
+        run: npm run search-zero-results:check
+
+      - name: Search intent detection validation
+        run: npm run search-intent-detection:check
+
+      - name: Content model validation
+        run: npm run content-model:check
+
+      - name: Decision journey validation
+        run: npm run decision-journey:check
+
+      - name: Decision journey quality validation
+        run: npm run decision-journey:quality
+
+      - name: Next calculator validation
+        run: npm run next-calculator:check
+
+      - name: Result hierarchy validation
+        run: npm run result-hierarchy:check
+
+      - name: Result certainty validation
+        run: npm run result-certainty:check
+
+      - name: SEO validation
+        run: npm run seo:check
+
+      - name: Canonical URL validation
+        run: npm run canonical-url:check
+
+      - name: Formula regression tests
+        run: npm run formula:check
+
+      - name: Production build
+        run: npm run build
+
+      - name: Performance budget validation
+        run: npm run performance:check
