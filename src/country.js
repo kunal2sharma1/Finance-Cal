@@ -1,8 +1,3 @@
-import { getCountryCurrency } from './currency.js'
-import { getCountryLocale } from './locale.js'
-import { getNumberFormatLocale, getInitialNumberSystem, saveNumberSystem } from './numberSystem.js'
-import { formatMoney } from './moneyFormat.js'
-
 export const DEFAULT_COUNTRY = 'IN'
 export const COUNTRY_STORAGE_KEY = 'fincalc-country'
 
@@ -40,13 +35,13 @@ export function saveCountry(code) {
   const country = getCountry(code)
   if (typeof window !== 'undefined') {
     window.localStorage.setItem(COUNTRY_STORAGE_KEY, country.code)
-    if (country.code === 'IN' && !window.localStorage.getItem('fincalc-number-system')) {
-      window.localStorage.setItem('fincalc-number-system', 'indian')
-    }
     window.dispatchEvent(new CustomEvent('fincalc-country-change', { detail: country.code }))
   }
   return country.code
 }
 
 // Compatibility accessors. Ownership remains in dedicated presentation modules.
-export { getCountryCurrency, getCountryLocale, getNumberFormatLocale, getInitialNumberSystem, saveNumberSystem, formatMoney }
+export { getCountryCurrency } from './currency.js'
+export { getCountryLocale } from './locale.js'
+export { getNumberFormatLocale, getInitialNumberSystem, saveNumberSystem } from './numberSystem.js'
+export { formatMoney } from './moneyFormat.js'
