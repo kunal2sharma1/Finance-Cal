@@ -1,17 +1,14 @@
+import { getNumberFormatLocale } from '../numberSystem.js'
 import './result-interpretation.css'
 
 function isValidNumeric(value) {
   return typeof value === 'number' && Number.isFinite(value)
 }
 
-function getNumberLocale(numberSystem = 'indian') {
-  return numberSystem === 'international' ? 'en-US' : 'en-IN'
-}
-
 function formatCurrency(value, currency = 'INR', numberSystem = 'indian') {
   if (!isValidNumeric(value)) return '—'
   try {
-    return new Intl.NumberFormat(getNumberLocale(numberSystem), {
+    return new Intl.NumberFormat(getNumberFormatLocale(numberSystem), {
       style: 'currency',
       currency,
       maximumFractionDigits: currency === 'JPY' ? 0 : 2,
@@ -23,7 +20,7 @@ function formatCurrency(value, currency = 'INR', numberSystem = 'indian') {
 
 function formatNumber(value, maximumFractionDigits = 0, numberSystem = 'indian') {
   if (!isValidNumeric(value)) return '—'
-  return new Intl.NumberFormat(getNumberLocale(numberSystem), {
+  return new Intl.NumberFormat(getNumberFormatLocale(numberSystem), {
     maximumFractionDigits,
   }).format(value)
 }
