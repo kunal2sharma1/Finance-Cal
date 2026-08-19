@@ -5,12 +5,15 @@ on:
     branches: [fincalc-generational-release]
     paths:
       - 'package.json'
-      - 'package-lock.json'
       - '.github/workflows/generate-lockfile.yml'
   workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: generate-lockfile-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   lockfile:
