@@ -3,16 +3,18 @@
 Branch: `workstream-international-jurisdiction`
 
 ## IJ-01 — Domain inventory and separation contract
-Status: COMPLETE
+Status: IMPLEMENTED BUT UNVERIFIED
 
 Goal: inventory existing country, locale, currency, number-format, and jurisdiction behavior and define canonical concepts.
 
-Acceptance: current coupling documented; canonical identifiers defined; no duplicate model introduced.
+Acceptance: current coupling documented; canonical identifiers defined; no duplicate model introduced; targeted verification and required regression checks GREEN against the exact final SHA.
 
 Delivery: `PROJECT_CONTEXT/workstreams/INTERNATIONAL_JURISDICTION/DOMAIN_INVENTORY.md` defines the canonical separation contract and documents current implementation coupling. No calculator formulas or jurisdiction rules were changed.
 
+Verification state: implementation and documentation are present, but the exact current branch SHA has not yet been verified GREEN. IJ-02 must not begin until this status is resolved.
+
 ## IJ-02 — Country/locale/currency/number separation
-Status: NEXT
+Status: BLOCKED_ON_IJ01_VERIFICATION
 Depends on: IJ-01
 
 Goal: separate presentation locale, country, currency, number system, and calculation jurisdiction.
