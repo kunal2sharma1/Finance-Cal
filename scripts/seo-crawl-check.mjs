@@ -10,6 +10,7 @@ import { CANONICAL_SITE_URL } from '../src/siteConfig.js'
 
 const failures = []
 const assert = (condition, message) => { if (!condition) failures.push(message) }
+const REQUEST_TIMEOUT_MS = 5000
 
 function expectedPublicPaths() {
   const paths = new Set(['/'])
@@ -32,7 +33,7 @@ async function waitForServer(url, timeoutMs = 15000) {
   const started = Date.now()
   while (Date.now() - started < timeoutMs) {
     try {
-      const response = await fetch(url)
+      const response = await fetch(url, { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) })
       if (response.ok) return
     } catch {
       // Keep polling until the preview server is ready.
@@ -47,19 +48,13 @@ async function stopProcessTree(child) {
 
   if (process.platform !== 'win32') {
     try { process.kill(-child.pid, 'SIGTERM') } catch {}
-    await Promise.race([
-      onceExit(child),
-      sleep(2000),
-    ])
+    await Promise.race([onceExit(child), sleep(2000)])
     if (!child.killed) {
       try { process.kill(-child.pid, 'SIGKILL') } catch {}
     }
   } else {
     try { child.kill('SIGTERM') } catch {}
-    await Promise.race([
-      onceExit(child),
-      sleep(2000),
-    ])
+    await Promise.race([onceExit(child), sleep(2000)])
     if (!child.killed) {
       try { child.kill('SIGKILL') } catch {}
     }
@@ -116,20 +111,34 @@ try {
 
   for (const url of locs) {
     const pathname = new URL(url).pathname
-    const response = await fetch(`http://127.0.0.1:4173${pathname}`, { redirect: 'manual' })
-    assert(response.status === 200, `Preview route did not resolve successfully (${response.status}): ${pathname}`)
-    assert(!response.headers.get('location'), `Preview route unexpectedly redirects: ${pathname}`)
-    const contentType = response.headers.get('content-type') || ''
-    assert(contentType.includes('text/html'), `Preview route did not return HTML: ${pathname}`)
+    try {
+      const response = await fetch(`http://127.0.0.1:4173${pathname}`, {
+        redirect: 'manual',
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+      })
+      assert(response.status === 200, `Preview route did not resolve successfully (${response.status}): ${pathname}`)
+      assert(!response.headers.get('location'), `Preview route unexpectedly redirects: ${pathname}`)
+      const contentType = response.headers.get('content-type') || ''
+      assert(contentType.includes('text/html'), `Preview route did not return HTML: ${pathname}`)
+      await response.body?.cancel()
+    } catch (error) {
+      assert(false, `Preview route request failed or timed out (${error?.name || 'unknown error'}): ${pathname}`)
+    }
   }
 
-  const sitemapResponse = await fetch('http://127.0.0.1:4173/sitemap.xml')
+  const sitemapResponse = await fetch('http://127.0.0.1:4173/sitemap.xml', {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  })
   assert(sitemapResponse.status === 200, `Preview sitemap is not reachable: ${sitemapResponse.status}`)
   assert((sitemapResponse.headers.get('content-type') || '').includes('xml'), 'Preview sitemap must return XML content.')
+  await sitemapResponse.body?.cancel()
 
-  const robotsResponse = await fetch('http://127.0.0.1:4173/robots.txt')
+  const robotsResponse = await fetch('http://127.0.0.1:4173/robots.txt', {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  })
   assert(robotsResponse.status === 200, `Preview robots.txt is not reachable: ${robotsResponse.status}`)
   assert((robotsResponse.headers.get('content-type') || '').includes('text/plain'), 'Preview robots.txt must return text content.')
+  await robotsResponse.body?.cancel()
 } finally {
   await stopProcessTree(child)
 }
