@@ -31,6 +31,9 @@ jobs:
       - name: Validate IJ-01 domain contract
         run: node scripts/ij01-domain-contract-check.mjs
 
+      - name: Validate IJ-02 country/locale/currency/number separation
+        run: node scripts/ij02-country-locale-currency-number-check.mjs
+
       - name: Validate international calculators
         run: node scripts/international-check.mjs
 
