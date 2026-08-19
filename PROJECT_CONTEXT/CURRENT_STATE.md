@@ -10,6 +10,7 @@
 - Next phase: **IJ-03 — Calculation jurisdiction architecture**, blocked until IJ-02 is GREEN
 - IJ-01 starting SHA: `9bc07f8531ee4d89af3d4bc09d36de5060258c83`
 - IJ-02 starting SHA: `6b39020a85cf24626e560a2ed9c0a6c8432c5583`
+- IJ-02 verification candidate before context-only commits: `f8d683f04639a1bda4aebb3cba713b0bcaed50d2`
 
 ### Canonical IJ vocabulary
 
