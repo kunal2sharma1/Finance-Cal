@@ -1,10 +1,10 @@
 {
   "workflow": "Verify build",
   "branch": "fincalc-generational-release",
-  "commit": "fd8a0eeff146bf2cc2db923c68f3aece356f7893",
-  "status": "passed",
-  "updated_at": "2026-08-19T15:18:05.872Z",
-  "run_id": 32269168741,
-  "run_number": 485,
-  "run_url": "https://github.com/kunal2sharma1/Finance-Cal/actions/runs/32269168741"
+  "commit": "1193b560b2fd736f2ff6f2cf0864ae302f9bf28d",
+  "status": "cancelled",
+  "updated_at": "2026-08-19T16:51:06.465Z",
+  "run_id": 32178618541,
+  "run_number": 468,
+  "run_url": "https://github.com/kunal2sharma1/Finance-Cal/actions/runs/32178618541"
 }
