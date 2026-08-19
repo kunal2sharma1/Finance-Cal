@@ -1,18 +1,13 @@
 import { useEffect, useState } from 'react'
-import {
-  countries,
-  getCountry,
-  getInitialCountry,
-  getInitialNumberSystem,
-  saveCountry,
-  saveNumberSystem,
-} from '../country.js'
+import { countries, getCountry, getInitialCountry, saveCountry } from '../country.js'
+import { getCountryCurrency } from '../currency.js'
+import { getInitialNumberSystem, saveNumberSystem } from '../numberSystem.js'
 import { trackEvent } from '../analytics.js'
 import './country-selector.css'
 
 export default function CountrySelector() {
   const [countryCode, setCountryCode] = useState(getInitialCountry)
-  const [numberSystem, setNumberSystem] = useState(getInitialNumberSystem)
+  const [numberSystem, setNumberSystem] = useState(() => getInitialNumberSystem(getInitialCountry()))
   const country = getCountry(countryCode)
 
   useEffect(() => {
@@ -49,7 +44,7 @@ export default function CountrySelector() {
         <span className="country-selector__control">
           <span aria-hidden="true">{country.flag}</span>
           <select value={country.code} onChange={handleCountryChange} aria-label="Choose your country or region">
-            {countries.map((item) => <option key={item.code} value={item.code}>{item.name} ({item.currency})</option>)}
+            {countries.map((item) => <option key={item.code} value={item.code}>{item.name} ({getCountryCurrency(item.code)})</option>)}
           </select>
         </span>
       </label>
