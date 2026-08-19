@@ -2,7 +2,9 @@ name: Verify international build
 
 on:
   push:
-    branches: [global-development]
+    branches:
+      - global-development
+      - workstream-international-jurisdiction
     paths:
       - 'src/**'
       - 'scripts/**'
@@ -24,6 +26,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Validate IJ-01 domain contract
+        run: node scripts/ij01-domain-contract-check.mjs
 
       - name: Validate international calculators
         run: node scripts/international-check.mjs
