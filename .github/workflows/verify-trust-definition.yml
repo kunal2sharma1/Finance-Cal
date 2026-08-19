@@ -1,0 +1,37 @@
+name: Verify TrustDefinition
+
+on:
+  push:
+    branches: [fincalc-generational-release]
+    paths:
+      - 'src/trustDefinition.js'
+      - 'src/trustDefinitions.js'
+      - 'src/trustMetadata.js'
+      - 'src/trustRules.js'
+      - 'scripts/trust-definition-check.mjs'
+      - 'scripts/trust-provenance-check.mjs'
+      - 'package.json'
+      - '.github/workflows/verify-trust-definition.yml'
+  workflow_dispatch:
+
+jobs:
+  trust-definition:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate TrustDefinition framework
+        run: npm run trust:definition
+
+      - name: Validate trust rule provenance
+        run: npm run trust:provenance

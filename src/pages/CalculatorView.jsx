@@ -6,12 +6,16 @@ import CalculatorSEOSections from '../components/CalculatorSEOSections.jsx'
 import CalculatorTrust from '../components/CalculatorTrust.jsx'
 import CommercialDisclosure from '../components/CommercialDisclosure.jsx'
 import CommercialPlacement from '../components/CommercialPlacement.jsx'
+import NextCalculatorSection from '../components/NextCalculatorSection.jsx'
 import { calculators } from '../calculatorCatalog.js'
 import { guides } from '../guides.js'
+import { getNextCalculatorRecommendations } from '../decisionJourneys.js'
 import { getCalculatorCurrency } from '../calculatorLocale.js'
+import { validateInputValues } from '../inputValidation.js'
 import { setBreadcrumbSchema } from '../seo.js'
 import { trackEvent } from '../analytics.js'
 import './calculator-view.css'
+import './calculator-toolbar.css'
 
 const categoryPaths = {
   Investing: '/investing', Loans: '/loans', Salary: '/salary', Retirement: '/retirement', Budgeting: '/budgeting',
@@ -69,15 +73,20 @@ function getSupportingGuides(calculatorId) {
 }
 
 export default function CalculatorView({ calculator, onBack, country, numberSystem }) {
-  const { config, calculate, explanation } = calculator
+  const { config, calculate, explanation, meta = {} } = calculator
   const [values, setValues] = useState(() => buildDefaultValues(config.fields))
   const [results, setResults] = useState({})
+  const [touched, setTouched] = useState({})
   const completionTrackedRef = useRef(false)
+  const inputErrors = useMemo(() => validateInputValues(config.fields, values), [config.fields, values])
+  const hasInputErrors = Object.keys(inputErrors).length > 0
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
     completionTrackedRef.current = false
+    setTouched({})
     trackEvent('calculator_open', { calculatorId: config.id, category: config.category || 'Other' })
+
     setBreadcrumbSchema([
       { label: 'FinCalc', href: '/' },
       { label: config.category, href: categoryPaths[config.category] || '/financial-planning' },
@@ -96,6 +105,16 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
 
   useEffect(() => {
     let active = true
+
+    if (hasInputErrors) {
+      setResults({
+        isValid: false,
+        loading: false,
+        message: 'Fix the highlighted inputs to see an updated result.',
+      })
+      return () => { active = false }
+    }
+
     setResults((previous) => ({ ...previous, loading: true }))
     Promise.resolve()
       .then(() => calculate(values))
@@ -112,18 +131,27 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
         if (active) setResults({ isValid: false, loading: false, message: 'The calculation could not be completed. Please check your inputs and try again.' })
       })
     return () => { active = false }
-  }, [values, calculate, config.id])
+  }, [values, calculate, config.id, hasInputErrors])
 
   const relatedCalculators = useMemo(() => getRelatedCalculators(calculator), [calculator])
   const supportingGuides = useMemo(() => getSupportingGuides(config.id), [config.id])
+  const nextCalculatorRecommendations = useMemo(() => getNextCalculatorRecommendations(config.id), [config.id])
   const displayCurrency = getCalculatorCurrency(config, country)
 
-  function handleChange(name, rawValue) { setValues((prev) => ({ ...prev, [name]: rawValue })) }
+  function handleChange(name, rawValue) {
+    setValues((prev) => ({ ...prev, [name]: rawValue }))
+  }
+
+  function handleBlur(name) {
+    setTouched((prev) => ({ ...prev, [name]: true }))
+  }
 
   return (
     <section className="calc-view">
-      <Breadcrumbs items={[{ label: 'FinCalc', href: '/' }, { label: config.category, href: categoryPaths[config.category] || '/financial-planning' }, { label: config.title }]} />
-      <button className="calc-view__back" onClick={onBack} type="button">← Back to calculators</button>
+      <div className="calc-view__topbar">
+        <Breadcrumbs items={[{ label: 'FinCalc', href: '/' }, { label: config.category, href: categoryPaths[config.category] || '/financial-planning' }]} />
+        <button className="calc-view__back" onClick={onBack} type="button">← Back to calculators</button>
+      </div>
       <div className="calc-view__header">
         <span className="calc-view__eyebrow">FINANCIAL CALCULATOR</span>
         <h1 className="calc-view__title">{config.title}</h1>
@@ -132,13 +160,21 @@ export default function CalculatorView({ calculator, onBack, country, numberSyst
       <div className="calc-view__grid">
         <div className="calc-view__panel calc-view__panel--results">
           <div className="calc-view__panel-heading calc-view__panel-heading--light"><div><span className="calc-view__panel-kicker">ESTIMATED OUTCOME</span><h2>See what the numbers mean</h2></div></div>
-          <ResultPanel resultFields={config.resultFields} results={results} defaultCurrency={displayCurrency} numberSystem={numberSystem} />
+          <ResultPanel
+            resultFields={config.resultFields}
+            results={results}
+            defaultCurrency={displayCurrency}
+            numberSystem={numberSystem}
+            resultCertainty={meta.resultCertainty}
+            resultCertaintyNote={meta.resultCertaintyNote}
+          />
         </div>
         <div className="calc-view__panel calc-view__panel--inputs">
           <div className="calc-view__panel-heading"><div><span className="calc-view__panel-kicker">YOUR INPUTS</span><h2>Set your assumptions</h2></div><span className="calc-view__panel-hint">Updates instantly</span></div>
-          <CalculatorForm fields={config.fields} values={values} onChange={handleChange} />
+          <CalculatorForm calculatorId={config.id} fields={config.fields} values={values} errors={inputErrors} touched={touched} onChange={handleChange} onBlur={handleBlur} />
         </div>
       </div>
+      <NextCalculatorSection currentCalculatorId={config.id} recommendations={nextCalculatorRecommendations} />
       <section className="calc-view__content" aria-labelledby="how-it-works">
         <span className="calc-view__eyebrow">PLAIN-ENGLISH GUIDE</span>
         <h2 id="how-it-works">How the {config.title.toLowerCase()} works</h2>

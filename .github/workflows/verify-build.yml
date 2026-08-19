@@ -2,7 +2,7 @@ name: Verify build
 
 on:
   push:
-    branches: [main, seo-development, global-development, seo-growth-v1, fincalc-batch-1-5-final-validator-2]
+    branches: [main, seo-development, global-development, seo-growth-v1, fincalc-batch-1-5-final-validator-2, fincalc-generational-release]
     paths:
       - 'package.json'
       - 'package-lock.json'
@@ -11,15 +11,22 @@ on:
       - 'index.html'
       - 'vite.config.js'
       - 'scripts/**'
-      - '.github/workflows/verify-build.yml'
   workflow_dispatch:
 
 env:
   VERIFY_RUN: "2026-08-17T18:12:00+05:30"
 
+permissions:
+  contents: write
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,8 +43,65 @@ jobs:
       - name: Validate calculator contracts
         run: npm run calculator:contract
 
+      - name: Validate input grouping
+        run: npm run input-groups:check
+
+      - name: Validate input control policy
+        run: npm run input-control:check
+
+      - name: Validate contextual input validation
+        run: npm run input-validation:check
+
+      - name: Validate XIRR mobile UI
+        run: npm run xirr-ui:check
+
+      - name: Validate result hierarchy
+        run: npm run result-hierarchy:check
+
+      - name: Validate result card cleanup
+        run: npm run result-card:check
+
+      - name: Validate structured search index
+        run: npm run search-index:check
+
+      - name: Validate search intent ranking
+        run: npm run search-intent:check
+
+      - name: Validate search synonym and typo recovery
+        run: npm run search-recovery:check
+
+      - name: Validate zero-result recovery
+        run: npm run search-zero-results:check
+
+      - name: Validate search intent detection
+        run: npm run search-intent-detection:check
+
+      - name: Validate canonical content model
+        run: npm run content-model:check
+
+      - name: Validate decision journey framework
+        run: npm run decision-journey:check
+
+      - name: Validate first decision journeys
+        run: npm run decision-journey:quality
+
+      - name: Validate next calculator flow
+        run: npm run next-calculator:check
+
+      - name: Validate indexability policy
+        run: npm run indexability:check
+
       - name: Run golden formula regression tests
         run: npm run formula:golden
+
+      - name: Run formula boundary tests
+        run: npm run formula:boundary
+
+      - name: Run XIRR numerical solver tests
+        run: npm run formula:xirr
+
+      - name: Run live-data resilience tests
+        run: npm run live-data:check
 
       - name: Validate SEO Growth V1
         run: npm run seo:growth:v1
@@ -45,8 +109,11 @@ jobs:
       - name: Validate country SEO
         run: npm run country-seo:check
 
-      - name: Validate search intent SEO
+      - name: Validate search intent SEO content
         run: npm run seo-intent:check
+
+      - name: Validate search intent SEO integration
+        run: npm run search-intent:seo:check
 
       - name: Validate technical SEO
         run: npm run technical-seo:check
@@ -60,11 +127,23 @@ jobs:
       - name: Validate SEO configuration
         run: npm run seo:check
 
+      - name: Validate canonical site URL
+        run: npm run canonical-url:check
+
       - name: Validate discovery
         run: npm run discovery:check
 
       - name: Validate trust
         run: npm run trust:check
+
+      - name: Validate modeling scope
+        run: npm run model-scope:check
+
+      - name: Validate result certainty
+        run: npm run result-certainty:check
+
+      - name: Validate precision policy
+        run: npm run precision:check
 
       - name: Validate analytics
         run: npm run analytics:check
@@ -81,5 +160,18 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Production-like SEO crawl
+        run: npm run seo:crawl
+
       - name: Validate performance budget
         run: npm run performance:check
+
+      - name: Publish CI status
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STATUS_FILE: ci-status/verify.json
+          STATUS_BRANCH: ci-status
+          WORKFLOW_NAME: Verify build
+          JOB_STATUS: ${{ job.status }}
+        run: node scripts/publish-ci-status.mjs

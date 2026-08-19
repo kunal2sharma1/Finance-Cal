@@ -1,52 +1,124 @@
-import { calculators } from './calculatorCatalog.js'
-import { guides } from './guides.js'
+import { calculatorSearchIndex, guideSearchIndex } from './searchIndex.js'
+import { detectSearchIntent, scoreSearchResult } from './searchIntent.js'
+import { buildSearchVocabulary, getSearchTerms, recoverQuery } from './searchRecovery.js'
 
 const normalize = (value) => String(value || '').trim().toLowerCase()
+const SEARCH_VOCABULARY = buildSearchVocabulary([...calculatorSearchIndex, ...guideSearchIndex])
 
-export function searchSite(query, { countryCode } = {}) {
+function matchesCountry(entry, countryCode) {
+  return !countryCode || !entry.countries.length || entry.countries.includes(countryCode)
+}
+
+function matchesTerms(entry, terms) {
+  return terms.some((term) => entry.searchText.includes(term))
+}
+
+function calculatorSearchResult(entry, terms, queryMeta, recovery = false) {
+  if (!recovery && !matchesTerms(entry, terms)) return null
+  return {
+    type: entry.type,
+    id: entry.id,
+    title: entry.title,
+    description: entry.description,
+    category: entry.category,
+    href: entry.href,
+    score: scoreSearchResult(entry, queryMeta),
+    ...(recovery ? { recovery: 'zero-result' } : {}),
+  }
+}
+
+function guideSearchResult(entry, terms, queryMeta, recovery = false) {
+  if (!recovery && !matchesTerms(entry, terms)) return null
+  return {
+    type: entry.type,
+    slug: entry.slug,
+    title: entry.title,
+    description: entry.description,
+    href: entry.href,
+    score: scoreSearchResult(entry, queryMeta),
+    ...(recovery ? { recovery: 'zero-result' } : {}),
+  }
+}
+
+function buildZeroResultRecovery(queryMeta, { countryCode, types }) {
+  if (!queryMeta.domain && !queryMeta.journey) return []
+
+  const candidates = []
+  const allowedTypes = new Set(types)
+
+  if (allowedTypes.has('calculator')) {
+    for (const entry of calculatorSearchIndex) {
+      if (!matchesCountry(entry, countryCode)) continue
+      const score = scoreSearchResult(entry, { ...queryMeta, term: '' })
+      if (score <= 0) continue
+      const result = calculatorSearchResult(entry, [], queryMeta, true)
+      candidates.push({ ...result, score })
+    }
+  }
+
+  if (allowedTypes.has('guide')) {
+    for (const entry of guideSearchIndex) {
+      const score = scoreSearchResult(entry, { ...queryMeta, term: '' })
+      if (score <= 0) continue
+      const result = guideSearchResult(entry, [], queryMeta, true)
+      candidates.push({ ...result, score })
+    }
+  }
+
+  return candidates
+    .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
+    .slice(0, 6)
+}
+
+export function detectSearch(query) {
+  const term = normalize(query)
+  if (!term) return detectSearchIntent('')
+
+  const recovered = recoverQuery(term, SEARCH_VOCABULARY)
+  return {
+    ...detectSearchIntent(recovered.query || term),
+    corrected: recovered.corrected,
+    corrections: recovered.corrections,
+  }
+}
+
+export function searchSite(query, { countryCode, types = ['calculator', 'guide'] } = {}) {
   const term = normalize(query)
   if (!term) return []
 
+  const recovered = recoverQuery(term, SEARCH_VOCABULARY)
+  const recoveryBase = recovered.query || term
+  const terms = getSearchTerms(term, SEARCH_VOCABULARY)
+  const allowedTypes = new Set(types)
+  const queryMeta = {
+    ...detectSearchIntent(recoveryBase),
+    term,
+    terms,
+    corrected: recovered.corrected,
+    corrections: recovered.corrections,
+  }
   const results = []
 
-  for (const { config } of calculators) {
-    const countries = Array.isArray(config.countries) ? config.countries : []
-    if (countryCode && countries.length && !countries.includes(countryCode)) continue
-
-    const haystack = [config.title, config.shortDescription, config.category, ...(config.keywords || [])]
-      .filter(Boolean)
-      .join(' ')
-      .toLowerCase()
-
-    if (!haystack.includes(term)) continue
-
-    const exactTitle = normalize(config.title).includes(term)
-    results.push({
-      type: 'calculator',
-      id: config.id,
-      title: config.title,
-      description: config.shortDescription,
-      href: `/calculators/${encodeURIComponent(config.id)}`,
-      score: exactTitle ? 100 : haystack.indexOf(term) >= 0 ? 60 : 20,
-    })
+  if (allowedTypes.has('calculator')) {
+    for (const entry of calculatorSearchIndex) {
+      if (!matchesCountry(entry, countryCode)) continue
+      const result = calculatorSearchResult(entry, terms, queryMeta)
+      if (result) results.push(result)
+    }
   }
 
-  for (const guide of guides) {
-    const haystack = [guide.title, guide.intro, guide.topic, ...guide.sections.flat()].filter(Boolean).join(' ').toLowerCase()
-    if (!haystack.includes(term)) continue
-
-    const exactTitle = normalize(guide.title).includes(term)
-    results.push({
-      type: 'guide',
-      slug: guide.slug,
-      title: guide.title,
-      description: guide.metaDescription || guide.intro,
-      href: `/guides/${guide.slug}`,
-      score: exactTitle ? 90 : 40,
-    })
+  if (allowedTypes.has('guide')) {
+    for (const entry of guideSearchIndex) {
+      const result = guideSearchResult(entry, terms, queryMeta)
+      if (result) results.push(result)
+    }
   }
 
-  return results
-    .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
-    .slice(0, 12)
+  if (results.length > 0) {
+    return results
+      .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
+      .slice(0, 12)
+  }
+
+  return buildZeroResultRecovery(queryMeta, { countryCode, types })
 }

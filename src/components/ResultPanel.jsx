@@ -1,3 +1,5 @@
+import './result-interpretation.css'
+
 function isValidNumeric(value) {
   return typeof value === 'number' && Number.isFinite(value)
 }
@@ -50,18 +52,24 @@ function formatResultValue(value, field, results, defaultCurrency, numberSystem)
   return formatCurrency(value, defaultCurrency || 'INR', numberSystem)
 }
 
-function buildInterpretation(primary, results) {
-  if (typeof results.interpretation === 'string' && results.interpretation.trim()) return results.interpretation
-  if (typeof results.keyInsight === 'string' && results.keyInsight.trim()) return results.keyInsight
-  if (!primary) return 'This result is an estimate based on the assumptions you entered. Test another scenario before making an important financial decision.'
-  return `This is an estimated ${primary.label.toLowerCase()} based on the assumptions you entered. Change the inputs to compare scenarios.`
+function formatCertaintyLabel(level) {
+  if (!level) return ''
+  return level.charAt(0).toUpperCase() + level.slice(1).replace(/-/g, ' ')
 }
 
-export default function ResultPanel({ resultFields, results = {}, defaultCurrency = 'INR', numberSystem = 'indian' }) {
+export default function ResultPanel({
+  resultFields,
+  results = {},
+  defaultCurrency = 'INR',
+  numberSystem = 'indian',
+  resultCertainty,
+  resultCertaintyNote,
+}) {
   const safeResultFields = Array.isArray(resultFields) ? resultFields.filter(Boolean) : []
   const primary = safeResultFields.find((field) => field.primary)
   const secondary = safeResultFields.filter((field) => !field.primary)
   const isInvalid = results.isValid === false
+  const hasCertainty = !isInvalid && !results.loading && Boolean(resultCertainty)
 
   const invested = results.totalInvested
   const returns = results.totalReturns
@@ -94,9 +102,11 @@ export default function ResultPanel({ resultFields, results = {}, defaultCurrenc
         </div>
       )}
 
-      {!isInvalid && !results.loading && (
-        <div className="result-panel__message" role="status">
-          {buildInterpretation(primary, results)}
+      {hasCertainty && (
+        <div className="result-panel__interpretation" aria-label={`Result certainty: ${formatCertaintyLabel(resultCertainty)}`}>
+          <span className="result-panel__interpretation-label">RESULT INTERPRETATION</span>
+          <strong>{formatCertaintyLabel(resultCertainty)}</strong>
+          {resultCertaintyNote && <p>{resultCertaintyNote}</p>}
         </div>
       )}
 

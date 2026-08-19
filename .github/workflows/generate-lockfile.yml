@@ -2,33 +2,49 @@ name: Generate package lockfile
 
 on:
   push:
-    branches: [main]
+    branches: [fincalc-generational-release]
     paths:
       - 'package.json'
-      - 'package-lock.json'
       - '.github/workflows/generate-lockfile.yml'
   workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: generate-lockfile-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   lockfile:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: fincalc-generational-release
+          fetch-depth: 0
 
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
+          cache: npm
 
       - name: Generate root lockfile
-        run: npm install --package-lock-only
+        # Regenerate from the checked-in package.json so npm ci sees an exact spec match.
+        run: npm install --package-lock-only --ignore-scripts --include=dev --no-audit
+
+      - name: Verify clean install
+        run: npm ci --ignore-scripts --include=dev --no-audit
+
+      - name: Verify high-severity audit
+        run: npm audit --audit-level=high
 
       - name: Commit lockfile
         run: |
+          set -euo pipefail
           git add package-lock.json
           if git diff --cached --quiet -- package-lock.json; then
             echo "Root lockfile is already up to date."
@@ -36,5 +52,5 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Regenerate root package lockfile for Vite 6"
-          git push
+          git commit -m "chore: regenerate root package lockfile"
+          git push origin HEAD:fincalc-generational-release

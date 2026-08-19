@@ -1,3 +1,8 @@
+import { getCalculatorScope } from './calculatorScope.js'
+import { getResultCertainty } from './calculatorCertainty.js'
+import { getPrecisionPolicy } from './precisionPolicy.js'
+import { normalizeCalculatorFields } from './inputControlPolicy.js'
+
 const DOMAIN_MAP = [
   ['invest', 'investing'],
   ['stock', 'investing'],
@@ -111,11 +116,18 @@ export function getCalculatorMeta(config) {
   const domain = inferDomain(config)
   const intent = inferIntent(config)
   const modelType = inferModelType(config)
+  const { modelScope, note: modelingScopeNote } = getCalculatorScope(config, modelType)
+  const { level: resultCertainty, note: resultCertaintyNote } = getResultCertainty(modelScope)
 
   return {
     domain,
     intent,
     modelType,
+    modelScope,
+    modelingScopeNote,
+    resultCertainty,
+    resultCertaintyNote,
+    precisionPolicy: getPrecisionPolicy(resultCertainty),
     calculatorClass: inferCalculatorClass(config),
     riskLevel: inferRisk(config, modelType),
     primaryJourney: inferJourney(domain),
@@ -124,8 +136,14 @@ export function getCalculatorMeta(config) {
 }
 
 export function withCalculatorMeta(calculator) {
+  const config = {
+    ...calculator.config,
+    fields: normalizeCalculatorFields(calculator.config?.fields || []),
+  }
+
   return {
     ...calculator,
-    meta: getCalculatorMeta(calculator.config),
+    config,
+    meta: getCalculatorMeta(config),
   }
 }
