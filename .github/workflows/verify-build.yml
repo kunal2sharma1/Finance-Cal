@@ -11,6 +11,17 @@ on:
       - 'index.html'
       - 'vite.config.js'
       - 'scripts/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'src/**'
+      - 'public/**'
+      - 'index.html'
+      - 'vite.config.js'
+      - 'scripts/**'
+      - '.github/workflows/verify-build.yml'
   workflow_dispatch:
 
 env:
@@ -167,7 +178,7 @@ jobs:
         run: npm run performance:check
 
       - name: Publish CI status
-        if: always()
+        if: always() && github.event_name == 'push'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STATUS_FILE: ci-status/verify.json
