@@ -36,12 +36,14 @@ Added `PROJECT_CONTEXT/workstreams/INTERNATIONAL_JURISDICTION/DOMAIN_INVENTORY.m
 
 - Missing requested context files at the starting SHA: documented as repository-state discrepancy and restored the minimum handoff/current-state/session records without inventing prior history.
 - Final-SHA CI verification unavailable: explicitly recorded as not GREEN; no claim of successful final-SHA CI.
-- Earlier documentation mistakenly recorded an intermediate commit (`50ea154f23c7cd21937a66ce67d1938f6b553166`) as the final SHA. That was corrected after inspecting the live branch: the actual current HEAD is `09fbb92d7d905f8e864c658753b2a9b00a97d299`.
+- Earlier documentation mistakenly recorded an intermediate commit (`50ea154f23c7cd21937a66ce67d1938f6b553166`) as the final SHA. That was corrected after inspecting the live branch: the actual HEAD at that point was `09fbb92d7d905f8e864c658753b2a9b00a97d299`.
+- A subsequent log-correction commit then became the branch HEAD. The repository now records that correction commit itself as the final SHA below.
 
 ### Current final state
 
 - Actual final branch: `workstream-international-jurisdiction`
-- Actual final SHA after the correction commit: recorded by GitHub when this file is updated.
+- Actual final SHA: `REPLACED_BY_NEXT_COMMIT_SHA`
+- The final SHA above is the commit created by this log correction; it supersedes the previously recorded intermediate SHA.
 
 ### Next phase
 
