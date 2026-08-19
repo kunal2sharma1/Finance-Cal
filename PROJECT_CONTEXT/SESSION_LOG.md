@@ -8,5 +8,5 @@
 - Product Experience and International & Jurisdiction are the first active streams.
 - Durable AI response and parallel-work protocols were defined.
 - Durable `PROJECT_CONTEXT` was merged to `main` as PR #12 at merge SHA `c03975f579647ad4e36fef4997fd0b949f08f4af`.
-- Product and International workstream branches were synchronized with the canonical context baseline.
-- Next actions: PX-01 on Product Experience and IJ-01 on International/Jurisdiction.
+- Product Experience was synchronized with the canonical context baseline without replacing its workstream roadmap.
+- PX-01 is next and has not yet been started.
