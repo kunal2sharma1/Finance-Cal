@@ -33,6 +33,7 @@ jobs:
           cache: npm
 
       - name: Generate root lockfile
+        # Regenerate from the checked-in package.json so npm ci sees an exact spec match.
         run: npm install --package-lock-only --ignore-scripts --include=dev --no-audit
 
       - name: Verify clean install
