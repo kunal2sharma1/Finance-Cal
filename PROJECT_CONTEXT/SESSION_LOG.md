@@ -21,8 +21,11 @@
 - Confirmed five canonical journey slugs and found stale journey mappings in search intent and calculator metadata.
 - Confirmed `calculatorCatalog.js` is the canonical combined calculator catalog, while `AppSeo` direct topic rendering still consumes the core registry, creating a route/data-source divergence risk.
 - Confirmed guide/calculator relationships are centralized in `contentModel.js`; no duplicate content model is proposed.
-- Updated PX roadmap and current state to record inventory completion with verification pending.
-- Exact candidate SHA: `2bf45b28b85ea116722557834c716cf37b2708a5`.
-- Verification status: exact-SHA Product Experience workflow still required; no older GREEN run is being reused.
+- Updated the PX roadmap and current state to record the inventory as complete with verification pending.
+- Documentation predecessor SHA before this session-log update: `7263182e8c4a7440ba1b6ef1419434a630f2eefc`.
+- Final branch SHA is the commit containing this session-log update; exact-SHA CI verification remains pending.
+- No PX-02 work has started.
 
-PX-02 has not started.
+## Verification rule
+
+The older infrastructure GREEN result is not reused to validate this newer candidate. PX-01 remains IN_PROGRESS until the Product Experience workflow is manually run and GREEN for the exact final branch SHA.
