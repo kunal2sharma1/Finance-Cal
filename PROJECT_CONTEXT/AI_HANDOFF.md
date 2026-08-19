@@ -11,99 +11,75 @@ Do not assume the previous conversation is available. Use this repository contex
 1. Read `PROJECT_CONTEXT/README.md`.
 2. Read `PROJECT_CONTEXT/CURRENT_STATE.md`.
 3. Read `PROJECT_CONTEXT/ARCHITECTURE.md`.
-4. Read `PROJECT_CONTEXT/ROADMAP.md`.
-5. Read the latest entries of `PROJECT_CONTEXT/SESSION_LOG.md`.
+4. Read `PROJECT_CONTEXT/WORKSTREAMS.md`.
+5. Read `PROJECT_CONTEXT/SESSION_LOG.md`.
 6. Inspect the actual GitHub branch and current HEAD before modifying anything.
-7. Compare documentation claims against the code/CI; do not blindly trust stale status text.
+7. Compare documentation claims against code and CI; do not blindly trust stale status text.
 
-## Current assignment
+## Current execution model
 
-Active branch: `fincalc-jurisdiction-v1`
+The old 88-phase roadmap is historical context only. FinCalc is now delivered through independent workstreams. Dependency-coupled work stays together; independent work is isolated so one stream does not block another.
 
-Current milestone: **SEO and International Architecture**
+### Active branches
 
-Current target phases: **44–47**
+- `main` — canonical production baseline.
+- `workstream-product-experience` — Product Experience.
+- `workstream-platform-quality` — Platform Quality.
+- `workstream-international-jurisdiction` — International & Jurisdiction.
+- `workstream-commercial-analytics` — Commercial & Analytics.
+- `fincalc-jurisdiction-v1` — transitional planning branch; do not use as the primary feature branch for new work.
+- `fincalc-generational-release` — historical Milestone 1 source branch.
 
-### Immediate work
+## Workstream order
 
-Start with **Phase 44** only after inspecting the existing search-intent SEO implementation and its verification gate.
+Operationally complete workstreams one at a time, while preserving branch independence:
 
-Do not implement Phase 45–47 prematurely. Finish one phase, verify it, then proceed.
+1. Product Experience
+2. International & Jurisdiction
+3. Platform Quality
+4. Commercial & Analytics
 
-## Operating protocol
+This is sequencing for manageability, not a claim that all four are technically dependent.
 
-For every phase:
+## Required workflow
 
-### START
+For each work package:
 
-- Read the phase acceptance criteria.
-- Inspect current implementation and existing tests.
-- Identify affected files and architectural invariants.
+`inspect → define acceptance criteria → implement → targeted verification → full verification → exact-SHA check → GREEN → merge → production verification`
 
-### IMPLEMENT
+If RED:
 
-- Make the smallest coherent change that satisfies the phase.
-- Preserve existing behavior unless the phase explicitly changes it.
-- Add/update a deterministic verification gate when one is missing.
-
-### VERIFY
-
-- Run the relevant checks.
-- Run the full Verify workflow when appropriate.
-- Match the result to the exact candidate SHA.
-
-### RED LOOP
-
-If anything is RED:
-
-1. identify the failing job/step;
-2. read the actual logs;
-3. find the root cause;
-4. fix it;
-5. commit the fix;
+1. inspect the exact failing job/step;
+2. read actual logs;
+3. identify root cause;
+4. make the smallest correct fix;
+5. commit;
 6. rerun verification;
 7. repeat until GREEN.
 
-Never stop at “implementation complete” while verification is RED or missing.
-
-### COMPLETE
-
-Only then:
-
-- mark the phase complete;
-- update `PROJECT_CONTEXT/CURRENT_STATE.md`;
-- update `PROJECT_CONTEXT/ROADMAP.md` if status changed;
-- append to `PROJECT_CONTEXT/SESSION_LOG.md`;
-- update this file with the next immediate action.
+Never stop at implementation while verification is RED or missing.
 
 ## Truth rules
 
 - A green run for an older SHA does not validate newer code.
-- A successful commit operation does not mean CI passed.
-- A green branch CI result does not automatically mean production is healthy.
-- Historical RED runs should not be treated as current failures.
-- If a tool cannot verify something, say so rather than guessing.
+- A successful commit does not mean CI passed.
+- A green branch run does not prove production health.
+- Historical RED runs are not current failures.
 - Do not create speculative commits just to make CI run.
 - Do not force-update `main`.
 - Do not merge unverified work.
+- If a tool cannot verify something, say so rather than guessing.
 
-## Branch policy
+## Shared-contract rule
 
-- `main` is the canonical production baseline.
-- `fincalc-jurisdiction-v1` is the active development branch.
-- Milestone branches are merged only after their verification is green.
-- The old `fincalc-generational-release` branch is historical and supplied Milestone 1.
+If two workstreams discover a shared prerequisite, put the smallest stable contract/foundation on `main`, verify it, then refresh the affected branches from `main`. Do not duplicate the same domain concept across branches.
 
 ## Session close protocol
 
-At the end of each session, append a concise entry to `SESSION_LOG.md` containing:
+At the end of every meaningful session:
 
-- date/time;
-- active branch;
-- starting HEAD and ending HEAD;
-- work completed;
-- verification result and exact SHA;
-- unresolved issues;
-- next action.
+- update `AI_HANDOFF.md` with the current state and next action;
+- update `CURRENT_STATE.md` with branch/commit/verification changes;
+- append to `SESSION_LOG.md` with date/time, work completed, verification result, unresolved issues, and next action.
 
-The next ChatGPT session should be able to continue without relying on chat history.
+A new ChatGPT session must be able to continue from the repository without relying on chat history.
