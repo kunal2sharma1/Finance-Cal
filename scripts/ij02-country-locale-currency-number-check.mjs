@@ -25,6 +25,7 @@ for (const code of countryCodes) {
 
 assert(!/code: 'IN', name: 'India', flag: '🇮🇳', currency:/.test(countrySource), 'Country record still owns currency metadata.')
 assert(!/code: 'IN', name: 'India', flag: '🇮🇳', currency: 'INR', locale:/.test(countrySource), 'Country record still owns locale metadata.')
+assert(!countrySource.includes('fincalc-number-system'), 'Country module still owns number-system storage.')
 assert(countrySource.includes('countryMap.get(code) || countryMap.get(DEFAULT_COUNTRY)'), 'Existing country fallback behavior was not preserved.')
 assert(localeSource.includes('export function getCountryLocale'), 'Locale module does not expose canonical locale ownership.')
 assert(currencySource.includes('export function getCountryCurrency'), 'Currency module does not expose canonical currency ownership.')
