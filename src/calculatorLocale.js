@@ -1,3 +1,5 @@
+import { getCountryCurrency } from './currency.js'
+
 const INDIA_ONLY_CALCULATORS = new Set([
   'ppf',
   'epf',
@@ -12,7 +14,7 @@ const INDIA_ONLY_CALCULATORS = new Set([
 export function getCalculatorCurrency(config, country) {
   if (config.currency) return config.currency
   if (INDIA_ONLY_CALCULATORS.has(config.id)) return 'INR'
-  return country?.currency || 'INR'
+  return getCountryCurrency(country?.code)
 }
 
 export function isCountrySpecific(config) {
