@@ -22,15 +22,10 @@ const DOMAIN_SIGNALS = [
 
 const JOURNEY_BY_DOMAIN = {
   investing: 'wealth-building',
-  saving: 'saving',
-  borrowing: 'home-and-borrowing',
-  debt: 'debt-free',
-  salary: 'career-finance',
-  retirement: 'retirement',
-  tax: 'tax-planning',
-  education: 'education-planning',
-  insurance: 'risk-protection',
-  'financial-health': 'financial-health',
+  borrowing: 'home-buying',
+  debt: 'debt-management',
+  salary: 'job-offer-comparison',
+  retirement: 'retirement-planning',
 }
 
 const INTENT_PRIORITY = new Map([
@@ -74,7 +69,7 @@ export function detectSearchIntent(query) {
     .sort((a, b) => b.priority - a.priority)
 
   const domain = domainMatches[0]?.domain || null
-  const journey = domain ? JOURNEY_BY_DOMAIN[domain] || 'financial-planning' : null
+  const journey = domain ? JOURNEY_BY_DOMAIN[domain] || null : null
 
   const evidence = [
     ...matchedIntents.map((value) => ({ type: 'intent', value })),
