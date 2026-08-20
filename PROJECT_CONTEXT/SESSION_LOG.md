@@ -12,7 +12,7 @@
 - Durable `PROJECT_CONTEXT` was merged to `main` as PR #12 at merge SHA `c03975f579647ad4e36fef4997fd0b949f08f4af`.
 - Product Experience was synchronized with the canonical context baseline without replacing its workstream roadmap.
 
-## 2026-08-20 — PX-01 inventory
+## 2026-08-20 — PX-01 inventory and PX-02 closeout
 
 - Starting branch: `workstream-product-experience`.
 - Starting SHA: `b3c86b0eb48360dc4eb94b0b507cc1a45f1643e2`.
@@ -23,11 +23,10 @@
 - Confirmed five canonical journey slugs and found stale journey mappings in search intent and calculator metadata.
 - Confirmed `calculatorCatalog.js` is the canonical combined calculator catalog, while `AppSeo` direct topic rendering still consumes the core registry, creating a route/data-source divergence risk.
 - Confirmed guide/calculator relationships are centralized in `contentModel.js`; no duplicate content model is proposed.
-- Updated the PX roadmap and current state to record the inventory as complete with verification pending.
-- Documentation predecessor SHA before this session-log update: `7263182e8c4a7440ba1b6ef1419434a630f2eefc`.
-- Final branch SHA is the commit containing this session-log update; exact-SHA CI verification remains pending.
-- No PX-02 work has started.
+- PX-02 decision-oriented entry experience work was completed without introducing a second search, catalog, content, or journey architecture.
+- The Product Experience workflow reached GREEN for exact candidate SHA `53e50a4029aeea590d5e57d787c876a9d1a98539` after the search-intent and zero-result recovery expectations were aligned with the canonical `home-buying` journey slug.
+- PX-01 and PX-02 are now closed. PX-03 — Decision graph integration — is the next phase and has not started.
 
 ## Verification rule
 
-The older infrastructure GREEN result is not reused to validate this newer candidate. PX-01 remains IN_PROGRESS until the Product Experience workflow is manually run and GREEN for the exact final branch SHA.
+Exact-SHA GREEN is required before a phase is considered complete. Older GREEN results are not reused for newer candidates.
