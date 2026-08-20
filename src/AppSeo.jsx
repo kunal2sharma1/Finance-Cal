@@ -3,6 +3,7 @@ import App from './App.jsx'
 import TopicHub from './pages/TopicHub.jsx'
 import GuideView from './pages/GuideView.jsx'
 import DecisionJourney from './pages/DecisionJourney.jsx'
+import JourneysIndex from './pages/JourneysIndex.jsx'
 import CountrySelector from './components/CountrySelector.jsx'
 import { calculators } from './calculators/registry.js'
 import { topicHubs } from './topicHubs.js'
@@ -16,6 +17,7 @@ function getSpecialRoute() {
   if (hub) return { type: 'hub', slug: hub[1] }
   const guide = path.match(/^\/guides\/([^/]+)$/)
   if (guide) return { type: 'guide', slug: decodeURIComponent(guide[1]) }
+  if (path === '/journeys') return { type: 'journeys' }
   const journey = path.match(/^\/journeys\/([^/]+)$/)
   if (journey) return { type: 'journey', slug: decodeURIComponent(journey[1]) }
   return { type: 'app' }
@@ -57,6 +59,8 @@ export default function AppSeo() {
       const guide = getCanonicalGuide(route.slug)
       if (guide) setSiteSEO({ title: guide.metaTitle, description: guide.metaDescription, pathname: `/guides/${guide.slug.replace(/^guide:/, '')}`, routeType: 'guide' })
       else setSiteSEO({ title: 'Guide not found | FinCalc', description: 'The requested FinCalc guide could not be found.', pathname: window.location.pathname, routeType: 'guide', routeExists: false })
+    } else if (route.type === 'journeys') {
+      setSiteSEO({ title: 'Decision Journeys | Financial Calculators | FinCalc', description: 'Explore FinCalc decision journeys that connect related calculators, guides and next steps around common financial decisions.', pathname: '/journeys', routeType: 'journeys' })
     } else if (route.type === 'journey') {
       const journey = getDecisionJourney(route.slug)
       if (journey) setSiteSEO({ title: `${journey.title} | FinCalc`, description: journey.summary, pathname: `/journeys/${journey.slug}`, routeType: 'journey' })
@@ -80,7 +84,9 @@ export default function AppSeo() {
         </div>
       </header>
       <main className="site-main">
-        {hub ? (
+        {route.type === 'journeys' ? (
+          <JourneysIndex />
+        ) : hub ? (
           <TopicHub slug={route.slug} calculators={calculators} onSelect={(id) => { window.location.href = `/calculators/${encodeURIComponent(id)}` }} />
         ) : guide ? (
           <GuideView guide={guide} />
