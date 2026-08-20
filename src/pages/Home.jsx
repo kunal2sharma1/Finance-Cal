@@ -6,6 +6,7 @@ import { getCalculatorCountries } from '../calculatorLocale.js'
 import { getDecisionJourneys } from '../decisionJourneys.js'
 import './home-filters.css'
 import './home-hero.css'
+import './home-journeys.css'
 
 const CATEGORY_ORDER = [
   'All',
