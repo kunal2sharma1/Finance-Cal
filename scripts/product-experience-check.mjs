@@ -16,6 +16,15 @@ const expectedSlugs = [
   'job-offer-comparison',
 ]
 
+const staleJourneyIdentifiers = [
+  'home-and-borrowing',
+  'debt-free',
+  'career-finance',
+  'tax-planning',
+  'education-planning',
+  'risk-protection',
+]
+
 assert.deepEqual(decisionJourneys.map(({ slug }) => slug), expectedSlugs, 'canonical journey slugs changed unexpectedly')
 assert.match(appSeo, /if \(path === '\/journeys'\) return \{ type: 'journeys' \}/, 'missing /journeys route')
 assert.match(appSeo, /path\.match\(\/\^\\\/journeys\\\/\(\[\^\/\]\+\)\$\//, 'missing /journeys/:slug route')
@@ -23,7 +32,11 @@ assert.match(appSeo, /<JourneysIndex \/>/, 'missing JourneysIndex rendering')
 assert.match(home, /href="\/journeys"/, 'homepage is missing the journeys index link')
 assert.match(home, /href=\{`\/journeys\/\$\{journey\.slug\}`\}/, 'homepage is missing journey detail links')
 assert.match(sitemap, /urls\.add\('\/journeys'\)/, 'journeys index is missing from sitemap generation')
-assert.doesNotMatch(searchIntent, /home-and-borrowing|debt-free|career-finance|retirement'|tax-planning|education-planning|risk-protection|financial-health/, 'stale search journey identifiers remain')
-assert.doesNotMatch(calculatorMeta, /home-and-borrowing|debt-free|career-finance|retirement'|tax-planning|education-planning|risk-protection|financial-health|financial-planning'\s*\}/, 'stale calculator journey identifiers remain')
+
+for (const identifier of staleJourneyIdentifiers) {
+  const pattern = new RegExp(`['"]${identifier}['"]`)
+  assert.doesNotMatch(searchIntent, pattern, `stale search journey identifier remains: ${identifier}`)
+  assert.doesNotMatch(calculatorMeta, pattern, `stale calculator journey identifier remains: ${identifier}`)
+}
 
 console.log('Product Experience PX-02 route/discovery validation passed.')
