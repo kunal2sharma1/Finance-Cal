@@ -1,0 +1,51 @@
+.home_journeys {
+  margin: 40px 0;
+}
+
+.home_journeys__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.home_journey_card {
+  display: flex;
+  min-height: 170px;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid currentColor;
+  border-radius: 14px;
+  text-decoration: none;
+}
+
+.home_journey_card strong {
+  line-height: 1.25;
+}
+
+.home_journey_card span {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.home_journey_card small {
+  margin-top: auto;
+  font-weight: 700;
+}
+
+@media (max-width: 1000px) {
+  .home_journeys__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .home_journeys__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home_journey_card {
+    min-height: 0;
+  }
+}
