@@ -2,15 +2,15 @@ import assert from 'node:assert/strict'
 import { inferSearchIntent, scoreSearchResult } from '../src/searchIntent.js'
 
 const cases = [
-  ['compare home loan vs personal loan', 'compare', 'borrowing', 'home-and-borrowing'],
-  ['can i afford a loan', 'check', 'borrowing', 'home-and-borrowing'],
-  ['can i afford a house', 'check', 'borrowing', 'home-and-borrowing'],
-  ['how much loan can i afford', 'check', 'borrowing', 'home-and-borrowing'],
-  ['should i save or repay my loan', 'plan', 'borrowing', 'home-and-borrowing'],
-  ['how much should i retire', 'plan', 'retirement', 'retirement'],
+  ['compare home loan vs personal loan', 'compare', 'borrowing', 'home-buying'],
+  ['can i afford a loan', 'check', 'borrowing', 'home-buying'],
+  ['can i afford a house', 'check', 'borrowing', 'home-buying'],
+  ['how much loan can i afford', 'check', 'borrowing', 'home-buying'],
+  ['should i save or repay my loan', 'plan', 'borrowing', 'home-buying'],
+  ['how much should i retire', 'plan', 'retirement', 'retirement-planning'],
   ['projected mutual fund growth', 'project', 'investing', 'wealth-building'],
   ['xirr return rate', 'measure', 'investing', 'wealth-building'],
-  ['calculate emi', 'calculate', 'borrowing', 'home-and-borrowing'],
+  ['calculate emi', 'calculate', 'borrowing', 'home-buying'],
 ]
 
 for (const [query, intent, domain, journey] of cases) {
@@ -26,10 +26,10 @@ const aligned = {
   searchText: 'retirement plan calculator',
   intent: 'plan',
   domain: 'retirement',
-  primaryJourney: 'retirement',
+  primaryJourney: 'retirement-planning',
 }
 const unrelated = { ...aligned, intent: 'calculate', domain: 'investing', primaryJourney: 'wealth-building' }
-const meta = { term: 'retirement', intent: 'plan', domain: 'retirement', journey: 'retirement' }
+const meta = { term: 'retirement', intent: 'plan', domain: 'retirement', journey: 'retirement-planning' }
 assert.ok(scoreSearchResult(aligned, meta) > scoreSearchResult(unrelated, meta), 'intent/domain/journey signals must affect ranking')
 
 const noQuery = inferSearchIntent('')
