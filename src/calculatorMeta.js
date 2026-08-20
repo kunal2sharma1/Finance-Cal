@@ -97,19 +97,13 @@ function inferRisk(config, modelType) {
 function inferJourney(domain) {
   const journeys = {
     investing: 'wealth-building',
-    saving: 'saving',
-    borrowing: 'home-and-borrowing',
+    borrowing: 'home-buying',
     housing: 'home-buying',
-    debt: 'debt-free',
-    salary: 'career-finance',
-    retirement: 'retirement',
-    tax: 'tax-planning',
-    education: 'education-planning',
-    insurance: 'risk-protection',
-    'financial-health': 'financial-health',
-    'financial-planning': 'financial-planning',
+    debt: 'debt-management',
+    salary: 'job-offer-comparison',
+    retirement: 'retirement-planning',
   }
-  return journeys[domain] || 'financial-planning'
+  return journeys[domain] || null
 }
 
 export function getCalculatorMeta(config) {
