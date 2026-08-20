@@ -3,6 +3,7 @@ import CalculatorCard from '../components/CalculatorCard.jsx'
 import TopicHubLinks from '../components/TopicHubLinks.jsx'
 import { searchSite } from '../searchCatalog.js'
 import { getCalculatorCountries } from '../calculatorLocale.js'
+import { getDecisionJourneys } from '../decisionJourneys.js'
 import './home-filters.css'
 import './home-hero.css'
 
@@ -40,6 +41,7 @@ function isAvailableForCountry(config, countryCode) {
 export default function Home({ calculators, onSelect, country }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [activeCategory, setActiveCategory] = useState('All')
+  const journeys = useMemo(() => getDecisionJourneys(), [])
 
   const normalizedCalculators = useMemo(
     () => calculators
@@ -113,6 +115,25 @@ export default function Home({ calculators, onSelect, country }) {
           <div className="illustration_card illustration_card_bottom">✓</div>
         </div>
       </div>
+
+      <section className="home_journeys" aria-labelledby="decision-journeys-heading">
+        <div className="home_section_header">
+          <div>
+            <span className="home_section_kicker">START WITH THE DECISION</span>
+            <h2 id="decision-journeys-heading">What are you trying to figure out?</h2>
+          </div>
+          <a href="/journeys">Explore all journeys →</a>
+        </div>
+        <div className="home_journeys__grid">
+          {journeys.map((journey) => (
+            <a className="home_journey_card" href={`/journeys/${journey.slug}`} key={journey.id}>
+              <strong>{journey.title}</strong>
+              <span>{journey.summary}</span>
+              <small>{journey.steps.length} calculators →</small>
+            </a>
+          ))}
+        </div>
+      </section>
 
       <div className="calculator_filters" aria-label="Calculator filters">
         <div className="calculator_filter_topline">
