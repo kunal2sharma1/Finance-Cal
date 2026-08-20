@@ -16,6 +16,7 @@ for (const country of countryPages) urls.add(`/countries/${country.slug}`)
 for (const journey of decisionJourneys) urls.add(`/journeys/${journey.slug}`)
 urls.add('/countries')
 urls.add('/guides')
+urls.add('/journeys')
 
 const xml = [
   '<?xml version="1.0" encoding="UTF-8"?>',
