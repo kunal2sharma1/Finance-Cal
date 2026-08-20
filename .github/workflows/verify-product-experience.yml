@@ -50,6 +50,9 @@ jobs:
       - name: Product QA
         run: node scripts/product-qa-check.mjs
 
+      - name: PX-02 route and discovery validation
+        run: npm run product-experience:check
+
       - name: Discovery validation
         run: npm run discovery:check
 
