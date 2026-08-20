@@ -17,9 +17,9 @@ Product Experience and International & Jurisdiction are the first two streams be
 
 ## Current Product Experience phase
 
-PX-01 inventory is documented on `workstream-product-experience`. No UI redesign or PX-02 work has started.
+PX-01 inventory and PX-02 decision-oriented entry experience are complete. PX-03 — Decision graph integration — is the next active Product Experience phase.
 
-The inventory identifies existing calculator/search/content/journey infrastructure plus integration gaps around journey discovery, canonical journey identifiers and route/data-layer consistency.
+The PX-01 inventory identifies existing calculator/search/content/journey infrastructure plus integration gaps around journey discovery, canonical journey identifiers and route/data-layer consistency. PX-02 established the decision-oriented entry experience while preserving the existing search, calculator, content, and journey architecture.
 
 ## Rules
 
@@ -27,7 +27,7 @@ Every phase must reach exact-SHA GREEN verification before being considered comp
 
 ## Verification state
 
-PX-01 inventory work is complete, but PX-01 remains IN_PROGRESS until the Product Experience workflow is verified GREEN for the exact final candidate SHA.
+PX-01 and PX-02 were verified GREEN by the Product Experience workflow for exact candidate SHA `53e50a4029aeea590d5e57d787c876a9d1a98539`. Documentation closeout is recorded in the Product Experience roadmap. PX-03 is next and has not started.
 
 ## Context synchronization
 
